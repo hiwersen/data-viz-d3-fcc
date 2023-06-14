@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .attr("class", "dot")
         .attr("data-xvalue", d => d.Year)
         .attr("data-yvalue", d => d.Seconds)
-        .style("fill", d => d.Doping ? "orange" : "navy")
+        .attr("fill", d => d.Doping ? "orange" : "navy") // .attr instead of style to allow :hover
         .on("mouseover", (event, d) => {
             tooltip
             .attr("data-year", d.Year)
@@ -64,7 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .style("left", event.pageX + "px");
         })
         .on("mouseout", () => {
-            tooltip.style("opacity", 0);
+            tooltip
+            .style("opacity", 0)
+            // Move the tooltip out of the svg area so that other .dots can reliably be hovered,
+            // without the tooltip overlapping them
+            .style("top", "0px")
+            .style("left", "0px");
         });
 
         const xvalueFormat = d3.format("d");

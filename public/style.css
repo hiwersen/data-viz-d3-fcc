@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tooltip {
+    background-color: rgb(130, 168, 201, 0.8);
+    display: inline-block;
+    padding: 0.3rem;
+    border-radius: 3px;
+    transition: opacity 0.3s ease-in;
+}
+
+#chart-container {
+    margin-top: 2rem;
+}
+
+footer {
+    
+}

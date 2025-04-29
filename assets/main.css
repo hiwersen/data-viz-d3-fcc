@@ -1,14 +1,20 @@
 :root {
   /* Colors setting */
-  --primary-color: #3498db;
-  --secondary-color: #2c3e50;
-  --text-color: #333;
-  --background-color: #f5f5f5;
+  --text-color: #979797;
+  --text-color-light: rgb(210, 210, 210);
+  --text-color-dark: #646464;
+  --primary-color: #9dfa5f;
+  --secondary-color: #fa0376;
+  --d3: #ef7234;
+
+  /* Background settings */
+  --background-color: #000000;
+  --foreground-color: #1f1f1f;
+  --spot-light: rgb(106, 50, 211);
+  --spot-light-alpha: rgba(60, 33, 110, 0.3);
 
   /* Font settings */
-  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-mono: "Consolas", "Monaco", "Andale Mono", monospace;
+  --font-main: monospace, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --dynamic-font-size: clamp(16px, 0.33vw + 13px, 20px); /* Adjust !*/
 
   /* Spacing */
@@ -24,12 +30,15 @@
   --text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 
   /* Page settings */
-  --page-max-with: 1900px;
-  --page-padding: 20px;
-  --navbar-height: 52px;
+  --page-max-with: 1920px;
+  --page-padding: 1vw;
+
+  /* Layout settings */
+  --grid-gap: 1vw;
 
   /* Animation settings */
   /*  Animations' timing functions */
+  --time: 0.5s;
   --timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -37,16 +46,239 @@ body {
   font-family: var(--font-main);
   color: var(--text-color);
   background-color: var(--background-color);
-  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+body::before,
+body::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+body::before {
+  background-color: var(--background-color);
+  background-image: conic-gradient(
+    transparent 0% 20%,
+    var(--spot-light-alpha) 49% 51%,
+    transparent 75% 100%
+  );
+  background-size: 100% 200%;
+  background-position: center 98%;
+  z-index: -2;
+
+  /* Animation */
+  opacity: 0;
+  animation-name: lightUp;
+  animation-duration: 4s;
+  animation-delay: 2s;
+  animation-timing-function: var(--timing-function);
+  animation-fill-mode: both;
+}
+
+body::after {
+  --gap: 4px;
+  background-color: transparent;
+  background-image: conic-gradient(
+    var(--foreground-color) 0% 25%,
+    transparent 25% 100%
+  );
+  background-size: var(--gap) var(--gap);
+  margin-left: calc(var(--gap) * -0.25);
+  margin-top: calc(var(--gap) * 0.25);
+  z-index: -1;
+}
+
+#page-container {
+  flex: 1;
+  padding: var(--page-padding);
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr 2fr;
+  gap: var(--grid-gap);
+}
+
+header {
+  grid-column: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--lg);
+}
+
+h1 {
+  color: var(--text-color-light);
+  font-weight: lighter;
 }
 
 a {
-  color: var(--primary-color);
+  color: var(--text-color);
   text-decoration: none;
+  transition: color var(--time) var(--timing-function);
 }
 
-a:visited,
+a:visited {
+  color: var(--text-color);
+}
+
 a:hover,
 a:active {
+  color: var(--primary-color);
+}
+
+a:visited:hover {
   color: var(--secondary-color);
+}
+
+li {
+  list-style: none;
+}
+
+#info {
+  /* Fallback value */
+  color: var(--text-color-dark);
+
+  color: transparent;
+  background-image: linear-gradient(
+    45deg,
+    var(--spot-light) -100%,
+    var(--text-color-dark)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  grid-column: 4 / -1;
+
+  /* Animate text color */
+  /* Animation */
+  animation-name: lightUp-text;
+  animation-duration: 4s;
+  animation-delay: 2s;
+  animation-timing-function: var(--timing-function);
+  animation-fill-mode: both;
+}
+
+.d3 {
+  transition: color var(--time) var(--timing-function);
+}
+
+.d3 a:hover,
+.d3 a:active {
+  color: var(--d3);
+}
+
+#chart-container {
+  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.tooltip {
+  background-color: rgba(39, 24, 10, 0.75);
+  color: white;
+  font-size: 0.95rem;
+  text-align: left;
+  border-radius: 3px;
+  border: 1px solid black;
+  box-shadow: 3px 5px 10px 2px rgba(39, 24, 10, 0.75);
+  padding: 0.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tick {
+  font-size: 0.7rem;
+}
+
+#title,
+#description {
+  color: rgb(69, 69, 71);
+  text-align: center;
+  font-size: 3rem;
+
+  margin: 0.3em;
+}
+
+#description {
+  font-size: 1.2rem;
+}
+
+#cards {
+  --card-gap: 1px;
+  background-color: yellow;
+  grid-column: 1/ -1;
+  grid-row: 2 / -1;
+  align-self: end;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  column-gap: var(--card-gap);
+  align-items: end;
+
+  position: relative;
+  width: 100dvw;
+  height: 400px;
+  overflow: visible;
+}
+
+.card {
+  background-color: red;
+  height: 600px;
+  width: 600px;
+  flex-shrink: 0;
+
+  /* ! BUILDING 
+  display: none; */
+}
+
+footer {
+  padding: var(--sm) var(--page-padding);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+#author {
+  color: var(--text-color-dark);
+  display: flex;
+  transition: color var(--time) var(--timing-function);
+}
+
+#author a {
+  color: inherit;
+  display: flex;
+  place-items: center;
+  gap: var(--sm);
+}
+
+.social-icons {
+  fill: currentColor;
+}
+
+#author a:hover {
+  color: var(--text-color-light);
+}
+
+@keyframes lightUp {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes lightUp-text {
+  from {
+    color: var(--text-color-dark);
+  }
+  to {
+    color: transparent;
+  }
 }

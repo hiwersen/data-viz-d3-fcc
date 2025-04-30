@@ -93,9 +93,9 @@ body::after {
 }
 
 #page-container {
+  position: relative;
   flex: 1;
   padding: var(--page-padding);
-
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr 2fr;
@@ -209,64 +209,73 @@ li {
 
 #cards {
   --card-gap: 1px;
-  background-color: yellow;
   grid-column: 1/ -1;
   grid-row: 2 / -1;
   align-self: end;
+  justify-self: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: nowrap;
   column-gap: var(--card-gap);
   align-items: end;
 
-  position: relative;
+  position: absolute;
+  bottom: 0;
   width: 100dvw;
   height: 400px;
   overflow: visible;
+
+  /* ! BUILDING 
+  display: none; */
+  border: 2px solid red;
+  background-color: yellow;
 }
 
 .card {
-  background-color: red;
   height: 600px;
   width: 600px;
   flex-shrink: 0;
 
   /* ! BUILDING 
   display: none; */
+  background-color: rgba(255, 0, 0, 0.534);
 }
 
 footer {
-  padding: var(--sm) var(--page-padding);
-  font-size: 0.9rem;
-  font-style: italic;
-}
-
-#author {
   color: var(--text-color-dark);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: var(--sm) var(--page-padding);
   display: flex;
-  transition: color var(--time) var(--timing-function);
+  align-items: center;
+  gap: var(--lg);
 }
 
-#author a {
-  color: inherit;
-  display: flex;
-  place-items: center;
-  gap: var(--sm);
-}
-
-.social-icons {
+.social-icon svg {
   fill: currentColor;
 }
 
-#author a:hover {
+.social-icon a {
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: var(--sm);
+}
+
+.social-icon a:hover {
   color: var(--text-color-light);
+}
+
+#author {
+  transition: color var(--time) var(--timing-function);
+  height: fit-content;
 }
 
 @keyframes lightUp {
   0% {
     opacity: 0;
   }
-  80% {
+  50% {
     opacity: 1;
   }
   100% {

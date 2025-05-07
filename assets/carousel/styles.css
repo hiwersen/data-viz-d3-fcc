@@ -1,0 +1,133 @@
+/* Hide scrollbar */
+#carousel #cards-container {
+  scrollbar-width: none; /* Firefox and latest Chromium */
+}
+#carousel #cards-container::-webkit-scrollbar {
+  display: none; /* Safari and legacy Chromium */
+}
+
+#carousel {
+  /* 
+    @screen-width:320px, card: 200px
+    @screen-width:1920px, card: 600px
+  */
+  --card-size: clamp(200px, 25dvw + 120px, 600px);
+
+  grid-column: 1/ -1;
+  grid-row: 2 / -1;
+  align-self: end;
+  justify-self: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  /* ! DEBUGGING STYLE 
+  display: none; 
+  background-color: rgba(255, 255, 0, 0.5);
+  border: 2px solid red;
+  */
+}
+
+#carousel #cards-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  /* Disable for JS users */
+  flex-wrap: wrap;
+
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100dvw;
+
+  /* Important for swiping */
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+
+  /* Perspective settings */
+  perspective: calc(var(--card-size) * 1.6);
+  perspective-origin: center center;
+  transform-style: preserve-3d;
+
+  overscroll-behavior: contain;
+  overflow-x: scroll;
+
+  /* ! DEBUGGING STYLE 
+  display: none;
+  background-color: rgba(0, 4, 255, 0.5);
+  border: 2px solid yellow;
+  */
+}
+
+@media (max-aspect-ratio: 1/1) {
+  #carousel #cards-container {
+    /* 
+      @screen-width:320px, card: 200px
+      @screen-width:1024px, card: 600px
+    */
+    --card-size: clamp(200px, 57dvw + 18px, 600px);
+    perspective: calc(var(--card-size) * 1.6);
+  }
+}
+
+#carousel .card {
+  opacity: 1;
+  width: var(--card-size);
+  height: var(--card-size);
+  flex: 0 0 auto;
+  font-size: calc(var(--card-size) * 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 600ms linear; /* cubic-bezier(0.34, 1.1, 0.64, 1) */
+  /* Important for swiping */
+  scroll-snap-align: center;
+
+  /* DEBUGGING STYLES 
+  display: none; */
+  --line: #232323;
+  --bg: #1f1f1f;
+  background-image: repeating-linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 10%,
+      var(--line) 10%,
+      var(--line) calc(10% + 1px),
+      transparent calc(10% + 1px),
+      transparent 90%,
+      var(--line) 90%,
+      var(--line) calc(90% + 1px),
+      transparent calc(90% + 1px),
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 10%,
+      var(--line) 10%,
+      var(--line) calc(10% + 1px),
+      transparent calc(10% + 1px),
+      transparent 90%,
+      var(--line) 90%,
+      var(--line) calc(90% + 1px),
+      transparent calc(90% + 1px),
+      transparent 100%
+    );
+
+  mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    black 50%,
+    transparent 100%
+  );
+
+  padding: 5%;
+  color: rgb(255, 255, 255);
+}

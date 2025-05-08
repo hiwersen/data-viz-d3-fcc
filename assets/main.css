@@ -1,7 +1,7 @@
 :root {
   /* Colors setting */
   --text-color: #979797;
-  --text-color-light: rgb(210, 210, 210);
+  --text-color-light: #d2d2d2;
   --text-color-dark: #464646;
   --primary-color: #9dfa5f;
   --secondary-color: #fa0376;
@@ -10,8 +10,8 @@
   /* Background settings */
   --background-color: #000000;
   --foreground-color: #1f1f1f;
-  --spot-light: rgb(106, 50, 211);
-  --spot-light-alpha: rgba(60, 33, 110, 0.3);
+  --spot-light: #6a32d3;
+  --spot-light-alpha: #3c216e4d;
 
   /* Font settings */
   --font-main: monospace, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;

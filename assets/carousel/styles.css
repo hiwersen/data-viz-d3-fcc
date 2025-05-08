@@ -59,6 +59,45 @@
   overscroll-behavior: contain;
   overflow-x: scroll;
 
+  /* Line effect settings */
+  --line-thin: 1px;
+  --line-c: #ababab; /* originally set to: #494949 */
+  --line-step1: 10%;
+  --line-step2: calc(var(--line-step1) + var(--line-thin));
+  --line-step3: 90%;
+  --line-step4: calc(var(--line-step3) + var(--line-thin));
+
+  /* Glow effect settings */
+  --glow: 4px;
+  --glow-c: #cfc2e3;
+  --glow-step1: calc(10% - (var(--glow) / 2));
+  --glow-step2: calc(10% + (var(--glow) / 2));
+  --glow-step3: calc(90% - (var(--glow) / 2));
+  --glow-step4: calc(90% + (var(--glow) / 2));
+
+  /* Line effect settings - animation  */
+  --offset1: 50%; /* varying speed: from -2% to -2%; timing-function: .53,.83,.5,.24*/
+  --offset2: 35%; /* constant speed: from -2% to -2% */
+
+  animation-name: animate-mask;
+  animation-duration: 4s;
+  animation-timing-function: linear; /* cubic-bezier(0.53, 0.083, 0.5, 0.24);*/
+
+  --mask: radial-gradient(circle at center, black 50%, transparent 100%);
+  --mask-line: conic-gradient(
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.75) var(--offset2),
+    black var(--offset1),
+    rgba(0, 0, 0, 0.5) var(--offset1)
+  );
+  --mask-glow: conic-gradient(
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) var(--offset2),
+    black var(--offset1),
+    rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
+    transparent calc(var(--offset1) + 2%)
+  );
+
   /* ! DEBUGGING STYLE 
   display: none;
   background-color: rgba(0, 4, 255, 0.5);
@@ -78,6 +117,7 @@
 }
 
 #carousel .card {
+  position: relative;
   opacity: 1;
   width: var(--card-size);
   height: var(--card-size);
@@ -90,44 +130,101 @@
   /* Important for swiping */
   scroll-snap-align: center;
 
+  padding: 5%;
+  color: rgb(255, 255, 255);
+  position: relative;
+
   /* DEBUGGING STYLES 
-  display: none; */
-  --line: #232323;
-  --bg: #1f1f1f;
+  display: none;
+  background-color: yellow; */
+}
+
+/* Grid effect with lines */
+#carousel .card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
   background-image: repeating-linear-gradient(
-      to right,
+      to bottom,
       transparent 0%,
-      transparent 10%,
-      var(--line) 10%,
-      var(--line) calc(10% + 1px),
-      transparent calc(10% + 1px),
-      transparent 90%,
-      var(--line) 90%,
-      var(--line) calc(90% + 1px),
-      transparent calc(90% + 1px),
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
       transparent 100%
     ),
     repeating-linear-gradient(
-      to bottom,
+      to right,
       transparent 0%,
-      transparent 10%,
-      var(--line) 10%,
-      var(--line) calc(10% + 1px),
-      transparent calc(10% + 1px),
-      transparent 90%,
-      var(--line) 90%,
-      var(--line) calc(90% + 1px),
-      transparent calc(90% + 1px),
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
       transparent 100%
     );
 
-  mask-image: radial-gradient(circle at center, black 50%, transparent 90%);
-  -webkit-mask-image: radial-gradient(
-    circle at center,
-    black 50%,
-    transparent 100%
-  );
+  mask-image: var(--mask), var(--mask-line);
+  -webkit-mask-image: var(--mask), var(--mask-line);
 
-  padding: 5%;
-  color: rgb(255, 255, 255);
+  mask-composite: intersect;
+  -webkit-mask-composite: intersect;
+
+  /* DEBUGGING STYLE 
+  display: none; */
+}
+
+/* Glow effect with blur */
+#carousel .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent var(--glow-step1),
+      var(--glow-c) var(--glow-step1),
+      var(--glow-c) var(--glow-step2),
+      transparent var(--glow-step2),
+      transparent var(--glow-step3),
+      var(--glow-c) var(--glow-step3),
+      var(--glow-c) var(--glow-step4),
+      transparent var(--glow-step4),
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      transparent 0%,
+      transparent var(--glow-step1),
+      var(--glow-c) var(--glow-step1),
+      var(--glow-c) var(--glow-step2),
+      transparent var(--glow-step2),
+      transparent var(--glow-step3),
+      var(--glow-c) var(--glow-step3),
+      var(--glow-c) var(--glow-step4),
+      transparent var(--glow-step4),
+      transparent 100%
+    );
+
+  mask-image: var(--mask), var(--mask-glow);
+  -webkit-mask-image: var(--mask), var(--mask-glow);
+
+  mask-composite: intersect;
+  -webkit-mask-composite: intersect;
+
+  filter: blur(8px);
+
+  /* DEBUGGING STYLE  
+  display: none; */
 }

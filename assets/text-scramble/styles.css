@@ -1,0 +1,26 @@
+.scramble-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 5em),
+    transparent 100%
+  );
+
+  padding-top: 0.2em;
+
+  /* Creates perfect squares:
+   █ (Full Block) 
+   ░ ▒ ▓ (Shade Blocks)
+  */
+  font-family: "Courier New", monospace;
+
+  /* manually adjusted for better visual effect */
+  --char-width: 1ch;
+  line-height: calc(var(--char-width) + 0.25em);
+
+  word-break: break-all;
+  z-index: 1;
+}

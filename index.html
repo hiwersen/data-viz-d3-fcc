@@ -20,50 +20,88 @@
       rel="stylesheet"
       type="text/css"
     />
+    <link
+      href="./assets/text-scramble/styles.css"
+      rel="stylesheet"
+      type="text/css"
+    />
     <script src="./assets/common.js" type="module" defer></script>
   </head>
   <body>
     <main id="page-container">
-      <header>
-        <h1>Data Visualisation</h1>
+      <header class="showUp">
+        <h1>DATA VISUALISATION</h1>
         <nav>
           <ul>
-            <li>
-              <a href="./projects/barchart/index.html">Bar chart</a>
+            <li id="bar-chart-link" class="nav-link">
+              <a href="./projects/barchart/index.html" target="_blank"
+                ><span class="arrow-right">→</span>bar chart</a
+              >
             </li>
-            <li>
-              <a href="./projects/choroplethmap/index.html">Choropleth map</a>
+            <li id="choropleth-map-link" class="nav-link">
+              <a href="./projects/choroplethmap/index.html" target="_blank"
+                ><span class="arrow-right">→</span>choropleth map</a
+              >
             </li>
-            <li>
-              <a href="./projects/heatmap/index.html">Heat map</a>
+            <li id="heat-map-link" class="nav-link">
+              <a href="./projects/heatmap/index.html" target="_blank"
+                ><span class="arrow-right">→</span>heat map</a
+              >
             </li>
-            <li>
-              <a href="./projects/scatterplot">Scatter plot</a>
+            <li id="scatter-plot-link" class="nav-link">
+              <a href="./projects/scatterplot" target="_blank"
+                ><span class="arrow-right">→</span>scatter plot</a
+              >
             </li>
-            <li>
-              <a href="./projects/treemap/index.html">Tree map</a>
+            <li id="tree-map-link" class="nav-link">
+              <a href="./projects/treemap/index.html" target="_blank"
+                ><span class="arrow-right">→</span>tree map</a
+              >
             </li>
           </ul>
         </nav>
       </header>
       <section id="info">
-        <p>
+        <p
+          class="scramble-text"
+          data-speed="0.095"
+          data-direction="fromRight"
+          data-bezier="0.0, 1.0, 0.0, 1.0"
+          data-target-text="A showcase of five interactive data visualisations. Each project explores different visualisation techniques created with common web standards and D3 (Data-Driven Documents)."
+          data-scramble-length="2500"
+        >
           A showcase of five interactive data visualisations. Each project
           explores different visualisation techniques created with common web
-          standards and
-          <span class="d3"
-            ><a href="https://d3js.org/" target="_blank">D3.js</a></span
-          >
-          (Data-Driven Documents).
+          standards and 3d (Data-Driven Documents).
         </p>
       </section>
-      <section id="carousel">
+      <section id="carousel" class="showUp slideUp">
         <div id="cards-container">
-          <div class="card">1</div>
-          <div class="card">2</div>
-          <div class="card">3</div>
-          <div class="card">4</div>
-          <div class="card">5</div>
+          <div id="bar-chart" class="card">
+            <div class="glass"></div>
+            <span class="chart-label">bar chart</span>
+            1
+          </div>
+          <div id="choropleth-map" class="card">
+            <div class="glass"></div>
+            <span class="chart-label">choropleth map</span>
+            2
+          </div>
+          <div id="heat-map" class="card">
+            <div class="glass"></div>
+            <span class="chart-label">heat map</span>
+            3
+          </div>
+          <div id="scatter-plot" class="card">
+            <div class="glass"></div>
+            <span class="chart-label">scatter plot</span>
+            4
+          </div>
+          <div id="tree-map" class="card">
+            <div class="glass"></div>
+            <span class="chart-label">tree map</span>
+            5
+          </div>
         </div>
       </section>
     </main>

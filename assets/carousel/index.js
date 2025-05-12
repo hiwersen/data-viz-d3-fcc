@@ -87,6 +87,7 @@ export function initCarousel() {
     });
 
     translate();
+    pushLink();
 
     // Step 2: After full snap translation completes, reorganize DOM
     setTimeout(() => {
@@ -180,6 +181,22 @@ export function initCarousel() {
   function setZIndex() {
     [...cardsContainer.children].forEach((card, i) => {
       card.style.zIndex = `${getZIndex(i)}`;
+    });
+  }
+
+  function pushLink() {
+    [...cardsContainer.children].forEach((card, i) => {
+      const cardId = card.getAttribute("id");
+      const link = document.getElementById(cardId + "-link");
+      const x = normalizeX(i);
+
+      if (x === 0) {
+        if (link && !link.classList.contains("pushed")) {
+          link.classList.add("pushed");
+        }
+      } else if (link) {
+        link.classList.remove("pushed");
+      }
     });
   }
 

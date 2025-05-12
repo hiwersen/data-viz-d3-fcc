@@ -2,9 +2,9 @@
   /* Colors setting */
   --text-color: #979797;
   --text-color-light: #d2d2d2;
-  --text-color-dark: #464646;
-  --primary-color: #9dfa5f;
-  --secondary-color: #fa0376;
+  --text-color-dark: #3b3b3b;
+  --primary-color: #ff0040;
+  --secondary-color: #9dfa5f;
   --d3: #ef7234;
 
   /* Background settings */
@@ -31,14 +31,14 @@
 
   /* Page settings */
   --page-max-with: 1920px;
-  --page-padding: 1vw;
+  --page-padding: 0.25vw;
 
   /* Layout settings */
   --grid-gap: 1vw;
 
   /* Animation settings */
   /*  Animations' timing functions */
-  --time: 0.5s;
+  --time: 0.6s;
   --timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -106,6 +106,18 @@ body::after {
   gap: var(--grid-gap);
 }
 
+.showUp {
+  animation-name: showUp;
+  animation-duration: 4s;
+  animation-delay: 2s;
+  animation-timing-function: var(--timing-function);
+  animation-fill-mode: both;
+}
+
+.slideUp {
+  animation-name: showUp, slideUp;
+}
+
 header {
   grid-column: 1 / span 2;
   display: flex;
@@ -114,7 +126,7 @@ header {
 }
 
 h1 {
-  color: var(--text-color-light);
+  color: var(--text-color-dark);
   font-weight: lighter;
 }
 
@@ -134,11 +146,41 @@ a:active {
 }
 
 a:visited:hover {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 li {
   list-style: none;
+}
+
+nav {
+  overflow: hidden;
+}
+
+.nav-link {
+  width: fit-content;
+  transition: transform 0.6s ease;
+}
+
+.nav-link.pushed {
+  transform: translateX(1.1em);
+}
+
+.nav-link:hover {
+  transform: translateX(1.1em);
+}
+
+nav a {
+  text-transform: uppercase;
+  font-size: 0.9em;
+  position: relative;
+}
+
+nav .arrow-right {
+  margin-right: var(--sm);
+  position: absolute;
+  left: -1.1em;
+  font-size: 1.1em;
 }
 
 #info {
@@ -146,23 +188,9 @@ li {
   grid-column: 3 / 4;
 
   width: 66%;
-
-  /* Animate text color */
-  /* Animation */
-  animation-name: lightUp-text;
-  animation-duration: 4s;
-  animation-delay: 2s;
-  animation-timing-function: var(--timing-function);
-  animation-fill-mode: both;
-}
-
-.d3 {
-  transition: color var(--time) var(--timing-function);
-}
-
-.d3 a:hover,
-.d3 a:active {
-  color: var(--d3);
+  max-height: 100%;
+  position: relative;
+  overflow: visible;
 }
 
 #chart-container {
@@ -260,11 +288,20 @@ footer {
   }
 }
 
-@keyframes lightUp-text {
+@keyframes showUp {
   from {
-    color: transparent;
+    opacity: 0;
   }
   to {
-    color: var(--text-color-dark);
+    color: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate(70px, 70px);
+  }
+  to {
+    transform: translate(0, 0);
   }
 }

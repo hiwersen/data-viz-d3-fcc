@@ -34,6 +34,24 @@
   */
 }
 
+@property --offset1 {
+  syntax: "<percentage>";
+  initial-value: -2%;
+  inherits: false;
+}
+
+@property --offset2 {
+  syntax: "<percentage>";
+  initial-value: -2%;
+  inherits: false;
+}
+
+@property --offset3 {
+  syntax: "<percentage>";
+  initial-value: -2%;
+  inherits: false;
+}
+
 #carousel #cards-container {
   display: flex;
   justify-content: center;
@@ -63,14 +81,14 @@
 
   /* Line effect settings */
   --line-thin: 1px;
-  --line-c: #ababab; /* originally set to: #494949 */
+  --line-c: #9d9d9d; /* originally set to: #494949 */
   --line-step1: 10%;
   --line-step2: calc(var(--line-step1) + var(--line-thin));
   --line-step3: 90%;
   --line-step4: calc(var(--line-step3) + var(--line-thin));
 
   /* Glow effect settings */
-  --glow: 4px;
+  --glow: 2px;
   --glow-c: #cfc2e3;
   --glow-step1: calc(10% - (var(--glow) / 2));
   --glow-step2: calc(10% + (var(--glow) / 2));
@@ -78,28 +96,27 @@
   --glow-step4: calc(90% + (var(--glow) / 2));
 
   /* Line effect settings - animation  */
-  --offset1: 10%; /* varying speed: from -2% to -2%; timing-function: .53,.83,.5,.24*/
-  --offset2: 5%; /* constant speed: from -2% to -2% */
+  /* varying speed: from -2% to -2%; */
+  /* timing-function: .53,.83,.5,.24* */
+  --time: 10s;
+  --delay: 1.5s;
+  --timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 
-  /* Glass effect settings */
-  --light-dir: 135deg; /* light direction */
-  --glass-c1: #021548c1;
-  --glass-c2: #0324b491;
-  --glass-c3: #ff0040;
-
-  animation-name: animate-mask;
-  animation-duration: 4s;
-  animation-timing-function: linear; /* cubic-bezier(0.53, 0.083, 0.5, 0.24);*/
+  animation-name: spinLine;
+  animation-duration: var(--time);
+  animation-delay: var(--delay);
+  animation-timing-function: var(--timing-function);
+  animation-fill-mode: both;
 
   --mask: radial-gradient(circle at center, black 50%, transparent 100%);
   --mask-line: conic-gradient(
-    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.5) var(--offset3),
     rgba(0, 0, 0, 0.75) var(--offset2),
     black var(--offset1),
     rgba(0, 0, 0, 0.5) var(--offset1)
   );
   --mask-glow: conic-gradient(
-    transparent 0%,
+    transparent var(--offset3),
     rgba(0, 0, 0, 0.3) var(--offset2),
     black var(--offset1),
     rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
@@ -224,7 +241,7 @@
       transparent 100%
     );
 
-  filter: blur(8px);
+  filter: blur(3px);
 
   mask-image: var(--mask), var(--mask-glow);
   -webkit-mask-image: var(--mask), var(--mask-glow);
@@ -280,4 +297,22 @@
   z-index: 3;
 
   transition: color 0.6s ease;
+}
+
+@keyframes spinLine {
+  0% {
+    --offset1: -2%;
+    --offset2: -2%;
+    --offset3: -2%;
+  }
+  50% {
+    --offset1: 75%;
+    --offset2: 50%;
+    --offset3: 0%;
+  }
+  100% {
+    --offset1: 102%;
+    --offset2: 102%;
+    --offset3: 102%;
+  }
 }

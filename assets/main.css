@@ -76,11 +76,11 @@ body::before {
 
   /* Animation */
   opacity: 0;
-  animation-name: lightUp;
-  animation-duration: 4s;
-  animation-delay: 2s;
+  animation-name: lightUp, dim;
+  animation-duration: 4s, 2s;
+  animation-delay: 1.5s, 8s;
   animation-timing-function: var(--timing-function);
-  animation-fill-mode: both;
+  animation-fill-mode: both, forwards;
 }
 
 body::after {
@@ -114,8 +114,8 @@ body::after {
   animation-fill-mode: both;
 }
 
-.slideUp {
-  animation-name: showUp, slideUp;
+.spinUp {
+  animation-name: showUp, spinUp;
 }
 
 header {
@@ -128,6 +128,7 @@ header {
 h1 {
   color: var(--text-color-dark);
   font-weight: lighter;
+  line-height: 0.95em;
 }
 
 a {
@@ -188,7 +189,7 @@ nav .arrow-right {
   grid-column: 3 / 4;
 
   width: 66%;
-  max-height: 100%;
+  height: 100%;
   position: relative;
   overflow: visible;
 }
@@ -288,6 +289,15 @@ footer {
   }
 }
 
+@keyframes dim {
+  from {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
 @keyframes showUp {
   from {
     opacity: 0;
@@ -297,7 +307,7 @@ footer {
   }
 }
 
-@keyframes slideUp {
+@keyframes spinUp {
   from {
     transform: translate(70px, 70px);
   }

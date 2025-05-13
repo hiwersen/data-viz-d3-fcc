@@ -88,12 +88,14 @@
   --line-step4: calc(var(--line-step3) + var(--line-thin));
 
   /* Glow effect settings */
-  --glow: 2px;
-  --glow-c: #cfc2e3;
-  --glow-step1: calc(10% - (var(--glow) / 2));
-  --glow-step2: calc(10% + (var(--glow) / 2));
-  --glow-step3: calc(90% - (var(--glow) / 2));
-  --glow-step4: calc(90% + (var(--glow) / 2));
+  --theme1: #cfc2e3;
+  --theme2: #fa3560;
+  --glow-spread: 2px;
+  --glow-c: var(--theme2);
+  --glow-step1: calc(10% - (var(--glow-spread) / 2));
+  --glow-step2: calc(10% + (var(--glow-spread) / 2));
+  --glow-step3: calc(90% - (var(--glow-spread) / 2));
+  --glow-step4: calc(90% + (var(--glow-spread) / 2));
 
   /* Line effect settings - animation  */
   /* varying speed: from -2% to -2%; */
@@ -241,6 +243,7 @@
       transparent 100%
     );
 
+  /* It affects glow spread */
   filter: blur(3px);
 
   mask-image: var(--mask), var(--mask-glow);
@@ -282,11 +285,7 @@
 }
 
 #carousel .card .chart-label {
-  --text-color: #979797;
-  --text-color-light: #d2d2d2;
   --text-color-dark: #3b3b3b;
-  --primary-color: #ff0040;
-  --secondary-color: #9dfa5f;
 
   color: var(--text-color-dark);
   font-size: 0.95rem;

@@ -16,7 +16,7 @@ export class TextScramble {
     this.speed = parseFloat(el.dataset.speed) || 1;
     this.direction = el.dataset.direction || "fromLeft";
     this.scrambleLength =
-      el.dataset.scrambleLength || this.normalizedTargetText.length;
+      parseInt(el.dataset.scrambleLength) || this.normalizedTargetText.length;
 
     // Get and store bezier curve configuration
     // Slow at the end: "0.0, 1.0, 0.0, 1.0"
@@ -64,29 +64,23 @@ export class TextScramble {
 
     // Apply bezier timing to the linear progress
     const linearProgress = frame / frames;
+
     const bezierProgress = this.applyBezierTiming(linearProgress);
 
     // Calculate how many characters should be completed
-    const progress = bezierProgress * text.length;
+    // Math.ceil cuts off the smooth bezier ending progression
+    const progress = Math.round(bezierProgress * text.length);
 
-    let complete = 0;
-    let textContent = "";
+    let textContent = text.slice(0, progress);
 
-    for (let i = 0; i < text.length; i++) {
-      const targetChar = text[i];
-
-      if (i < progress) {
-        // Character has settled
-        complete++;
-        textContent += targetChar;
-      } else {
-        // Character is still scrambling
-        textContent += `${this.randomChar()}`;
-      }
+    for (let i = progress; i < text.length; i++) {
+      this.loopCount++;
+      // Character is still scrambling
+      textContent += `${this.randomChar()}`;
     }
 
     this.el.textContent = textContent;
-    return complete === text.length;
+    return progress === text.length;
   }
 
   fromRight(frame, frames) {
@@ -97,31 +91,21 @@ export class TextScramble {
     const bezierProgress = this.applyBezierTiming(linearProgress);
 
     // Calculate how many characters should be completed
-    const progress = bezierProgress * this.scrambleLength;
+    const progress = Math.round(bezierProgress * this.scrambleLength);
 
-    let complete = 0;
-    let textContent = "";
+    let textContent = text.slice(this.scrambleLength - progress);
 
-    for (let i = 0; i < this.scrambleLength; i++) {
-      // Determine if this character should be settled yet
-      const isSettled = this.scrambleLength - i <= progress;
-
-      if (isSettled) {
-        // Character has settled
-        textContent += text[i] || "";
-        complete++;
-      } else {
-        // Character is still scrambling
-        textContent += this.randomChar();
-      }
+    for (let i = progress; i < this.scrambleLength; i++) {
+      this.loopCount++;
+      // Character is still scrambling
+      textContent = this.randomChar() + textContent;
     }
 
     this.el.textContent = textContent;
-    return complete === this.scrambleLength;
+    return progress === this.scrambleLength;
   }
 
   start() {
-    const text = this.normalizedTargetText;
     let frames = this.scrambleLength * this.speed;
     let frame = 0;
 

@@ -43,6 +43,24 @@
   --timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+@property --offset1 {
+  syntax: "<percentage>";
+  initial-value: -2%;
+  inherits: false;
+}
+
+@property --offset2 {
+  syntax: "<percentage>";
+  initial-value: -2%;
+  inherits: false;
+}
+
+@property --offset3 {
+  syntax: "<percentage>";
+  initial-value: -2%;
+  inherits: false;
+}
+
 .flex-c {
   display: flex;
   flex-direction: column;
@@ -211,11 +229,6 @@ nav .arrow-right {
 }
 
 /* D3 STYLES */
-#page-container.flex-c {
-  /* DEBUGGING STYLES 
-  background-color: rgba(255, 255, 0, 0.111); */
-}
-
 #chart-container {
   gap: var(--lg);
   /* DEBUGGING STYLES 
@@ -226,7 +239,7 @@ nav .arrow-right {
   animation-delay: 0.75s;
 }
 
-#chart-container .title-container {
+#chart-title {
   align-self: flex-start;
 
   display: flex;
@@ -237,7 +250,7 @@ nav .arrow-right {
   background-color: rgba(0, 0, 255, 0.191); */
 }
 
-#chart-container .legend-container {
+#chart-footer {
   align-self: flex-start;
   display: flex;
   justify-content: space-between;
@@ -249,59 +262,47 @@ nav .arrow-right {
   background-color: red; */
 }
 
-#chart-container .source {
+#source {
   font-size: 0.8rem;
 
   /* DEBUGGING STYLES 
   background-color: blue; */
 }
 
-/*
-#chart-container .legend-container svg {
-  background-color: rgba(255, 255, 0, 0.381);
+.tick {
+  font-size: 0.7rem;
 }
-*/
+
+.screen {
+  /* Screen effect */
+  background-color: #2300088a; /*  #230008a4 */
+  box-shadow: 3px 5px 10px 2px #230008c2;
+  border: 1px solid black;
+}
 
 #tooltip {
   --theme1: #cfc2e3;
   --theme2: #fa3560;
   --padding: calc(var(--dynamic-font-size) * 1.65);
+
   color: var(--text-color-light);
   font-weight: lighter;
-  padding: var(--padding);
-  position: relative;
+
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+  visibility: hidden;
+
   width: calc(var(--dynamic-font-size) * 25);
   height: calc(var(--dynamic-font-size) * 25);
+  padding: var(--padding);
+
   overflow: visible;
   z-index: 2;
   pointer-events: none;
 }
 
-.screen {
-  background-color: #230008a4;
-  box-shadow: 3px 5px 10px 2px #230008c2;
-  border: 1px solid black;
-}
-
-@property --offset1 {
-  syntax: "<percentage>";
-  initial-value: -2%;
-  inherits: false;
-}
-
-@property --offset2 {
-  syntax: "<percentage>";
-  initial-value: -2%;
-  inherits: false;
-}
-
-@property --offset3 {
-  syntax: "<percentage>";
-  initial-value: -2%;
-  inherits: false;
-}
-
-/* Line effect */
+/* ! Line effect - NOT IN USE */
 #tooltip::before {
   /* Line effect settings */
   --line-thin: 1px;
@@ -369,13 +370,12 @@ nav .arrow-right {
   mask-composite: intersect;
   -webkit-mask-composite: intersect;
 
-  /* DEBUGGING STYLE */
+  /* ! DEBUGGING STYLE */
   display: none;
 }
 
-#tooltip .tooltip-content {
+#tooltip-content {
   position: relative;
-  padding: var(--padding);
 
   width: 100%;
   height: 100%;
@@ -385,11 +385,10 @@ nav .arrow-right {
   gap: var(--lg);
 
   /* DEBUGGING STYLES
-  background-color: yellow;
-  */
+  background-color: yellow; */
 }
 
-#tooltip .data {
+#data-container {
   justify-content: flex-start;
   align-items: flex-start;
   gap: var(--md);
@@ -403,7 +402,7 @@ nav .arrow-right {
   font-size: 3rem;
 }
 
-#tooltip .county-minimap {
+#county-minimap {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -412,12 +411,12 @@ nav .arrow-right {
   z-index: -2;
 }
 
-#tooltip .county-minimap svg {
+#county-minimap svg {
   width: 100%;
   height: 100%;
 }
 
-#tooltip .county-minimap path {
+#county-minimap path {
   stroke-width: 0.5px;
   fill: none;
   stroke: var(--theme1);
@@ -450,12 +449,7 @@ nav .arrow-right {
   animation-iteration-count: infinite;
 }
 
-.tick {
-  font-size: 0.7rem;
-}
-
 /* FOOTER */
-
 footer {
   color: var(--text-color-dark);
   font-size: 0.85rem;
@@ -465,10 +459,12 @@ footer {
   align-items: center;
   gap: var(--lg);
 
+  /*
   position: absolute;
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
+  */
 
   width: 100%;
 
@@ -477,28 +473,27 @@ footer {
   border: 1px solid yellow; */
 }
 
-.social-icon svg {
+footer .social-icon svg {
   fill: currentColor;
 }
 
-.social-icon a {
+footer .social-icon a {
   color: inherit;
   display: flex;
   align-items: center;
   gap: var(--sm);
 }
 
-.social-icon a:hover {
+footer .social-icon a:hover {
   color: var(--text-color-light);
 }
 
-#author {
+footer #author {
   transition: color var(--time) var(--timing-function);
   height: fit-content;
 }
 
 /* ANIMATIONS */
-
 @keyframes lightUp {
   0% {
     opacity: 0;

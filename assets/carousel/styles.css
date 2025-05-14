@@ -80,18 +80,21 @@
   overflow-y: visible;
 
   /* Line effect settings */
+  --text-color-light: #d2d2d2;
+  --theme1: #cfc2e3;
+  --theme2: #fa3560;
+
+  /* Line */
   --line-thin: 1px;
-  --line-c: #9d9d9d; /* originally set to: #494949 */
+  --line-c: var(--text-color-light);
   --line-step1: 10%;
   --line-step2: calc(var(--line-step1) + var(--line-thin));
   --line-step3: 90%;
   --line-step4: calc(var(--line-step3) + var(--line-thin));
 
-  /* Glow effect settings */
-  --theme1: #cfc2e3;
-  --theme2: #fa3560;
-  --glow-spread: 2px;
-  --glow-c: var(--theme2);
+  /* Glow */
+  --glow-spread: 1px;
+  --glow-c: var(--theme1);
   --glow-step1: calc(10% - (var(--glow-spread) / 2));
   --glow-step2: calc(10% + (var(--glow-spread) / 2));
   --glow-step3: calc(90% - (var(--glow-spread) / 2));
@@ -112,15 +115,14 @@
 
   --mask: radial-gradient(circle at center, black 50%, transparent 100%);
   --mask-line: conic-gradient(
-    rgba(0, 0, 0, 0.5) var(--offset3),
-    rgba(0, 0, 0, 0.75) var(--offset2),
-    black var(--offset1),
-    rgba(0, 0, 0, 0.5) var(--offset1)
+    rgba(0, 0, 0, 0.3) var(--offset3),
+    rgba(0, 0, 0, 1) var(--offset2),
+    rgba(0, 0, 0, 0.3) var(--offset1)
   );
   --mask-glow: conic-gradient(
     transparent var(--offset3),
     rgba(0, 0, 0, 0.3) var(--offset2),
-    black var(--offset1),
+    rgba(0, 0, 0, 0.75) var(--offset1),
     rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
     transparent calc(var(--offset1) + 2%)
   );
@@ -304,10 +306,13 @@
     --offset2: -2%;
     --offset3: -2%;
   }
-  50% {
-    --offset1: 75%;
-    --offset2: 50%;
+  35% {
     --offset3: 0%;
+  }
+  50% {
+    --offset1: 80%;
+    --offset2: 75%;
+    --offset3: 65%;
   }
   100% {
     --offset1: 102%;

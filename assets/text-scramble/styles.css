@@ -22,8 +22,10 @@
   font-family: "Courier New", monospace;
 
   /* manually adjusted for better visual effect */
+  --char-space: 0.25em;
   --char-width: 1ch;
-  line-height: calc(var(--char-width) + 0.25em);
+  line-height: calc(var(--char-width) + var(--char-space));
+  letter-spacing: var(--char-space);
 
   word-break: break-all;
   z-index: 1;

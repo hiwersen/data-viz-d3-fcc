@@ -1,8 +1,5 @@
 .county:hover {
-  fill: red;
-}
+  --primary-color: #ff0037;
 
-#source {
-  margin: 0.75rem;
-  font-size: 0.95rem;
+  fill: var(--primary-color);
 }

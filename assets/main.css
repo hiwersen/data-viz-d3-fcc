@@ -60,6 +60,9 @@ body {
   overflow: hidden;
   position: relative;
   letter-spacing: 2px;
+
+  /* ! DEBUGGING 
+  overflow: auto; */
 }
 
 body::before,
@@ -214,7 +217,7 @@ nav .arrow-right {
 }
 
 #chart-container {
-  gap: var(--xl);
+  gap: var(--lg);
   /* DEBUGGING STYLES 
   background-color: rgba(255, 0, 0, 0.139); */
 }
@@ -239,13 +242,25 @@ nav .arrow-right {
   display: flex;
   justify-content: space-between;
 
+  width: 100%;
+  overflow: visible;
+
   /* DEBUGGING STYLES 
   background-color: red; */
 }
 
 #chart-container .source {
   font-size: 0.8rem;
+
+  /* DEBUGGING STYLES 
+  background-color: blue; */
 }
+
+/*
+#chart-container .legend-container svg {
+  background-color: rgba(255, 255, 0, 0.381);
+}
+*/
 
 #tooltip {
   --theme1: #cfc2e3;
@@ -371,12 +386,6 @@ nav .arrow-right {
 
   /* DEBUGGING STYLES
   background-color: yellow;
-  background-color: #280f6e;
-  background-color: #37137e;
-  background-color: #470e9c;
-  background-color: #6511c5;
-  background-color: #ab77d8;
-  background-color: #9600ff;
   */
 }
 

@@ -180,15 +180,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const legendW = 250;
       const legendH = 8;
+      const legendPadding = 14;
       const legendCellW = legendW / colorScale.range().length;
 
-      const legend = svg
+      const legend = d3
+        .select("#chart-container .legend-container")
+        .append("svg")
+        .attr("width", legendW + legendPadding * 2)
+        .attr("height", legendH + legendPadding * 1.5)
         .append("g")
         .attr("id", "legend")
-        .attr(
-          "transform",
-          `translate(${svgW / 2 + legendCellW * 3}, ${paddingH / 2})`
-        );
+        .attr("transform", `translate(${legendPadding}, 0)`);
 
       legend
         .selectAll("rect")

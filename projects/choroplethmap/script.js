@@ -1,26 +1,43 @@
 import { colorThemes } from "../../color-themes.js";
+import { UpdateChartDimensions } from "../../assets/updateChartDimensions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const colorTheme = colorThemes[2];
+  console.log(window.innerWidth, window.innerHeight);
 
-  const chartWidth = 960; // ! TODO: make it dynamic
-  const chartHeight = 600; // ! TODO: make it dynamic
+  const updateChartDimensions = new UpdateChartDimensions(
+    1.6,
+    0.25, // 25% max-discount
+    0.35
+  );
 
-  const tooltip = d3
-    .select("body")
-    .append("div")
-    .attr("id", "tooltip")
-    .attr("class", "screen");
+  // Update on page load
+  updateChartDimensions.update();
+
+  // Update on window resize
+  window.addEventListener("resize", updateChartDimensions.update);
+
+  const colorTheme = colorThemes[1].reverse();
+  const stateStroke = colorTheme.at(3); // "white";
+
+  const svgRatio = 1.6;
+  const viewBoxWidth = 960;
+  const viewBoxHeight = viewBoxWidth / svgRatio;
 
   const chartSvg = d3
     .select("#chart-svg")
     .append("svg")
     .attr("id", "svg")
-    .attr("width", chartWidth)
-    .attr("height", chartHeight);
+    .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
 
   const counties = chartSvg.append("g").attr("id", "counties");
   const states = chartSvg.append("g").attr("id", "states");
+
+  const tooltip = d3
+    .select("#chart-page")
+    .append("div")
+    .attr("id", "tooltip")
+    .attr("class", "screen showUp");
 
   d3.select("#chart-title")
     .append("h1")
@@ -34,12 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
     )
     .attr("id", "title-description");
 
-  d3.select("#chart-footer")
-    .append("div")
-    .attr("id", "source")
-    .html(
-      `Source: <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/download-data.aspx" target="_blank">USDA Economic Research Service</a>`
-    );
+  d3.select("#chart-source").html(
+    `Source: <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/download-data.aspx" target="_blank">USDA Economic Research Service</a>`
+  );
 
   const req = new XMLHttpRequest();
 
@@ -127,21 +141,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Create tooltip content
           const tooltipContent = `
-            <div id="tooltip-content" class="flex-c">
-              <p id="tooltip-title">${feature.properties.area_name}, ${feature.properties.state}</p>
-                <div id="data-container flex-c">
-                  <div class="data">
-                    <p class="data-title">Higher education:</p>
-                    <p class="data-value">${feature.properties.education}%</p>
+            <div id="tooltip-content">
+              <p id="tooltip-title">Higher education</p>
+              <div id="data-container">
+
+                <div class="data-max">
+                  <div class="data national-max">
+                    <p class="data-title">National max</p>
+                    <p class="data-value">${feature.properties.area_name}, ${feature.properties.state}: ${feature.properties.education}%</p>
+                  </div>
+                  <div class="data state-max">
+                    <p class="data-title">State max</p>
+                    <p class="data-value">${feature.properties.area_name}, ${feature.properties.state}: ${feature.properties.education}%</p>
                   </div>
                 </div>
-                <div id="county-minimap" class="flex-c">
-                    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" >
-                        <g transform="translate(${translateX}, ${translateY}) scale(${scale})">
-                          <path d="${pathData}"/>
-                        </g>
-                    </svg>
+                
+                <div class="data current-county">
+                  <p class="data-title">${feature.properties.area_name}, ${feature.properties.state}:</p>
+                  <p class="data-value">${feature.properties.education}%</p>
                 </div>
+
+                <div class="data-min">
+                  <div class="data national-min">
+                    <p class="data-title">National min</p>
+                    <p class="data-value">${feature.properties.area_name}, ${feature.properties.state}: ${feature.properties.education}%</p>
+                  </div>
+                  <div class="data state-min">
+                    <p class="data-title">State min</p>
+                    <p class="data-value">${feature.properties.area_name}, ${feature.properties.state}: ${feature.properties.education}%</p>
+                  </div>
+                </div>
+                
+              </div>
+              <div id="county-minimap" class="flex-c">
+                  <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" >
+                      <g transform="translate(${translateX}, ${translateY}) scale(${scale})">
+                        <path d="${pathData}"/>
+                      </g>
+                  </svg>
+              </div>
+              <div id="tooltip-footer">Adults with a bachelor's degree or higher</div>
             </div>`;
 
           // Set tooltip content
@@ -203,23 +242,24 @@ document.addEventListener("DOMContentLoaded", () => {
         .append("path")
         .attr("class", "state")
         .attr("fill", "none")
-        .attr("stroke", "white")
+        .attr("stroke", stateStroke)
+        .attr("stroke-width", 0.7)
         .attr("d", d3.geoPath());
 
-      const legendW = 250;
-      const legendH = 8;
+      const legendViewBoxWidth = 250;
+      const legendViewBoxHeight = 8;
       const legendPadding = 14;
-      const legendCellW = legendW / colorScale.range().length;
+      const legendCellWidth = legendViewBoxWidth / colorScale.range().length;
+      const legendViewBox = `0 0 ${legendViewBoxWidth + legendPadding * 2} ${legendViewBoxHeight + legendPadding * 1.5}`;
 
       const legend = d3
         .select("#chart-footer")
-        .append("div")
-        .attr("id", "legend-container")
         .append("svg")
-        .attr("width", legendW + legendPadding * 2)
-        .attr("height", legendH + legendPadding * 1.5)
-        .append("g")
         .attr("id", "legend")
+        .attr("viewBox", legendViewBox)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .append("g")
+        .attr("id", "legend-bar")
         .attr("transform", `translate(${legendPadding}, 0)`);
 
       legend
@@ -227,16 +267,16 @@ document.addEventListener("DOMContentLoaded", () => {
         .data(colorScale.range())
         .enter()
         .append("rect")
-        .attr("x", (_, i) => i * legendCellW)
+        .attr("x", (_, i) => i * legendCellWidth)
         .attr("y", 0)
-        .attr("width", legendCellW)
-        .attr("height", legendH)
+        .attr("width", legendCellWidth)
+        .attr("height", legendViewBoxHeight)
         .attr("fill", (d) => d);
 
       const legendScale = d3
         .scaleLinear()
         .domain([minEdu / 100, maxEdu / 100])
-        .range([0, legendW]);
+        .range([0, legendViewBoxWidth]);
 
       const getTickValues = (min, max, Categorynum) => {
         let ticks = [];
@@ -259,10 +299,154 @@ document.addEventListener("DOMContentLoaded", () => {
       const legendAxis = legend
         .append("g")
         .attr("id", "legend-axis")
-        .attr("transform", `translate(0, ${legendH})`)
+        .attr("transform", `translate(0, ${legendViewBoxHeight})`)
         .call(legendAxisGenerator);
 
       legendAxis.selectAll("g").attr("class", "tick");
     };
   };
 });
+
+// ! TODO: add dynamic max and min data to tooltip:
+
+/**
+ * // Before creating the counties, calculate min/max values
+function calculateMinMaxValues(data) {
+  // Initialize variables to store min/max values
+  const stats = {
+    nationalMin: { value: Infinity, county: null },
+    nationalMax: { value: -Infinity, county: null },
+    stateMinMax: {} // Will store min/max for each state
+  };
+  
+  // Process all counties to find national min/max
+  data.forEach(feature => {
+    const education = feature.properties.education;
+    const state = feature.properties.state;
+    const countyName = feature.properties.area_name;
+    const fips = feature.properties.fips;
+    
+    // Check for national min/max
+    if (education < stats.nationalMin.value) {
+      stats.nationalMin = { 
+        value: education, 
+        county: countyName, 
+        state: state,
+        fips: fips
+      };
+    }
+    
+    if (education > stats.nationalMax.value) {
+      stats.nationalMax = { 
+        value: education, 
+        county: countyName, 
+        state: state,
+        fips: fips
+      };
+    }
+    
+    // Initialize state stats if first time seeing this state
+    if (!stats.stateMinMax[state]) {
+      stats.stateMinMax[state] = {
+        min: { value: Infinity, county: null, fips: null },
+        max: { value: -Infinity, county: null, fips: null }
+      };
+    }
+    
+    // Check for state min/max
+    if (education < stats.stateMinMax[state].min.value) {
+      stats.stateMinMax[state].min = { 
+        value: education, 
+        county: countyName,
+        fips: fips
+      };
+    }
+    
+    if (education > stats.stateMinMax[state].max.value) {
+      stats.stateMinMax[state].max = { 
+        value: education, 
+        county: countyName,
+        fips: fips
+      };
+    }
+  });
+  
+  return stats;
+}
+
+// Calculate stats before rendering
+const educationStats = calculateMinMaxValues(featuresCounties);
+
+// Now use these stats in your mouseover handler
+counties
+  .selectAll("path")
+  .data(featuresCounties)
+  .enter()
+  .append("path")
+  .attr("class", "county")
+  .attr("data-fips", (feature) => feature.properties.fips)
+  .attr("data-education", (feature) => feature.properties.education)
+  .attr("fill", (feature) => colorScale(feature.properties.education))
+  .attr("d", d3.geoPath())
+  .on("mouseover", (event, feature) => {
+    // Path setup code remains the same...
+    
+    // Get state min/max for the current county's state
+    const state = feature.properties.state;
+    const stateMin = educationStats.stateMinMax[state].min;
+    const stateMax = educationStats.stateMinMax[state].max;
+    const nationalMin = educationStats.nationalMin;
+    const nationalMax = educationStats.nationalMax;
+    
+    // Create tooltip content with dynamic min/max values
+    const tooltipContent = `
+      <div id="tooltip-content">
+        <p id="tooltip-title">Higher education</p>
+        <div id="data-container">
+
+          <div class="data-max">
+            <div class="data national-max">
+              <p class="data-title">National max</p>
+              <p class="data-value">${nationalMax.county}, ${nationalMax.state}: ${nationalMax.value}%</p>
+            </div>
+            <div class="data state-max">
+              <p class="data-title">State max</p>
+              <p class="data-value">${stateMax.county}, ${state}: ${stateMax.value}%</p>
+            </div>
+          </div>
+          
+          <div class="data current-county">
+            <p class="data-title">${feature.properties.area_name}, ${state}:</p>
+            <p class="data-value">${feature.properties.education}%</p>
+          </div>
+
+          <div class="data-min">
+            <div class="data national-min">
+              <p class="data-title">National min</p>
+              <p class="data-value">${nationalMin.county}, ${nationalMin.state}: ${nationalMin.value}%</p>
+            </div>
+            <div class="data state-min">
+              <p class="data-title">State min</p>
+              <p class="data-value">${stateMin.county}, ${state}: ${stateMin.value}%</p>
+            </div>
+          </div>
+          
+        </div>
+        <div id="county-minimap" class="flex-c">
+            <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" >
+                <g transform="translate(${translateX}, ${translateY}) scale(${scale})">
+                  <path d="${pathData}" fill="${colorScale(feature.properties.education)}"/>
+                </g>
+            </svg>
+        </div>
+        <div id="tooltip-footer">Adults with a bachelor's degree or higher</div>
+      </div>`;
+
+    // Rest of your tooltip setup...
+    tooltip
+      .html(tooltipContent)
+      .attr("data-education", feature.properties.education)
+      .style("opacity", 1)
+      // ... other tooltip styles
+  });
+*/

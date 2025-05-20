@@ -8,7 +8,7 @@
   --complementary-color: #00ffc8;
 
   --background-color: #000000;
-  --pixel-color: #1f1f1f;
+  --pixel-color: #270009dc; /* #1f1f1f; */
 
   --spotlight-color: #41296e48;
 
@@ -16,42 +16,6 @@
   --font-main: monospace, "Courier New", Roboto, sans-serif;
 
   --font-secondary: "Courier New", monospace, Roboto, sans-serif;
-
-  /* Device resolutions
-
-    Ultra-widescreen    - aspect ratio: 21:9 (2.333333333)
-    Widescreens:        - aspect ratio: 16:9 (1.777777778)
-
-    1280 x 720  pixels  - non-HD
-    1920 x 1080 pixels
-    2560 x 1440 pixels
-    3840 x 2160 pixels
-    5120 x 2880 pixels
-
-    Desktop:
-    1280 x 832 pixels  - aspect ratio: 1.538461538
-
-    Tablets:
-    1024 x 1366 pixels - aspect ratio: 0.749633968
-    744  x 1133 pixels - aspect ratio: 0.656663725
-
-    Mobiles:
-    412 x 915 pixels   - aspect ratio: 0.450273224
-    320 x 568 pixels   - aspect ratio: 0.563380282
-
-    ----------- non-HDs --------------
-    @screen-width < 320px : rem = 11px
-    @screen-width < 1920px: rem ≈ 16px
-
-    ------------- HDs -----------------
-    @screen-width = 1920px: rem ≈ 16px
-    @screen-width = 2560px: rem ≈ 21px
-    @screen-width = 3840px: rem ≈ 32px
-    @screen-width = 5120px: rem ≈ 42px
-  */
-
-  /* ! TODO: needs ratio limit beyond ultra-widescreen */
-  --dynamic-font-size: max(16px, 0.8334dvw);
 
   /* Spacing */
   --xxs: 0.125rem;
@@ -72,7 +36,7 @@
 
   /* Animation */
   --timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-  --timing-function2: cubic-bezier(0.57, 0.4, 0.5, 1.8);
+  --timing-function2: cubic-bezier(0.57, 0.4, 0.5, 1.8); /* Bounce effect */
 }
 
 /* 
@@ -228,9 +192,10 @@
  */
 
 html {
-  font-size: var(--dynamic-font-size);
   overflow-x: hidden;
-  background-color: red;
+
+  /* ! DEBUGGING 
+  background-color: black; */
 }
 
 body {
@@ -244,10 +209,8 @@ body {
   overflow: hidden !important;
   letter-spacing: var(--xxs);
 
-  /* Limit body width to ultra-widescreen displays */
-  max-width: calc(100vh * 2.333333333);
-
   /* ! DEBUGGING  
+  border: 5px solid yellow;
   background-color: greenyellow; */
 }
 
@@ -344,6 +307,9 @@ nav a {
   text-transform: uppercase;
   font-size: 0.8em;
   position: relative;
+
+  /* ! DEBUGGING */
+  font-size: 1rem;
 }
 
 footer {
@@ -365,8 +331,8 @@ footer {
 
   padding: var(--page-padding);
 
-  /* ! DEBUGGING */
-  background-color: rgba(255, 0, 0, 0.126);
+  /* ! DEBUGGING 
+  background-color: rgba(255, 0, 0, 0.126); */
 }
 
 #page-container.grid {
@@ -679,7 +645,7 @@ footer {
 #tooltip {
   --theme1: #cfc2e3;
   --theme2: #fa3560;
-  --padding: calc(var(--dynamic-font-size) * 1.65);
+  --padding: calc(1rem * 1.65);
 
   color: var(--text-color);
   font-size: 0.65rem;
@@ -691,8 +657,8 @@ footer {
   left: -1000px;
   visibility: hidden;
 
-  width: calc(var(--dynamic-font-size) * 25);
-  height: calc(var(--dynamic-font-size) * 25);
+  width: calc(1rem * 25);
+  height: calc(1rem * 25);
   padding: var(--padding);
 
   overflow: visible;

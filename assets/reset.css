@@ -29,15 +29,123 @@
   border-radius: 4px;
 }
 
-html {
-  scroll-behavior: smooth;
+:root {
+  /* 
+   * Common aspect ratios and resolutions
+
+   * Aspect ratios:
+
+    Ultra-widescreens   - aspect ratio: 21:9 (2.333333333)
+    Widescreens:        - aspect ratio: 16:9 (1.777777778)
+    Tablets:            - aspect ratio: 16:10 (1.6)
+    Mobiles:            - aspect ratio: 9:16 (0.5625)
+
+   * Widescreen resolutions:
+
+    5120 x 2880 pixels
+    3840 x 2160 pixels  
+    2560 x 1440 pixels
+    1920 x 1080 pixels
+    1280 x 720  pixels  - non-HD
+
+   * Desktop:
+    1280 x 832 pixels   - aspect ratio: 1.538461538
+
+   * Tablets:
+    1366 x 1024 pixels  - aspect ratio: 1.333984375
+    1133 x 744  pixels  - aspect ratio: 1.522849462
+
+   * Mobiles:
+    412 x 915 pixels    - aspect ratio: 0.450273224
+    320 x 568 pixels    - aspect ratio: 0.563380282
+  */
+
+  /* 
+   Limit the viewport aspect ratio to ultra-widescreen aspect ratio 21:9 (2.333333333)
+  */
+  --ar: calc(21 / 9);
+  --limited-dvw: min(100dvw, calc(100dvh * var(--ar)));
+
+  /* 
+   Set dynamic root font size [--dynamic-rem] to: 
+   - dynamic viewport width, limited to aspect ratio 21:9, if landscape
+   - dynamic viewport height, limited to aspect ratio 9:21,  if portrait
+   - 16px floor.
+
+   ----------- HD devices ---------------
+    rem ≈ 42px:
+    @screen 5120px width x 2880px height
+    @screen 2880px width x 5120px height
+
+    rem ≈ 16px:
+    @screen 1920px width x 1080px height
+    @screen 1080px width x 1920px height
+  */
+
+  --factor: 0.833335;
+
+  --dynamic-rem-width: min(
+    calc(var(--factor) * 1dvw),
+    calc(var(--factor) * 1dvh * var(--ar))
+  );
+
+  --dynamic-rem-height: min(
+    calc(var(--factor) * 1dvh),
+    calc(var(--factor) * 1dvw * var(--ar))
+  );
+
+  --dynamic-rem: max(16px, var(--dynamic-rem-width), var(--dynamic-rem-height));
+
+  /* Set rem to dynamic font size [--dynamic-rem].
+  Use rem for layout purposes: */
+  font-size: var(--dynamic-rem);
 }
 
-button {
-  cursor: pointer;
-  font-family: inherit;
-  background: none;
-  border: none;
+@media screen and (max-width: 1919px) and (orientation: landscape),
+  screen and (max-height: 1079px) and (orientation: landscape),
+  screen and (max-height: 1919px) and (orientation: portrait),
+  screen and (max-width: 1079px) and (orientation: portrait) {
+  :root {
+    /*
+      --------- non-HD devices ------------
+      rem ≈ 16px:
+      @screen 1919px width x 1079px height
+      @screen 1079px width x 1919px height
+
+      rem ≈ 12px:
+      @screen 568px width x  320px height
+      @screen 320px width x  568px height
+    */
+
+    --factor: 0.3; /* decrease viewport dimension influence */
+    --base-value: 10.3px; /* offset viewport dimension influence */
+
+    --dynamic-rem-width: min(
+      calc(var(--factor) * 1dvw) + var(--base-value),
+      calc((var(--factor) * 1dvh * var(--ar)) + var(--base-value))
+    );
+
+    --dynamic-rem-height: min(
+      calc((var(--factor) * 1dvh) + var(--base-value)),
+      calc((var(--factor) * 1dvw * var(--ar)) + var(--base-value))
+    );
+
+    --dynamic-rem: max(
+      12px,
+      var(--dynamic-rem-width),
+      var(--dynamic-rem-height)
+    );
+  }
+
+  /* DEBUGGING 
+  body {
+    background-color: red !important;
+  }
+  */
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* Media query helper for responsive design */
@@ -52,4 +160,16 @@ button {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+body {
+  /* Limit body width to --limited-dvw */
+  width: var(--limited-dvw);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  background: none;
+  border: none;
 }

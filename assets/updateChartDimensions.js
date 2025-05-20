@@ -67,7 +67,7 @@ export class UpdateChartDimensions {
       );
     }
 
-    this.log();
+    // this.log();
   }
 
   log() {

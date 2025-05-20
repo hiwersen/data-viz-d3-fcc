@@ -15,4 +15,15 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   initCarousel();
+  logRem();
 });
+
+window.addEventListener("resize", logRem);
+
+function logRem() {
+  console.log(
+    window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue("font-size")
+  );
+}

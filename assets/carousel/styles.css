@@ -11,7 +11,9 @@
     @screen-width:320px, card: 200px
     @screen-width:1920px, card: 600px
   */
-  --card-size: clamp(200px, 25dvw + 120px, 600px);
+  /*--card-size: clamp(200px, 25dvw + 120px, 600px);*/
+
+  --card-size: 37rem;
 
   display: flex;
   justify-content: center;
@@ -242,34 +244,6 @@
 
   /* DEBUGGING STYLE  
   display: none; */
-}
-
-#carousel .card:nth-child(1) {
-  --light-dir: 250deg;
-}
-
-#carousel .card:nth-child(2) {
-  --light-dir: 210deg;
-}
-
-#carousel .card:nth-child(3) {
-  --light-dir: 190deg;
-}
-
-#carousel .card:nth-child(4) {
-  --light-dir: 180deg;
-}
-
-#carousel .card:nth-child(5) {
-  --light-dir: 170deg;
-}
-
-#carousel .card:nth-child(6) {
-  --light-dir: 150deg;
-}
-
-#carousel .card:nth-child(7) {
-  --light-dir: 110deg;
 }
 
 #carousel .card .chart-label {

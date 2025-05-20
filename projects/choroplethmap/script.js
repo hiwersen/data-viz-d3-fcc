@@ -2,10 +2,17 @@ import { colorThemes } from "../../color-themes.js";
 import { UpdateChartDimensions } from "../../assets/updateChartDimensions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  const colorTheme = colorThemes[1].reverse();
+  const stateStroke = colorTheme.at(3); // "white";
+
+  const svgRatio = 1.6;
+  const viewBoxWidth = 960;
+  const viewBoxHeight = viewBoxWidth / svgRatio;
+
   console.log(window.innerWidth, window.innerHeight);
 
   const updateChartDimensions = new UpdateChartDimensions(
-    1.6,
+    svgRatio,
     0.25, // 25% max-discount
     0.35
   );
@@ -15,13 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Update on window resize
   window.addEventListener("resize", updateChartDimensions.update);
-
-  const colorTheme = colorThemes[1].reverse();
-  const stateStroke = colorTheme.at(3); // "white";
-
-  const svgRatio = 1.6;
-  const viewBoxWidth = 960;
-  const viewBoxHeight = viewBoxWidth / svgRatio;
 
   const chartSvg = d3
     .select("#chart-svg")

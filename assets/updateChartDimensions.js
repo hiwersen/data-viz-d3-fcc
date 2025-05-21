@@ -24,14 +24,16 @@ export class UpdateChartDimensions {
     const scaleFactor = 1 - this.discount;
 
     // Set CSS variables based on current viewport ratio and calculated discount
-    const pagePadding = getComputedStyle(document.documentElement)
-      .getPropertyValue("--page-padding")
-      .trim();
-    const paddingValue = parseInt(pagePadding);
+    const pageContainer = document.getElementById("page-container");
+    let pagePadding = getComputedStyle(pageContainer)
+      .getPropertyValue("padding")
+      .trim()
+      .slice(0, -2);
+    pagePadding = parseFloat(pagePadding);
 
     if (this.viewportRatio >= this.chartRatio) {
       // Landscape orientation - height is the limiting factor
-      const baseHeight = viewportHeight - 2 * paddingValue;
+      const baseHeight = viewportHeight - 2 * pagePadding;
       const baseWidth = baseHeight * this.chartRatio;
 
       // Apply scaling
@@ -49,7 +51,7 @@ export class UpdateChartDimensions {
       );
     } else {
       // Portrait orientation - width is the limiting factor
-      const baseWidth = viewportWidth; // no horizontal padding
+      const baseWidth = viewportWidth - 2 * pagePadding;
       const baseHeight = baseWidth / this.chartRatio;
 
       // Apply scaling

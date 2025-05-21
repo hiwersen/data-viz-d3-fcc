@@ -1,27 +1,14 @@
 import { colorThemes } from "../../color-themes.js";
 import { UpdateChartDimensions } from "../../assets/updateChartDimensions.js";
+import { updateNavbarPosition } from "../../assets/updateNavbarPosition.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+const svgRatio = 1.6;
+const viewBoxWidth = 960;
+const viewBoxHeight = viewBoxWidth / svgRatio;
+
+function drawChart() {
   const colorTheme = colorThemes[1].reverse();
   const stateStroke = colorTheme.at(3); // "white";
-
-  const svgRatio = 1.6;
-  const viewBoxWidth = 960;
-  const viewBoxHeight = viewBoxWidth / svgRatio;
-
-  console.log(window.innerWidth, window.innerHeight);
-
-  const updateChartDimensions = new UpdateChartDimensions(
-    svgRatio,
-    0.25, // 25% max-discount
-    0.35
-  );
-
-  // Update on page load
-  updateChartDimensions.update();
-
-  // Update on window resize
-  window.addEventListener("resize", updateChartDimensions.update);
 
   const chartSvg = d3
     .select("#chart-svg")
@@ -305,6 +292,27 @@ document.addEventListener("DOMContentLoaded", () => {
       legendAxis.selectAll("g").attr("class", "tick");
     };
   };
+}
+
+const updateChartDimensions = new UpdateChartDimensions(
+  svgRatio,
+  0.25, // 25% max-discount
+  0.35
+);
+
+document.addEventListener("DOMContentLoaded", () => {
+  // console.log(window.innerWidth, window.innerHeight);
+
+  updateChartDimensions.update();
+  updateNavbarPosition();
+  drawChart();
+});
+
+window.addEventListener("resize", () => {
+  // console.log(window.innerWidth, window.innerHeight);
+
+  updateChartDimensions.update();
+  updateNavbarPosition();
 });
 
 // ! TODO: add dynamic max and min data to tooltip:

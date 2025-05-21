@@ -32,7 +32,7 @@
   /* Page */
   --page-max-width: 1919px;
   --page-width: min(100dvw, var(--page-max-width));
-  --page-padding: var(--sm);
+  --page-padding: var(--md);
 
   /* Animation */
   --timing-function: cubic-bezier(0.19, 1, 0.22, 1);
@@ -153,6 +153,13 @@
   justify-content: center;
 }
 
+.flex-col-center-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .flex-col-start-between {
   display: flex;
   flex-direction: column;
@@ -194,8 +201,8 @@
 html {
   overflow-x: hidden;
 
-  /* ! DEBUGGING 
-  background-color: black; */
+  /* ! DEBUGGING */
+  background-color: black;
 }
 
 body {
@@ -210,8 +217,8 @@ body {
   letter-spacing: var(--xxs);
 
   /* ! DEBUGGING  
-  border: 5px solid yellow;
-  background-color: greenyellow; */
+  border: 5px solid yellow;*/
+  background-color: greenyellow;
 }
 
 body::before,
@@ -241,6 +248,9 @@ body::before {
   animation-timing-function: var(--timing-function);
   animation-fill-mode: both, forwards, forwards;
   animation-iteration-count: 1, 1, infinite;
+
+  /* !DEBUGGING*/
+  display: none;
 }
 
 /* Pixel effect */
@@ -256,6 +266,9 @@ body::after {
   margin-left: calc(var(--pixel) * -0.25);
   margin-top: calc(var(--pixel) * 0.25);
   z-index: -1;
+
+  /* !DEBUGGING*/
+  display: none;
 }
 
 header {
@@ -267,12 +280,7 @@ h1 {
 
   line-height: 0.95em;
   text-transform: uppercase;
-
-  font-size: 1.3rem;
   font-weight: lighter;
-
-  /* ! DEBUGGING 
-  font-size: 1rem; */
 }
 
 a {
@@ -305,20 +313,17 @@ nav {
 
 nav a {
   text-transform: uppercase;
-  font-size: 0.8em;
   position: relative;
-
-  /* ! DEBUGGING */
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 footer {
   color: var(--text-color-dark);
-  font-size: 0.8rem;
   font-style: italic;
+  font-size: 0.8rem;
 
-  align-items: flex-end;
-  gap: var(--lg);
+  /*align-items: flex-end;*/
+  gap: var(--md);
 }
 
 /*
@@ -328,11 +333,12 @@ footer {
 #page-container {
   margin: 0 auto;
   min-height: 100dvh;
+  height: 100dvh;
 
   padding: var(--page-padding);
 
-  /* ! DEBUGGING 
-  background-color: rgba(255, 0, 0, 0.126); */
+  /* ! DEBUGGING */
+  background-color: rgba(255, 0, 0, 0.418);
 }
 
 #page-container.grid {
@@ -400,20 +406,20 @@ footer {
   position: relative;
 
   /* Slower transition when returning (hover-out) */
-  transition: transform 0.6s ease-in-out;
+  transition: transform 1.75s var(--timing-function);
 
   background-color: purple;
 }
 
 #navbar .nav-link.pushed {
-  transition: transform 0.25s ease-out;
+  transition: transform 1.25s var(--timing-function);
 
   transform: translateX(1.1em);
 }
 
 #navbar .nav-link:hover {
   /* Faster transition when hovering (hover-in) */
-  transition: transform 0.25s ease-out;
+  transition: transform 1.25s var(--timing-function);
 
   transform: translateX(1.1em);
 }
@@ -430,6 +436,14 @@ footer {
 
 #navbar .nav-link:hover .arrow-right {
   transform: translateX(0);
+}
+
+#title {
+  font-size: 1.3rem;
+}
+
+#title-description {
+  font-size: 1rem;
 }
 
 /* INFO */
@@ -466,14 +480,14 @@ footer {
 :root {
   --svg-ratio: 1.6;
 
-  /* Chart is full-screen height at horizontal screens */
+  /* Chart is full-screen height in landscape orientation */
   --chart-height: calc(100dvh - 2 * var(--page-padding));
   --chart-width: calc(var(--chart-height) * var(--svg-ratio));
 }
 
 @media (max-aspect-ratio: 1.6) {
   :root {
-    /* Chart is full-screen width at vertical screens */
+    /* Chart is full-screen width in portrait orientation */
     --chart-width: 100dvw; /* No padding */
     --chart-height: calc(var(--chart-width) / var(--svg-ratio));
   }
@@ -486,27 +500,27 @@ footer {
 
 #chart-page #page-container {
   flex-direction: row;
-  align-items: flex-end;
 
   /*
   background-color: blue; */
 }
 
 /* Text has vertical orientation when chart is full-screen height */
+
 #chart-page #title-container {
+  margin-left: var(--page-padding);
   flex-direction: row;
-  gap: var(--xs);
+  gap: var(--sm);
 
   background-color: red;
-  display: none;
 }
 
 #chart-page #title,
 #chart-page #title-description {
   align-self: flex-end;
   justify-self: flex-end;
+
   /* ! DEBUGGING */
-  font-size: 1rem;
   background-color: yellow;
 }
 
@@ -522,13 +536,18 @@ footer {
   transform: rotate(-90deg);
 }
 
-@media (max-aspect-ratio: 1.6) {
+@media (max-aspect-ratio: 16/9) {
   /* Text has horizontal orientation when chart is full screen width */
   #chart-page #page-container {
     flex-direction: column;
   }
 
+  #chart-page #navbar {
+    background-color: blue !important;
+  }
+
   #chart-page #title-container {
+    margin-left: unset;
     flex-direction: column;
   }
 
@@ -545,33 +564,88 @@ footer {
     text-orientation: unset;
   }
 
+  #chart-page footer,
+  #chart-page header {
+    width: var(--chart-width);
+    height: auto !important;
+  }
+
+  footer .footer-section {
+    flex-direction: row !important;
+  }
+
+  #chart-page footer #author {
+    margin-top: unset !important;
+    margin-right: auto;
+  }
+
   #chart-page footer svg {
     transform-origin: center center;
     transform: rotate(0);
   }
 }
 
-#chart-page #header {
+/* ! TODO: BUG to fix */
+#chart-page #navbar {
+  transform: translateX(calc(-100% - var(--page-padding)));
+}
+
+#chart-page #header,
+#chart-page footer {
+  z-index: 1;
+  pointer-events: none;
+
   background-color: blue;
+}
+
+#chart-page #header {
+  justify-content: flex-end;
 }
 
 #chart-page #navbar {
   position: absolute;
   top: 0;
-  left: 0;
-  transform: translateX(-100%);
+  bottom: 0;
+  left: var(--page-padding);
 
   width: fit-content;
   overflow: visible;
 
   z-index: 3;
 
+  /* Slower transition when returning (hover-out) */
+  transition: transform 2s var(--timing-function);
+
   background-color: red;
 }
 
+#chart-page #navbar::before {
+  /* Increase hovering area */
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: -1rem;
+
+  z-index: -1;
+
+  /* ! DEBUGGING: */
+  background-color: rgba(255, 255, 0, 0.355);
+}
+
+#chart-page #navbar:hover {
+  /* Faster transition when hovering (hover-in) */
+  transition: transform 1.25s var(--timing-function);
+  transform: translate(0) !important;
+}
+
 #chart-page #navbar ul {
+  position: relative;
   align-items: flex-end;
-  background-color: #00ffc8;
+  /* ! DEBUGGING:
+  background-color: rgba(255, 255, 0, 0.456); */
 }
 
 #chart-page #navbar .arrow-right {
@@ -582,28 +656,29 @@ footer {
 }
 
 #chart-page #chart-container {
+  position: relative;
+  /*
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  */
 
   height: var(--chart-height);
   width: var(--chart-width);
 
   background-color: purple;
-  z-index: -2;
+  z-index: 1;
 }
 
 #chart-page #chart {
   position: absolute;
   inset: 0;
 
-  /*
   width: 100%;
   height: 100%;
-  */
 
-  background-color: yellow;
+  background-color: rgba(255, 255, 0, 0.382);
 }
 
 #chart-page #legend {
@@ -611,11 +686,9 @@ footer {
   pointer-events: none;
 
   /* ! DEBUGGING */
-  background-color: yellow;
-  /*
-  width: 200px;
-  height: 10px;
-  */
+  background-color: red;
+  width: 16rem; /* ! TODO: REMOVE THIS AFTER DEBUGGING ! */
+  height: 0.75rem; /* ! TODO: REMOVE THIS AFTER DEBUGGING ! */
 }
 
 #legend-svg {
@@ -624,18 +697,6 @@ footer {
 
   width: calc(var(--length) + var(--padding) * 2);
   height: calc(8px + var(--padding) * 1.5);
-}
-
-#chart-page footer {
-  align-self: flex-start;
-  background-color: red;
-
-  display: none;
-}
-
-#chart-source {
-  justify-self: flex-start;
-  font-size: 0.8rem;
 }
 
 .tick {
@@ -868,19 +929,46 @@ footer {
 }
   */
 
-footer .social-icon {
+footer .footer-section {
   display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  gap: var(--xs);
+  flex-wrap: wrap;
+  /* Required for wrapped items' alignment */
+  align-content: flex-start;
+
+  /* ! DEBUGGINg */
+  background-color: yellow;
+}
+
+footer .footer-section span {
+  display: block;
+  width: fit-content;
+  height: fit-content;
+  background-color: greenyellow;
+}
+
+footer .social-icon {
+  flex: 1;
+  width: 100%;
+  display: flex;
+}
+
+footer .social-icon a {
+  display: flex;
+  align-items: center;
   gap: var(--sm);
 }
 
 footer .social-icon svg {
   fill: currentColor;
-}
 
-footer .social-icon a {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--sm);
+  width: 1rem;
+  height: 1rem;
+
+  background-color: blue;
 }
 
 footer #author {
@@ -888,4 +976,19 @@ footer #author {
 
   /* ! DEBUGGING
   background-color: purple; */
+}
+
+#chart-page header,
+#chart-page footer {
+  height: var(--chart-height);
+
+  background-color: red;
+
+  /*display: none;*/
+}
+
+#chart-page footer #author {
+  margin-top: auto;
+
+  background-color: #00ffc8;
 }

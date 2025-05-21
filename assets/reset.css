@@ -163,7 +163,7 @@ html {
 }
 
 body {
-  /* Limit body width to --limited-dvw */
+  /* Limit body width to [--limited-dvw] */
   width: var(--limited-dvw);
 }
 

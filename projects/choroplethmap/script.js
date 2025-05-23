@@ -294,24 +294,27 @@ function drawChart() {
   };
 }
 
-const updateChartDimensions = new UpdateChartDimensions(
-  svgRatio,
-  0.25, // 25% max-discount
-  0.35
-);
-
 document.addEventListener("DOMContentLoaded", () => {
-  // console.log(window.innerWidth, window.innerHeight);
+  // Disable all transitions/animations for initial calculations
+  document.body.classList.add("no-transitions");
 
-  updateChartDimensions.update();
+  new UpdateChartDimensions(
+    svgRatio,
+    0.25, // 25% max-discount
+    0.35
+  );
+
   updateNavbarPosition();
   drawChart();
+
+  // Re-enable transitions/animations
+  // Use RAF to ensure all layout calculations are complete
+  requestAnimationFrame(() => {
+    document.body.classList.remove("no-transitions");
+  });
 });
 
 window.addEventListener("resize", () => {
-  // console.log(window.innerWidth, window.innerHeight);
-
-  updateChartDimensions.update();
   updateNavbarPosition();
 });
 

@@ -5,7 +5,16 @@
   --text-color-dark: #3b3b3b;
 
   --primary-color: #ff0037;
-  --complementary-color: #00ffc8;
+
+  --C1: #ff0037;
+  --C2: #00ffb9;
+  --C3: #e100ff;
+
+  --g1: #620075;
+  --g2: #4a2b80;
+  --g3: #35518a;
+  --g4: #1b8097;
+  --g5: #00b0a4;
 
   --background-color: #000000;
   --pixel-color: #270009dc; /* #1f1f1f; */
@@ -36,7 +45,7 @@
 
   /* Animation */
   --timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-  --timing-function2: cubic-bezier(0.57, 0.4, 0.5, 1.8); /* Bounce effect */
+  --timing-function2: cubic-bezier(0.57, 0.4, 0.5, 1.4); /* Bounce effect */
 }
 
 /* 
@@ -142,6 +151,11 @@
  * UTILITY CLASSES 
  */
 
+.no-transitions * {
+  transition: none !important;
+  animation: none !important;
+}
+
 .flex {
   display: flex;
 }
@@ -211,7 +225,6 @@ body {
 
   font-family: var(--font-main);
   color: var(--text-color);
-  font-weight: lighter !important;
   background-color: var(--background-color);
   overflow: hidden !important;
   letter-spacing: var(--xxs);
@@ -277,10 +290,11 @@ header {
 
 h1 {
   color: var(--text-color-dark);
+  font-size: 1.5rem;
+  font-weight: normal;
 
   line-height: 0.95em;
   text-transform: uppercase;
-  font-weight: lighter;
 }
 
 a {
@@ -348,7 +362,7 @@ footer {
   grid-template-areas:
     "header . . info"
     "carousel carousel carousel carousel"
-    ". . . footer";
+    "footer footer footer footer";
 
   gap: var(--xs);
 
@@ -368,8 +382,8 @@ footer {
 #info {
   grid-area: info;
 
-  /* ! DEBUGGING */
-  background-color: yellow;
+  /* ! DEBUGGING 
+  background-color: yellow; */
 }
 
 #carousel {
@@ -438,14 +452,6 @@ footer {
   transform: translateX(0);
 }
 
-#title {
-  font-size: 1.3rem;
-}
-
-#title-description {
-  font-size: 1rem;
-}
-
 /* INFO */
 #info {
   color: var(--text-color-dark);
@@ -480,6 +486,11 @@ footer {
 :root {
   --svg-ratio: 1.6;
 
+  --snap-threshold: 0.3; /* When to trigger snap */
+
+  --snapping-to-duration: 2.25s;
+  --snapping-from-duration: 0.75s;
+
   /* Chart is full-screen height in landscape orientation */
   --chart-height: calc(100dvh - 2 * var(--page-padding));
   --chart-width: calc(var(--chart-height) * var(--svg-ratio));
@@ -488,7 +499,7 @@ footer {
 @media (max-aspect-ratio: 1.6) {
   :root {
     /* Chart is full-screen width in portrait orientation */
-    --chart-width: 100dvw; /* No padding */
+    --chart-width: calc(100dvw - 2 * var(--page-padding));
     --chart-height: calc(var(--chart-width) / var(--svg-ratio));
   }
 }
@@ -500,14 +511,74 @@ footer {
 
 #chart-page #page-container {
   flex-direction: row;
-
-  /*
-  background-color: blue; */
+  /* background-color: blue; */
 }
 
-/* Text has vertical orientation when chart is full-screen height */
+/* CHART SNAPPING */
+
+#chart-page #chart-container,
+#chart-page #header,
+#chart-page #footer,
+#chart-page #header *,
+#chart-page #footer * {
+  /* Applied when coming FROM snapped state */
+  transition: all var(--snapping-from-duration) var(--timing-function);
+}
+
+#chart-page #chart-container {
+  position: relative;
+  height: var(--chart-height);
+  width: var(--chart-width);
+  z-index: 1;
+
+  /* ! DEBUGGING */
+  background-color: purple;
+  border: 1px solid black;
+}
+
+#chart-page #header,
+#chart-page #footer,
+#chart-page #header *,
+#chart-page #footer * {
+  /* Show header and footer when non-snapped */
+  opacity: 1;
+  visibility: visible;
+}
+
+#chart-page #chart-container.snapped,
+#chart-page:has(#chart-container.snapped) #header,
+#chart-page:has(#chart-container.snapped) #footer,
+#chart-page:has(#chart-container.snapped) #header *,
+#chart-page:has(#chart-container.snapped) #footer * {
+  /* Applied when going TO snapped state */
+  transition: all var(--snapping-to-duration) var(--timing-function);
+}
+
+#chart-page #chart-container.snapped {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* ! DEBUGGING */
+  background-color: red;
+}
+
+#chart-page:has(#chart-container.snapped) #header,
+#chart-page:has(#chart-container.snapped) #footer,
+#chart-page:has(#chart-container.snapped) #header *,
+#chart-page:has(#chart-container.snapped) #footer * {
+  /* Hide header and footer when snapped */
+  opacity: 0;
+  visibility: hidden;
+
+  background-color: red;
+}
+
+/* TEXT ORIENTATION: vertical when chart is full screen height */
 
 #chart-page #title-container {
+  height: 100%;
   margin-left: var(--page-padding);
   flex-direction: row;
   gap: var(--sm);
@@ -536,8 +607,8 @@ footer {
   transform: rotate(-90deg);
 }
 
+/* TEXT ORIENTATION: horizontal when chart is full screen width */
 @media (max-aspect-ratio: 16/9) {
-  /* Text has horizontal orientation when chart is full screen width */
   #chart-page #page-container {
     flex-direction: column;
   }
@@ -591,8 +662,8 @@ footer {
 }
 
 #chart-page #header,
-#chart-page footer {
-  z-index: 1;
+#chart-page #footer {
+  z-index: 2;
   pointer-events: none;
 
   background-color: blue;
@@ -611,7 +682,7 @@ footer {
   width: fit-content;
   overflow: visible;
 
-  z-index: 3;
+  z-index: 4;
 
   /* Slower transition when returning (hover-out) */
   transition: transform 2s var(--timing-function);
@@ -655,22 +726,6 @@ footer {
   background-color: blue;
 }
 
-#chart-page #chart-container {
-  position: relative;
-  /*
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  */
-
-  height: var(--chart-height);
-  width: var(--chart-width);
-
-  background-color: purple;
-  z-index: 1;
-}
-
 #chart-page #chart {
   position: absolute;
   inset: 0;
@@ -710,7 +765,6 @@ footer {
 
   color: var(--text-color);
   font-size: 0.65rem;
-  font-weight: lighter;
 
   position: absolute;
 
@@ -974,6 +1028,8 @@ footer .social-icon svg {
 footer #author {
   transition: color var(--time) var(--timing-function);
 
+  margin-right: auto;
+
   /* ! DEBUGGING
   background-color: purple; */
 }
@@ -992,3 +1048,7 @@ footer #author {
 
   background-color: #00ffc8;
 }
+
+/*
+ *  DEBUGGING STYLES
+ */

@@ -29,17 +29,17 @@ export function updateNavbarPosition() {
     navbarRightEdge >= chartContainerLeftEdge &&
     navbarBottomEdge >= chartContainerTopEdge
   ) {
-    console.log("@if -----  ");
+    // console.log("@if -----  ");
     // Navbar is intersecting with chart area
     // Align navbar's right edge at chart container's left edge
 
     const translateX = chartContainerLeftEdge - x + pagePadding * 0.5;
     navbar.style.transform = `translateX(${translateX}px)`;
   } else {
-    console.log("@else -----  ");
+    // console.log("@else -----  ");
     // Reset translation
     x = null;
-    navbar.style.transform = "";
+    navbar.style.transform = "none";
   }
 
   navbar.style.top = `${chartContainerTopEdge}px`;

@@ -6,7 +6,7 @@
   );
 
   position: absolute;
-  bottom: -1.5em;
+  top: 0;
   left: 0;
   padding-bottom: 1.5em;
   min-width: calc(100% + 0.5em);
@@ -26,7 +26,7 @@
   --char-space: 0.25em;
   --char-width: 1ch;
   line-height: calc(var(--char-width) + var(--char-space) * 2);
-  letter-spacing: var(--char-space);
+  /*letter-spacing: var(--char-space);*/
 
   word-break: break-all;
 

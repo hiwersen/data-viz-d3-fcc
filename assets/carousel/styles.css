@@ -68,6 +68,16 @@
   overflow-x: scroll;
   overflow-y: visible;
 
+  --C1: #ff0037;
+  --C2: #00ffb9;
+  --C3: #e100ff;
+
+  --g1: #620075;
+  --g2: #4a2b80;
+  --g3: #35518a;
+  --g4: #1b8097;
+  --g5: #00b0a4;
+
   /* Line effect settings */
   --text-color-light: #d2d2d2;
   --theme1: #cfc2e3;
@@ -75,7 +85,7 @@
 
   /* Line */
   --line-thin: 1px;
-  --line-c: var(--text-color-light);
+  --line-c: #9eeafb;
   --line-step1: 10%;
   --line-step2: calc(var(--line-step1) + var(--line-thin));
   --line-step3: 90%;
@@ -142,7 +152,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 600ms linear; /* cubic-bezier(0.34, 1.1, 0.64, 1) */
+  transition: all 600ms cubic-bezier(0.34, 1.1, 0.64, 1);
   /* Important for swiping */
   scroll-snap-align: center;
 
@@ -252,6 +262,10 @@
   color: var(--text-color-dark);
   font-size: 0.95rem;
 
+  color: transparent;
+  background-image: linear-gradient(to right, #4a2b80 -50%, #fb6082 250%);
+  background-clip: text;
+
   position: absolute;
   top: calc(10% - 1.5em);
   left: 50%;
@@ -260,7 +274,14 @@
 
   transition: color 0.6s ease;
 
-  background-color: red;
+  /* ! DEBUGGING
+  background-color: red; */
+}
+
+#carousel .card:nth-child(4) .chart-label {
+  color: transparent;
+  background-image: linear-gradient(to right, #eb77fb -50%, #00ffb9 250%);
+  background-clip: text;
 }
 
 @keyframes spinLine {

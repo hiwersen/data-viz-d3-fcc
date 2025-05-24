@@ -34,7 +34,7 @@
   <body id="gallery-page">
     <div id="page-container" class="grid">
       <!--<div id="page-container" class="grid fastFadeIn">-->
-      <header id="header" class="flex-col-start-between">
+      <header id="header" class="flex-col-start-between slowFadeIn">
         <h1 id="title">Data Visualisation</h1>
         <nav id="navbar">
           <ul class="flex-col-start-between">
@@ -66,10 +66,10 @@
           </ul>
         </nav>
       </header>
-      <section id="info">
+      <section id="info" class="fastFadeIn">
         <p
           class="scramble-text"
-          data-speed="0.04"
+          data-speed="0.1"
           data-direction="fromRight"
           data-bezier="0.0, 1.0, 0.0, 1.0"
           data-target-text="A showcase of five interactive data visualisations. Each project explores different visualisation techniques created with common web standards and D3 (Data-Driven Documents)."
@@ -80,29 +80,34 @@
           standards and 3d (Data-Driven Documents).
         </p>
       </section>
-      <section id="carousel">
+      <section id="carousel" class="showUp spinUp">
         <!--<section id="carousel" class="showUp spinUp">-->
+
         <div id="cards-container">
           <div id="bar-chart" class="card">
             <div class="glass"></div>
             <span class="chart-label">bar chart</span>
             1
           </div>
+
           <div id="choropleth-map" class="card">
             <div class="glass"></div>
             <span class="chart-label">choropleth map</span>
             2
           </div>
+
           <div id="heat-map" class="card">
             <div class="glass"></div>
             <span class="chart-label">heat map</span>
             3
           </div>
+
           <div id="scatter-plot" class="card">
             <div class="glass"></div>
             <span class="chart-label">scatter plot</span>
             4
           </div>
+
           <div id="tree-map" class="card">
             <div class="glass"></div>
             <span class="chart-label">tree map</span>
@@ -110,13 +115,13 @@
           </div>
         </div>
       </section>
-      <footer class="flex">
-        <div id="author">
+      <footer id="footer" class="flex slowFadeIn">
+        <div id="author" class="footer-section">
           <span>author:</span>
           <a href="https://github.com/hiwersen/" target="_black"> Hiwersen </a>
         </div>
         <div id="social-icons">
-          <div id="source-code" class="social-icon">
+          <div id="source-code" class="social-icon footer-section">
             <span>source code:</span>
             <a
               href="https://github.com/hiwersen/data-viz-d3-fcc.git"

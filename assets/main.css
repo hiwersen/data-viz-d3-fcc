@@ -2,7 +2,7 @@
   /* Colors */
   --text-color: #979797;
   --text-color-light: #d2d2d2;
-  --text-color-dark: #3b3b3b;
+  --text-color-dark: #383838;
 
   --primary-color: #ff0037;
 
@@ -16,8 +16,12 @@
   --g4: #1b8097;
   --g5: #00b0a4;
 
+  --g6: #eb77fb;
+  --g7: #d8fcf2;
+  --g8: #fb6082;
+
   --background-color: #000000;
-  --pixel-color: #270009dc; /* #1f1f1f; */
+  --pixel-color: #200008dc; /* #130f19; /* #270009dc; /* #1f1f1f;  */
 
   --spotlight-color: #41296e48;
 
@@ -118,7 +122,7 @@
 
 @keyframes spinUp {
   from {
-    transform: translate(70px, 70px);
+    transform: translate(var(--xl), var(--xl));
   }
   to {
     transform: translate(0, 0);
@@ -208,6 +212,14 @@
   animation-fill-mode: both;
 }
 
+.slowFadeIn {
+  animation-name: showUp;
+  animation-duration: 0.75s;
+  animation-delay: 8.75s;
+  animation-timing-function: var(--timing-function);
+  animation-fill-mode: both;
+}
+
 /* 
  * ELEMENT STYLES 
  */
@@ -215,8 +227,8 @@
 html {
   overflow-x: hidden;
 
-  /* ! DEBUGGING */
-  background-color: black;
+  /* ! DEBUGGING 
+  background-color: black; */
 }
 
 body {
@@ -230,8 +242,8 @@ body {
   letter-spacing: var(--xxs);
 
   /* ! DEBUGGING  
-  border: 5px solid yellow;*/
-  background-color: greenyellow;
+  border: 5px solid yellow;
+  background-color: greenyellow; */
 }
 
 body::before,
@@ -262,8 +274,8 @@ body::before {
   animation-fill-mode: both, forwards, forwards;
   animation-iteration-count: 1, 1, infinite;
 
-  /* !DEBUGGING*/
-  display: none;
+  /* !DEBUGGING 
+  display: none; */
 }
 
 /* Pixel effect */
@@ -280,8 +292,8 @@ body::after {
   margin-top: calc(var(--pixel) * 0.25);
   z-index: -1;
 
-  /* !DEBUGGING*/
-  display: none;
+  /* !DEBUGGING 
+  display: none; */
 }
 
 header {
@@ -292,7 +304,6 @@ h1 {
   color: var(--text-color-dark);
   font-size: 1.5rem;
   font-weight: normal;
-
   line-height: 0.95em;
   text-transform: uppercase;
 }
@@ -310,11 +321,11 @@ a:visited {
 
 a:hover,
 a:active {
-  color: var(--primary-color);
+  color: var(--text-color-light);
 }
 
 a:visited:hover {
-  color: var(--primary-color);
+  color: var(--text-color-light);
 }
 
 li {
@@ -351,8 +362,8 @@ footer {
 
   padding: var(--page-padding);
 
-  /* ! DEBUGGING */
-  background-color: rgba(255, 0, 0, 0.418);
+  /* ! DEBUGGING 
+  background-color: rgba(255, 0, 0, 0.418); */
 }
 
 #page-container.grid {
@@ -393,11 +404,27 @@ footer {
   background-color: rgb(255, 255, 0); */
 }
 
-#gallery-page footer {
+#gallery-page #footer {
   grid-area: footer;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas: "social . . author";
+
+  gap: var(--xs);
+
+  height: 100%;
 
   /* ! DEBUGGING
   background-color: purple;  */
+}
+
+#gallery-page #footer #author {
+  grid-area: author;
+}
+
+#gallery-page #footer #social-icons {
+  grid-area: social;
 }
 
 /* 
@@ -405,6 +432,10 @@ footer {
  */
 
 /* HEADER */
+
+#header {
+  letter-spacing: var(--xs);
+}
 
 #navbar {
   width: 100%;
@@ -422,7 +453,8 @@ footer {
   /* Slower transition when returning (hover-out) */
   transition: transform 1.75s var(--timing-function);
 
-  background-color: purple;
+  /* ! DEBUGGING 
+  background-color: purple; */
 }
 
 #navbar .nav-link.pushed {
@@ -439,9 +471,13 @@ footer {
 }
 
 #navbar .arrow-right {
+  color: transparent;
+  background-image: linear-gradient(to right, #eb77fb -50%, #00ffb9 250%);
+  background-clip: text;
+
   margin-right: var(--sm);
   position: absolute;
-  left: -1.1em;
+  left: -1.35em;
   font-size: 1.1em;
 
   transform: translateX(-0.5em);
@@ -449,7 +485,7 @@ footer {
 }
 
 #navbar .nav-link:hover .arrow-right {
-  transform: translateX(0);
+  transform: translateX(0.25rem);
 }
 
 /* INFO */
@@ -464,9 +500,10 @@ footer {
   pointer-events: none;
 }
 
+/* ! DEBUGGING 
 #info p {
   background-color: rgba(255, 0, 0, 0.436);
-}
+} */
 
 /* CAROUSEL STYLES @assets/carousel/styles.css */
 
@@ -531,9 +568,9 @@ footer {
   width: var(--chart-width);
   z-index: 1;
 
-  /* ! DEBUGGING */
+  /* ! DEBUGGING 
   background-color: purple;
-  border: 1px solid black;
+  border: 1px solid black; */
 }
 
 #chart-page #header,
@@ -560,8 +597,8 @@ footer {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  /* ! DEBUGGING */
-  background-color: red;
+  /* ! DEBUGGING 
+  background-color: red; */
 }
 
 #chart-page:has(#chart-container.snapped) #header,
@@ -572,7 +609,8 @@ footer {
   opacity: 0;
   visibility: hidden;
 
-  background-color: red;
+  /* ! DEBUGGING 
+  background-color: red; */
 }
 
 /* TEXT ORIENTATION: vertical when chart is full screen height */
@@ -583,7 +621,8 @@ footer {
   flex-direction: row;
   gap: var(--sm);
 
-  background-color: red;
+  /* ! DEBUGGING 
+  background-color: red; */
 }
 
 #chart-page #title,
@@ -591,8 +630,8 @@ footer {
   align-self: flex-end;
   justify-self: flex-end;
 
-  /* ! DEBUGGING */
-  background-color: yellow;
+  /* ! DEBUGGING 
+  background-color: yellow; */
 }
 
 #chart-page #title,
@@ -613,9 +652,10 @@ footer {
     flex-direction: column;
   }
 
+  /* ! DEBUGGING 
   #chart-page #navbar {
     background-color: blue !important;
-  }
+  } */
 
   #chart-page #title-container {
     margin-left: unset;
@@ -666,7 +706,8 @@ footer {
   z-index: 2;
   pointer-events: none;
 
-  background-color: blue;
+  /* ! DEBUGGING 
+  background-color: blue; */
 }
 
 #chart-page #header {
@@ -682,12 +723,13 @@ footer {
   width: fit-content;
   overflow: visible;
 
-  z-index: 4;
+  z-index: 6;
 
   /* Slower transition when returning (hover-out) */
   transition: transform 2s var(--timing-function);
 
-  background-color: red;
+  /* ! DEBUGGING 
+  background-color: red; */
 }
 
 #chart-page #navbar::before {
@@ -697,13 +739,28 @@ footer {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
-  right: -1rem;
+  left: -1rem;
+  right: -1.25rem;
 
   z-index: -1;
+  cursor: pointer;
 
-  /* ! DEBUGGING: */
-  background-color: rgba(255, 255, 0, 0.355);
+  /* Screen effect */
+  /*  #230008a4 */
+  background-color: #23000865;
+
+  box-shadow:
+    /* Outer shadow */
+    3px 5px 10px 2px #230008c2,
+    /* top/left */ inset 1px 1px 1px #5e848d,
+    /* all around */ inset 0 0 7px 2px #23000886,
+    /* bottom/right */ inset -1px -1px 1px #35518a;
+
+  border: 1px solid black;
+  backdrop-filter: grayscale(30%) contrast(1.1) blur(1.5px);
+
+  /* ! DEBUGGING: 
+  background-color: rgba(255, 255, 0, 0.355); */
 }
 
 #chart-page #navbar:hover {
@@ -723,7 +780,12 @@ footer {
   left: unset;
   right: -2em;
 
-  background-color: blue;
+  /* ! DEBUGGING  
+  background-color: blue; */
+}
+
+#chart-page #navbar .nav-link:hover .arrow-right {
+  transform: translateX(0);
 }
 
 #chart-page #chart {
@@ -733,7 +795,8 @@ footer {
   width: 100%;
   height: 100%;
 
-  background-color: rgba(255, 255, 0, 0.382);
+  /*
+  background-color: rgba(255, 255, 0, 0.382); */
 }
 
 #chart-page #legend {
@@ -993,15 +1056,17 @@ footer .footer-section {
   /* Required for wrapped items' alignment */
   align-content: flex-start;
 
-  /* ! DEBUGGINg */
-  background-color: yellow;
+  /* ! DEBUGGING 
+  background-color: yellow; */
 }
 
 footer .footer-section span {
   display: block;
   width: fit-content;
   height: fit-content;
-  background-color: greenyellow;
+
+  /* ! DEBUGGING 
+  background-color: greenyellow; */
 }
 
 footer .social-icon {
@@ -1022,7 +1087,8 @@ footer .social-icon svg {
   width: 1rem;
   height: 1rem;
 
-  background-color: blue;
+  /* ! DEBUGGING 
+  background-color: blue; */
 }
 
 footer #author {
@@ -1038,7 +1104,8 @@ footer #author {
 #chart-page footer {
   height: var(--chart-height);
 
-  background-color: red;
+  /* ! DEBUGGING 
+  background-color: red; */
 
   /*display: none;*/
 }
@@ -1046,9 +1113,6 @@ footer #author {
 #chart-page footer #author {
   margin-top: auto;
 
-  background-color: #00ffc8;
+  /* ! DEBUGGING 
+  background-color: #00ffc8; */
 }
-
-/*
- *  DEBUGGING STYLES
- */

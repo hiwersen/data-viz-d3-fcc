@@ -1,9 +1,9 @@
 export function initCarousel() {
-  console.log("hello carousel");
+  // console.log("hello carousel");
   // Get carousel elements
   const carousel = document.getElementById("carousel");
   const cardsContainer = document.getElementById("cards-container");
-  const cards = document.querySelectorAll(".card");
+  const cards = document.querySelectorAll(".card-wrapper-1"); // Animate wrapper
 
   // Set parameters
   let translateX = 0;

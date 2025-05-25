@@ -39,6 +39,12 @@
   inherits: false;
 }
 
+@property --normalizedX {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
 #carousel #cards-container {
   display: flex;
   justify-content: center;
@@ -65,6 +71,10 @@
   overscroll-behavior: contain;
   overflow-x: scroll;
   overflow-y: visible;
+
+  --text-color: #979797;
+  --text-color-light: #d2d2d2;
+  --text-color-dark: #383838;
 
   --C1: #ff0037;
   --C2: #00ffb9;
@@ -155,10 +165,8 @@
 }
 
 /* showUP and spinUp animations when loading the scene */
-/* fastFadeIn animation when carousel is playing */
 #carousel .card-wrapper-2 {
-  /* Initial delay - will reset to fastFadeIn values 
-   after initial animations have played */
+  /* Initial delay */
   animation-duration: 4s;
   animation-delay: 2s;
 }
@@ -277,14 +285,7 @@
 }
 
 #carousel .card .chart-label {
-  --text-color-dark: #3b3b3b;
-
-  color: var(--text-color-dark);
   font-size: 0.95rem;
-
-  color: transparent;
-  background-image: linear-gradient(to right, #4a2b80 -50%, #fb6082 250%);
-  background-clip: text;
 
   position: absolute;
   top: calc(10% - 1.5em);
@@ -292,16 +293,43 @@
   transform: translateX(-50%);
   z-index: 3;
 
-  transition: color 0.6s ease;
-
   /* ! DEBUGGING
   background-color: red; */
 }
 
-#carousel #cards-container div:nth-child(4) .chart-label {
-  color: transparent;
-  background-image: linear-gradient(to right, #eb77fb -50%, #00ffb9 250%);
-  background-clip: text;
+.gradient-text {
+  /* Fallback color for unsupported browsers */
+  color: var(--text-color-light);
+}
+
+/* Only apply gradient text if background-clip is supported */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .gradient-text {
+    /* Set through JS @setAlphaX - carousel animation
+   value between 0 and 1 */
+    --alphaX: 0;
+
+    /* Webkit prefix (required for most browsers) */
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    /* Make text transparent only if background-clip is supported */
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
+    background-image: linear-gradient(
+        to right,
+        rgba(236, 119, 251, var(--alphaX)) -50%,
+        rgba(0, 255, 187, var(--alphaX)) 250%
+      ),
+      linear-gradient(
+        to right,
+        rgba(74, 43, 128, calc(1 - var(--alphaX))) -50%,
+        rgba(251, 96, 129, calc(1 - var(--alphaX))) 250%
+      );
+
+    transition: --alphaX 10s ease-out;
+  }
 }
 
 @keyframes spinLine {

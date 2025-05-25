@@ -4,6 +4,14 @@ export function initCarousel() {
   const carousel = document.getElementById("carousel");
   const cardsContainer = document.getElementById("cards-container");
   const cards = document.querySelectorAll(".card-wrapper-1"); // Animate wrapper
+  const start = Date.now();
+
+  // Get slowFadeIn animation delay and set to startOpacity
+  let startOpacity = window
+    .getComputedStyle(document.querySelector(".slowFadeIn"))
+    .getPropertyValue("animation-delay");
+
+  startOpacity = parseFloat(startOpacity.slice(0, -1)) * 1e3;
 
   // Set parameters
   let translateX = 0;
@@ -70,6 +78,8 @@ export function initCarousel() {
       card.style.transform = `translate3D(${translateX}px, 0px, ${z}px)`;
     });
     setZIndex();
+    setOpacity();
+    setAlphaX();
   }
 
   // Function to perform a smooth snap translation - with prolonged transition effect
@@ -83,7 +93,7 @@ export function initCarousel() {
 
     // Translate cards to the end position with transition enabled for smooth effect
     [...cardsContainer.children].forEach((card) => {
-      card.style.transition = `transform ${transitionDurationSnap}ms cubic-bezier(0.34, 1.1, 0.64, 1)`;
+      card.style.transition = `all ${transitionDurationSnap}ms cubic-bezier(0.34, 1.1, 0.64, 1)`;
     });
 
     translate();
@@ -101,17 +111,17 @@ export function initCarousel() {
     disableTransitions();
 
     if (direction === "left") {
-      // Remove first element
+      // Remove left card
       cardsContainer.removeChild(cardsContainer.firstElementChild);
 
-      // Clone and append new element
+      // Clone and append left card
       const leftClone = cardsContainer.children[cardsCloned].cloneNode(true);
       cardsContainer.append(leftClone);
     } else {
-      // Remove last element
+      // Remove right card
       cardsContainer.removeChild(cardsContainer.lastElementChild);
 
-      // Clone and prepend new element
+      // Clone and prepend right card
       const rightCloneIndex = cardsContainer.children.length - 1 - cardsCloned;
       const rightClone =
         cardsContainer.children[rightCloneIndex].cloneNode(true);
@@ -186,7 +196,7 @@ export function initCarousel() {
 
   function pushLink() {
     [...cardsContainer.children].forEach((card, i) => {
-      const cardId = card.getAttribute("id");
+      const cardId = card.querySelector(".card").getAttribute("id");
       const link = document.getElementById(cardId + "-link");
       const x = normalizeX(i);
 
@@ -222,10 +232,79 @@ export function initCarousel() {
     return maxZ * Math.pow(x, 2);
   }
 
+  function getOpacity(i) {
+    const x = normalizeX(i);
+
+    const fadeStartDistance = 0.65;
+    const fadeEndDistance = 1.0;
+
+    if (x <= fadeStartDistance) {
+      return 1;
+    } else if (x >= fadeEndDistance) {
+      return 0;
+    } else {
+      const fadeProgress =
+        (x - fadeStartDistance) / (fadeEndDistance - fadeStartDistance);
+
+      const easedProgress = 1 - Math.pow(1 - fadeProgress, 2);
+      return 1 - easedProgress;
+    }
+  }
+
+  function setOpacity() {
+    const now = Date.now();
+    const cards = [...cardsContainer.children];
+
+    if (now - start < startOpacity) {
+      cards.at(0).style.opacity = 0.75;
+      cards.at(-1).style.opacity = 0.75;
+      return;
+    }
+
+    cards.forEach((card, i) => {
+      const opacity = getOpacity(i);
+      card.style.opacity = opacity;
+    });
+  }
+
+  function setAlphaX() {
+    const cards = [...cardsContainer.children];
+
+    cards.forEach((card, i) => {
+      const x = normalizeX(i);
+      let alphaX = 0;
+
+      const fadeStartDistance = 0.2;
+      const fadeEndDistance = 1.0;
+
+      if (x <= fadeStartDistance) {
+        alphaX = 1;
+      } else if (x >= fadeEndDistance) {
+        alphaX = 0;
+      } else {
+        const fadeProgress =
+          (x - fadeStartDistance) / (fadeEndDistance - fadeStartDistance);
+
+        const easedProgress = 1 - Math.pow(1 - fadeProgress, 7.5);
+        alphaX = 1 - easedProgress;
+      }
+
+      card
+        .querySelector(".chart-label.gradient-text")
+        .style.setProperty("--alphaX", alphaX);
+
+      console.log(i, x, alphaX);
+    });
+  }
+
   function init() {
     disableTransitions();
     translate();
     enableTranslationAndTransition();
+
+    setTimeout(() => {
+      setOpacity();
+    }, startOpacity);
   }
 
   init();
@@ -293,14 +372,10 @@ export function initCarousel() {
     e.preventDefault();
     if (isSnapping) return;
 
-    console.log("touchStartX:", touchStartX);
-
     const touchMoveX = e.touches[0].clientX;
     touchStartX = touchStartX ?? touchMoveX;
     const touchDeltaX = touchMoveX - touchStartX;
     translateX = touchDeltaX * touchSpeed;
-
-    console.log("touchDeltaX:", touchDeltaX);
 
     // Check for snap translation
     if (Math.abs(touchDeltaX) > snapThreshold) {

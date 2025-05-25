@@ -14,7 +14,6 @@ window.addEventListener("DOMContentLoaded", () => {
   // Initialize card animations
   const cards = document.querySelectorAll(".card-wrapper-2");
   const timeout = staggeredAnimation(cards, ["showUp", "spinUp"], 250);
-  addAnimations(cards, ["fastFadeIn"], timeout);
 
   logRem();
 });

@@ -57,7 +57,7 @@
 
    * Mobiles:
     412 x 915 pixels    - aspect ratio: 0.450273224
-    320 x 568 pixels    - aspect ratio: 0.563380282
+    320 x 569 pixels    - aspect ratio: 0.563380282
   */
 
   /* 
@@ -113,8 +113,8 @@
       @screen 1079px width x 1919px height
 
       rem ≈ 12px:
-      @screen 568px width x  320px height
-      @screen 320px width x  568px height
+      @screen 569px width x  320px height
+      @screen 320px width x  569px height
     */
 
     --factor: 0.3; /* decrease viewport dimension influence */
@@ -146,6 +146,9 @@
 
 html {
   scroll-behavior: smooth;
+
+  /* ! DEBUGGING */
+  background-color: black;
 }
 
 /* Media query helper for responsive design */
@@ -165,6 +168,9 @@ html {
 body {
   /* Limit body width to [--limited-dvw] */
   width: var(--limited-dvw);
+
+  /* ! DEBUGGING 
+  background-color: greenyellow !important; */
 }
 
 button {

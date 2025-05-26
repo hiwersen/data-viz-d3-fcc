@@ -6,7 +6,7 @@ export function initCarousel() {
   const cards = document.querySelectorAll(".card-wrapper-1"); // Animate wrapper
   const start = Date.now();
 
-  // Get slowFadeIn animation delay and set to startOpacity
+  // Get slowFadeIn animation delay and set it to startOpacity
   let startOpacity = window
     .getComputedStyle(document.querySelector(".slowFadeIn"))
     .getPropertyValue("animation-delay");
@@ -18,12 +18,14 @@ export function initCarousel() {
   let cardsCount = cards.length;
   const cardsCloned = 1;
   let cardWidth = cards[0].offsetWidth;
+
   let gap = Number(
     window
       .getComputedStyle(cardsContainer)
       .getPropertyValue("column-gap")
       .slice(0, -2)
   );
+
   const transition = window
     .getComputedStyle(cards[0])
     .getPropertyValue("transition");
@@ -76,10 +78,15 @@ export function initCarousel() {
     [...cardsContainer.children].forEach((card, i) => {
       const z = getTranslateZQuadratic(i);
       card.style.transform = `translate3D(${translateX}px, 0px, ${z}px)`;
+
+      // console.log(`z i: ${i}`, Math.round(z));
     });
     setZIndex();
     setOpacity();
     setAlphaX();
+
+    console.log("card width:", cardWidth);
+    // console.log("gap:", gap);
   }
 
   // Function to perform a smooth snap translation - with prolonged transition effect
@@ -226,13 +233,14 @@ export function initCarousel() {
     const x = normalizeX(i);
 
     // Define max z translation (deepest point of the arch)
-    const maxZ = Math.floor((cardsCount - 1) / 2) * -300;
+    const maxZ = Math.floor((cardsCount - 1) / 2) * (cardWidth * 0.5);
 
     // Create a quadratic arch effect
-    return maxZ * Math.pow(x, 2);
+    return -maxZ * Math.pow(x, 2);
   }
 
   function getOpacity(i) {
+    return 1; // !! DEBUGGING
     const x = normalizeX(i);
 
     const fadeStartDistance = 0.65;
@@ -292,8 +300,6 @@ export function initCarousel() {
       card
         .querySelector(".chart-label.gradient-text")
         .style.setProperty("--alphaX", alphaX);
-
-      console.log(i, x, alphaX);
     });
   }
 

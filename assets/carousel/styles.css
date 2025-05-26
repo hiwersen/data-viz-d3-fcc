@@ -1,26 +1,3 @@
-/* Hide scrollbar */
-#carousel #cards-container {
-  scrollbar-width: none; /* Firefox and latest Chromium */
-}
-#carousel #cards-container::-webkit-scrollbar {
-  display: none; /* Safari and legacy Chromium */
-}
-
-#carousel {
-  /* 
-    @screen-width:320px, card: 200px
-    @screen-width:1920px, card: 600px
-  */
-  --card-size: clamp(200px, 25dvw + 120px, 600px);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: relative;
-  overflow: visible;
-}
-
 @property --offset1 {
   syntax: "<percentage>";
   initial-value: -2%;
@@ -45,19 +22,82 @@
   inherits: false;
 }
 
+/* Hide scrollbar */
+#carousel #cards-container {
+  scrollbar-width: none; /* Firefox and latest Chromium */
+}
+#carousel #cards-container::-webkit-scrollbar {
+  display: none; /* Safari and legacy Chromium */
+}
+
+#carousel {
+  /* 
+    Card dimensions:
+
+    ----------- HD devices ---------------
+
+    @screen 6720px x 2880px ≈ 1792px   - aspect ratio: 21:9 (2.333333333)
+    @screen 5120px x 2880px ≈ 1365px   - aspect ratio: 16:9 (1.777777778)
+
+    @screen 2520px x 1080px ≈ 672px    - aspect ratio: 21:9 (2.333333333)
+    @screen 1920px x 1080px ≈ 512px    - aspect ratio: 16:9 (1.777777778)
+
+  */
+
+  --card-size: 32rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  overflow: visible;
+
+  /* ! DEBUGGING 
+  background-color: red; */
+}
+
+@media screen and (max-width: 1919px) and (orientation: landscape),
+  screen and (max-height: 1079px) and (orientation: landscape),
+  screen and (max-height: 1919px) and (orientation: portrait),
+  screen and (max-width: 1079px) and (orientation: portrait) {
+  #carousel {
+    /*
+      Card dimensions:
+
+      --------- non-HD devices ------------
+      @screen 1919px x 1079px ≈ 512px    - aspect ratio: 16:9 (1.777777778)
+      
+      @screen 747px x 320px   ≈ 206px    - aspect ratio: 21:9 (2.333333333)
+      @screen 569px x 320px   ≈ 160px    - aspect ratio: 16:9 (1.777777778)
+    */
+
+    --base-value: -885px; /* base: -805px;  discounts rem influence */
+    --card-size: calc(87rem + var(--base-value)); /* factor: 82rem */
+  }
+}
+
 #carousel #cards-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2px;
+
+  /* !! TESTING VALUE  */
+  gap: calc(1 / 300 * var(--card-size));
+
   /* Disable for JS users */
   flex-wrap: wrap;
 
+  /*
   position: absolute;
   left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 100dvw;
+  */
+
+  width: 100%;
+  height: 100%;
 
   /* Important for swiping */
   scroll-behavior: smooth;
@@ -69,12 +109,15 @@
   transform-style: preserve-3d;
 
   overscroll-behavior: contain;
-  overflow-x: scroll;
+  /*overflow-x: scroll;*/
+  overflow-x: visible;
   overflow-y: visible;
 
   --text-color: #979797;
   --text-color-light: #d2d2d2;
   --text-color-dark: #383838;
+
+  --primary-color: #ff0037;
 
   --C1: #ff0037;
   --C2: #00ffb9;
@@ -86,13 +129,16 @@
   --g4: #1b8097;
   --g5: #00b0a4;
 
+  --g6: #eb77fb;
+  --g7: #d8fcf2;
+  --g8: #fb6082;
+
   /* Line effect settings */
-  --text-color-light: #d2d2d2;
   --theme1: #cfc2e3;
   --theme2: #fa3560;
 
   /* Line */
-  --line-thin: 1px;
+  --line-thin: 0.0625rem; /* 1px at rem 16px*/
   --line-c: #9eeafb;
   --line-step1: 10%;
   --line-step2: calc(var(--line-step1) + var(--line-thin));
@@ -100,7 +146,7 @@
   --line-step4: calc(var(--line-step3) + var(--line-thin));
 
   /* Glow */
-  --glow-spread: 1px;
+  --glow-spread: 0.0625rem;
   --glow-c: var(--theme1);
   --glow-step1: calc(10% - (var(--glow-spread) / 2));
   --glow-step2: calc(10% + (var(--glow-spread) / 2));
@@ -110,13 +156,14 @@
   /* Line effect settings - animation  */
   /* varying speed: from -2% to -2%; */
   /* timing-function: .53,.83,.5,.24* */
+
   --time: 10s;
   --delay: 1.5s;
   --timing-function1: cubic-bezier(0.19, 1, 0.22, 1); /* Popup */
   --timing-function2: cubic-bezier(0.34, 1.1, 0.64, 1); /* Dramatic pause */
   --timing-function3: cubic-bezier(0.57, 0.4, 0.5, 1.4); /* Bounce */
 
-  animation-name: spinLine;
+  /*animation-name: spinLine;*/
   animation-duration: var(--time);
   animation-delay: var(--delay);
   animation-timing-function: var(--timing-function2);
@@ -137,20 +184,9 @@
   );
 
   /* ! DEBUGGING STYLE 
-  display: none; 
+  display: none;  
   background-color: rgba(0, 4, 255, 0.5);
   border: 2px solid yellow; */
-}
-
-@media (max-aspect-ratio: 1/1) {
-  #carousel #cards-container {
-    /* 
-      @screen-width:320px, card: 200px
-      @screen-width:1024px, card: 600px
-    */
-    --card-size: clamp(200px, 57dvw + 18px, 600px);
-    perspective: calc(var(--card-size) * 1.6);
-  }
 }
 
 /* Carousel animation applied to wrapper 1 */
@@ -188,9 +224,10 @@
 
   transition: all 600ms cubic-bezier(0.34, 1.1, 0.64, 1);
 
-  /* DEBUGGING STYLES 
+  /* ! DEBUGGING STYLES 
   display: none;
-  background-color: yellow; */
+  background-color: yellow; 
+  border: 0.125rem solid red; */
 }
 
 /* Grid effect with lines */
@@ -295,6 +332,8 @@
 
   /* ! DEBUGGING
   background-color: red; */
+
+  display: none;
 }
 
 .gradient-text {

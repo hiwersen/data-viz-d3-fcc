@@ -109,6 +109,8 @@ export class TextScramble {
     let frames = this.scrambleLength * this.speed;
     let frame = 0;
 
+    this.el.style.wordBreak = "break-all";
+
     const animate = () => {
       let complete;
 
@@ -123,6 +125,9 @@ export class TextScramble {
       if (complete || frame >= frames) {
         // Ensure final state
         this.el.textContent = this.normalizedTargetText;
+
+        // Clear inline style
+        // this.el.style.wordBreak = "";
       } else {
         frame++;
         requestAnimationFrame(animate);

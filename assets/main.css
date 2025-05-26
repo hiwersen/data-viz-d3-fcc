@@ -1,8 +1,8 @@
 :root {
   /* Colors */
-  --text-color: #979797;
+  --text-color: #8d8d8d;
   --text-color-light: #d2d2d2;
-  --text-color-dark: #383838;
+  --text-color-dark: #474747;
 
   --primary-color: #ff0037;
 
@@ -215,8 +215,10 @@
 
 .slowFadeIn {
   animation-name: showUp;
+  /*
   animation-duration: 0.75s;
   animation-delay: 8.75s;
+  */
   animation-timing-function: var(--timing-function1);
   animation-fill-mode: both;
 }
@@ -348,8 +350,9 @@ footer {
   font-style: italic;
   font-size: 0.8rem;
 
-  /*align-items: flex-end;*/
+  /*align-items: flex-end; 
   gap: var(--md);
+  background-color: red; */
 }
 
 /*
@@ -367,12 +370,26 @@ footer {
   background-color: rgba(255, 0, 0, 0.418); */
 }
 
-#page-container.grid {
+#gallery-page #carousel {
+  z-index: 1;
+}
+#gallery-page #header,
+#gallery-page #navbar,
+#gallery-page #footer {
+  z-index: 2;
+}
+
+#gallery-page #info {
+  z-index: 3;
+}
+
+#gallery-page #page-container.grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
   grid-template-areas:
-    "header . . info"
+    "header header . ."
+    "navbar . . info"
     "carousel carousel carousel carousel"
     "footer footer footer footer";
 
@@ -388,6 +405,13 @@ footer {
   grid-area: header;
 
   /* ! DEBUGGING
+  background-color: yellow; */
+}
+
+#navbar {
+  grid-area: navbar;
+
+  /* ! DEBUGGING 
   background-color: yellow; */
 }
 
@@ -410,7 +434,7 @@ footer {
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-areas: "social . . author";
+  grid-template-areas: "author . . social";
 
   gap: var(--xs);
 
@@ -426,6 +450,74 @@ footer {
 
 #gallery-page #footer #social-icons {
   grid-area: social;
+
+  /*
+  background-color: yellow; */
+}
+
+@media screen and (orientation: portrait) {
+  #gallery-page #page-container.grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "header header"
+      "navbar info"
+      "carousel carousel"
+      "footer footer";
+  }
+
+  #gallery-page #footer {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: "author social";
+  }
+}
+
+@media screen and (max-width: 743px) and (orientation: portrait) {
+  /* --------- Small devices ------------ */
+  #gallery-page #page-container.grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas:
+      "header"
+      "info"
+      "navbar"
+      "carousel"
+      "footer";
+  }
+
+  #gallery-page #header,
+  #gallery-page #info {
+    margin: var(--md) 0;
+  }
+
+  #gallery-page #footer {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-height: 743px) and (orientation: landscape) {
+  /* --------- Small devices ------------ */
+  #gallery-page #page-container.grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "navbar header header header"
+      "navbar info info info"
+      "carousel carousel carousel carousel";
+  }
+
+  #gallery-page #footer {
+    position: absolute;
+    left: var(--page-padding);
+    right: var(--page-padding);
+    bottom: var(--page-padding);
+
+    height: fit-content !important;
+
+    /* ! DEBUGGING 
+    background-color: blue !important;
+    opacity: 0.5; */
+  }
 }
 
 /* 
@@ -436,6 +528,8 @@ footer {
 
 #header {
   letter-spacing: var(--xs);
+
+  margin-bottom: var(--md);
 }
 
 #navbar {
@@ -496,9 +590,10 @@ footer {
   height: 100%;
   position: relative;
   overflow: visible;
-
-  z-index: 2;
   pointer-events: none;
+
+  /* DEBUGGING 
+  background-color: red; */
 }
 
 /* ! DEBUGGING 
@@ -1097,8 +1192,8 @@ footer #author {
 
   margin-right: auto;
 
-  /* ! DEBUGGING
-  background-color: purple; */
+  /* ! DEBUGGING 
+  background-color: yellow; */
 }
 
 #chart-page header,

@@ -117,7 +117,7 @@
     opacity: 0;
   }
   to {
-    color: 1;
+    opacity: 1;
   }
 }
 
@@ -126,7 +126,9 @@
     transform: translate(var(--xl), var(--xl));
   }
   to {
-    transform: translate(0, 0);
+    /* unset - instead of translate(0);
+     apparently this has fixed the jump at first page load */
+    transform: unset;
   }
 }
 
@@ -202,7 +204,7 @@
 }
 
 .spinUp {
-  animation-name: showUp, spinUp;
+  animation-name: spinUp, showUp;
 }
 
 .fastFadeIn {
@@ -219,6 +221,14 @@
   animation-delay: 8.75s;
   animation-timing-function: var(--timing-function1);
   animation-fill-mode: both;
+}
+
+/* Prevent any animations until ready */
+.preload * {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  visibility: hidden !important;
 }
 
 /* 

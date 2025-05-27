@@ -3,19 +3,28 @@ import { TextScramble } from "./text-scramble/index.js";
 import { staggeredAnimation } from "./staggered-animation.js";
 import { addAnimations } from "./add-animations.js";
 
-window.addEventListener("DOMContentLoaded", () => {
-  // Initialize scramble text animation
-  const scrambleText = document.querySelector(".scramble-text");
-  new TextScramble(scrambleText).start();
+window.addEventListener("load", () => {
+  // ! TODO: synchronize animation -
+  // it is out of sync when you load the page from the address bar
+  // the carousel initial position isn't consistent
 
-  // Initialize carousel animation
-  initCarousel();
+  requestAnimationFrame(() => {
+    // Remove preload
+    document.body.classList.remove("preload");
 
-  // Initialize card animations
-  const cards = document.querySelectorAll(".card-wrapper-2");
-  staggeredAnimation(cards, ["showUp", "spinUp"], 250);
+    // Initialize carousel animation
+    initCarousel();
 
-  logRem();
+    // Initialize card animations
+    const cards = document.querySelectorAll(".card-wrapper-2");
+    staggeredAnimation(cards, ["spinUp", "showUp"], 250);
+
+    // Initialize scramble text animation
+    const scrambleText = document.querySelector(".scramble-text");
+    new TextScramble(scrambleText).start();
+
+    logRem();
+  });
 });
 
 window.addEventListener("resize", logRem);

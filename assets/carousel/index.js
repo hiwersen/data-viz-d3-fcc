@@ -240,7 +240,7 @@ export function initCarousel() {
   }
 
   function getOpacity(i) {
-    return 1; // !! DEBUGGING
+    // ! return 1; // !! DEBUGGING
     const x = normalizeX(i);
 
     const fadeStartDistance = 0.65;
@@ -300,6 +300,10 @@ export function initCarousel() {
       card
         .querySelector(".chart-label.gradient-text")
         .style.setProperty("--alphaX", alphaX);
+
+      //const blur = `${4 * (1 - alphaX)}px`;
+
+      // card.querySelector(".card").style.setProperty("--blur", blur);
     });
   }
 

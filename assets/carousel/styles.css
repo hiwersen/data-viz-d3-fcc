@@ -163,7 +163,7 @@
   --timing-function2: cubic-bezier(0.34, 1.1, 0.64, 1); /* Dramatic pause */
   --timing-function3: cubic-bezier(0.57, 0.4, 0.5, 1.4); /* Bounce */
 
-  /*animation-name: spinLine;*/
+  animation-name: spinLine;
   animation-duration: var(--time);
   animation-delay: var(--delay);
   animation-timing-function: var(--timing-function2);
@@ -223,6 +223,9 @@
   align-items: center;
 
   transition: all 600ms cubic-bezier(0.34, 1.1, 0.64, 1);
+
+  /* --blur: 0px; /* Dynamically set by setAlphaX @ carousel index.js */
+  /*filter: blur(var(--blur));*/
 
   /* ! DEBUGGING STYLES 
   display: none;
@@ -331,9 +334,8 @@
   z-index: 3;
 
   /* ! DEBUGGING
-  background-color: red; */
-
-  display: none;
+  background-color: red; 
+  display: none; */
 }
 
 .gradient-text {

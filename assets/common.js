@@ -6,14 +6,14 @@ import { addAnimations } from "./add-animations.js";
 window.addEventListener("DOMContentLoaded", () => {
   // Initialize scramble text animation
   const scrambleText = document.querySelector(".scramble-text");
-  // new TextScramble(scrambleText).start();
+  new TextScramble(scrambleText).start();
 
   // Initialize carousel animation
   initCarousel();
 
   // Initialize card animations
   const cards = document.querySelectorAll(".card-wrapper-2");
-  // staggeredAnimation(cards, ["showUp", "spinUp"], 250);
+  staggeredAnimation(cards, ["showUp", "spinUp"], 250);
 
   logRem();
 });

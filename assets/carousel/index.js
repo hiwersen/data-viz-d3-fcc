@@ -85,7 +85,7 @@ export function initCarousel() {
     setOpacity();
     setAlphaX();
 
-    console.log("card width:", cardWidth);
+    // console.log("card width:", cardWidth);
     // console.log("gap:", gap);
   }
 

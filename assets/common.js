@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
     const scrambleText = document.querySelector(".scramble-text");
     new TextScramble(scrambleText).start();
 
-    logRem();
+    // logRem();
   });
 });
 

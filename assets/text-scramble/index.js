@@ -25,7 +25,7 @@ export class TextScramble {
     this.bezierPoints = bezierPoints.split(",").map(parseFloat);
 
     // Define random character sets
-    this.uppercase = "░░░░░░░░░░░░░░ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    this.uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     this.lowercase = "abcdefghijklmnopqrstuvwxyz";
     this.special = "!@#$%^&*()_+=-[]{}|;:,./<>?~⧞§¶¤←↑→↓≈≠≤≥±÷×";
     this.blocks = "█░▒▓";
@@ -93,12 +93,30 @@ export class TextScramble {
     // Calculate how many characters should be completed
     const progress = Math.round(bezierProgress * this.scrambleLength);
 
+    // Get the revealed portion, from the end.
     let textContent = text.slice(this.scrambleLength - progress);
 
-    for (let i = progress; i < this.scrambleLength; i++) {
+    console.log("progress:", progress, "textContent:", textContent);
+
+    for (let i = this.scrambleLength - progress; i >= 0; i--) {
       this.loopCount++;
-      // Character is still scrambling
-      textContent = this.randomChar() + textContent;
+
+      let char = "";
+
+      if (i < text.length && textContent.length <= text.length) {
+        if (text[i] === " ") {
+          // Preserve white space
+          char = " ";
+        } else {
+          // Get a random character with no white space
+          char = this.randomChar();
+        }
+      } else {
+        // Get a random character with some white space
+        char = Math.random() < 0.35 ? " " : this.randomChar();
+      }
+
+      textContent = char + textContent;
     }
 
     this.el.textContent = textContent;
@@ -108,8 +126,6 @@ export class TextScramble {
   start() {
     let frames = this.scrambleLength * this.speed;
     let frame = 0;
-
-    this.el.style.wordBreak = "break-all";
 
     const animate = () => {
       let complete;

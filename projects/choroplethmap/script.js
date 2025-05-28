@@ -11,9 +11,9 @@ function drawChart() {
   const stateStroke = colorTheme.at(3); // "white";
 
   const chartSvg = d3
-    .select("#chart-svg")
-    .append("svg")
-    .attr("id", "svg")
+    .select("#chart")
+    //.append("svg")
+    //.attr("id", "svg")
     .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
 

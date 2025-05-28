@@ -21,7 +21,7 @@
   --g8: #fb6082;
 
   --background-color: #0d0010; /* #000000; */
-  --pixel-color: #200008dc; /* #200008dc; /* #6200755e; /* #200008dc; /* #130f19; /* #270009dc; /* #1f1f1f;  */
+  --pixel-color: #200008dc; /* #6200755e; /* #200008dc; /* #130f19; /* #270009dc; /* #1f1f1f;  */
 
   --spotlight-color: #41296e48; /* #35518a1d; /* #41296e48; */
 
@@ -643,7 +643,7 @@ footer {
 
 /* INFO */
 #info {
-  color: var(--text-color-dark);
+  color: var(--text-color);
 
   height: 100%;
   position: relative;
@@ -653,7 +653,18 @@ footer {
   /* DEBUGGING 
   background-color: red; */
 
-  padding: 1rem;
+  /*padding: 1rem;*/
+}
+
+#info::before {
+  /* Create a placeholder that reserves space in the grid layout */
+  content: attr(data-target-text);
+  /* Use the target text content only to reserve space */
+  visibility: hidden;
+  display: block;
+
+  /* ! DEBUGGING */
+  background-color: blue;
 }
 
 /* ! DEBUGGING 

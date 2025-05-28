@@ -75,85 +75,6 @@
   inherits: false;
 }
 
-/* 
- * ANIMATIONS 
- */
-
-@keyframes lightUp {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.8;
-  }
-}
-
-@keyframes dim {
-  from {
-    opacity: 0.8;
-  }
-  to {
-    opacity: 0.5;
-  }
-}
-
-@keyframes lightCycle {
-  0% {
-    opacity: 0.5;
-  }
-  85% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes showUp {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes spinUp {
-  from {
-    transform: translate(var(--xl), var(--xl));
-  }
-  to {
-    /* unset - instead of translate(0);
-     apparently this has fixed the jump at first page load */
-    transform: unset;
-  }
-}
-
-@keyframes spinLine {
-  0% {
-    --offset1: -2%;
-    --offset2: -2%;
-    --offset3: -2%;
-  }
-  35% {
-    --offset2: 35%;
-    --offset3: 0%;
-  }
-  50% {
-    --offset1: 80%;
-    --offset2: 75%;
-    --offset3: 65%;
-  }
-  100% {
-    --offset1: 102%;
-    --offset2: 102%;
-    --offset3: 102%;
-  }
-}
-
 /*
  * UTILITY CLASSES 
  */
@@ -161,6 +82,14 @@
 .no-transitions * {
   transition: none !important;
   animation: none !important;
+}
+
+/* Prevent any animations until ready */
+.preload * {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  visibility: hidden !important;
 }
 
 .flex {
@@ -221,14 +150,6 @@
   animation-delay: 8.75s;
   animation-timing-function: var(--timing-function1);
   animation-fill-mode: both;
-}
-
-/* Prevent any animations until ready */
-.preload * {
-  animation-duration: 0s !important;
-  animation-delay: 0s !important;
-  transition-duration: 0s !important;
-  visibility: hidden !important;
 }
 
 /* 
@@ -357,8 +278,14 @@ body::after {
   display: none; */
 }
 
-header {
-  gap: var(--lg);
+nav {
+  overflow: hidden;
+}
+
+nav a {
+  text-transform: uppercase;
+  position: relative;
+  font-size: 0.8rem;
 }
 
 h1 {
@@ -393,16 +320,6 @@ li {
   list-style: none;
 }
 
-nav {
-  overflow: hidden;
-}
-
-nav a {
-  text-transform: uppercase;
-  position: relative;
-  font-size: 0.8rem;
-}
-
 footer {
   color: var(--text-color-dark);
   font-style: italic;
@@ -424,21 +341,24 @@ footer {
 
   padding: var(--page-padding);
 
+  z-index: 1;
+
   /* ! DEBUGGING 
   background-color: rgba(255, 0, 0, 0.418); */
 }
 
 #gallery-page #carousel {
-  z-index: 1;
-}
-#gallery-page #header,
-#gallery-page #navbar,
-#gallery-page #footer {
   z-index: 2;
 }
 
-#gallery-page #info {
+#gallery-page #navbar,
+#gallery-page #title-container,
+#gallery-page #footer {
   z-index: 3;
+}
+
+#gallery-page #info {
+  z-index: 4;
 }
 
 #gallery-page #page-container.grid {
@@ -446,7 +366,7 @@ footer {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto auto 1fr auto;
   grid-template-areas:
-    "header header . ."
+    "title title . ."
     "navbar . . info"
     "carousel carousel carousel carousel"
     "footer footer footer footer";
@@ -459,17 +379,17 @@ footer {
   background-color: blue; */
 }
 
-#header {
-  grid-area: header;
-
-  /* ! DEBUGGING
-  background-color: yellow; */
-}
-
 #navbar {
   grid-area: navbar;
 
   /* ! DEBUGGING 
+  background-color: yellow; */
+}
+
+#title-container {
+  grid-area: title;
+
+  /* ! DEBUGGING
   background-color: yellow; */
 }
 
@@ -517,7 +437,7 @@ footer {
   #gallery-page #page-container.grid {
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
-      "header header"
+      "title title"
       "navbar info"
       "carousel carousel"
       "footer footer";
@@ -535,14 +455,14 @@ footer {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
-      "header"
+      "title"
       "info"
       "navbar"
       "carousel"
       "footer";
   }
 
-  #gallery-page #header,
+  #gallery-page #title-container,
   #gallery-page #info {
     margin: var(--md) 0;
   }
@@ -559,12 +479,15 @@ footer {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto auto 1fr;
     grid-template-areas:
-      "navbar header header header"
+      "navbar title title title"
       "navbar info info info"
       "carousel carousel carousel carousel";
   }
 
   #gallery-page #footer {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: ". author social social";
+
     position: absolute;
     left: var(--page-padding);
     right: var(--page-padding);
@@ -576,19 +499,17 @@ footer {
     background-color: blue !important;
     opacity: 0.5; */
   }
+
+  #social-icons {
+    justify-self: end;
+  }
 }
 
 /* 
  * SECTION STYLES
  */
 
-/* HEADER */
-
-#header {
-  letter-spacing: var(--xs);
-
-  margin-bottom: var(--md);
-}
+/* NAVBAR */
 
 #navbar {
   width: 100%;
@@ -639,6 +560,18 @@ footer {
 
 #navbar .nav-link:hover .arrow-right {
   transform: translateX(0.25rem);
+}
+
+/* TITLE */
+
+#title-container {
+  gap: var(--lg);
+  margin-bottom: var(--md);
+}
+
+#title-container,
+#navbar {
+  letter-spacing: var(--xs);
 }
 
 /* INFO */
@@ -1282,4 +1215,83 @@ footer #author {
 
   /* ! DEBUGGING 
   background-color: #00ffc8; */
+}
+
+/* 
+ * ANIMATIONS 
+ */
+
+@keyframes lightUp {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes dim {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes lightCycle {
+  0% {
+    opacity: 0.5;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes showUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spinUp {
+  from {
+    transform: translate(var(--xl), var(--xl));
+  }
+  to {
+    /* unset - instead of translate(0);
+     apparently this has fixed the jump at first page load */
+    transform: unset;
+  }
+}
+
+@keyframes spinLine {
+  0% {
+    --offset1: -2%;
+    --offset2: -2%;
+    --offset3: -2%;
+  }
+  35% {
+    --offset2: 35%;
+    --offset3: 0%;
+  }
+  50% {
+    --offset1: 80%;
+    --offset2: 75%;
+    --offset3: 65%;
+  }
+  100% {
+    --offset1: 102%;
+    --offset2: 102%;
+    --offset3: 102%;
+  }
 }

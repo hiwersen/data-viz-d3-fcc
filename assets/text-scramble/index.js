@@ -96,7 +96,7 @@ export class TextScramble {
     // Get the revealed portion, from the end.
     let textContent = text.slice(this.scrambleLength - progress);
 
-    console.log("progress:", progress, "textContent:", textContent);
+    // console.log("progress:", progress, "textContent:", textContent);
 
     for (let i = this.scrambleLength - progress; i >= 0; i--) {
       this.loopCount++;

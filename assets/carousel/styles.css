@@ -22,6 +22,18 @@
   inherits: false;
 }
 
+@property --alphaX-text {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --alphaX-bg {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
 /* Hide scrollbar */
 #carousel #cards-container {
   scrollbar-width: none; /* Firefox and latest Chromium */
@@ -138,7 +150,7 @@
   --theme2: #fa3560;
 
   /* Line */
-  --line-thin: 0.0625rem; /* 1px at rem 16px*/
+  --line-thin: 0.125rem; /* 0.0625rem; /* 1px at rem 16px*/
   --line-c: #9eeafb;
   --line-step1: 10%;
   --line-step2: calc(var(--line-step1) + var(--line-thin));
@@ -212,7 +224,7 @@
 
   color: rgb(255, 255, 255);
   font-size: calc(var(--card-size) * 0.3);
-  padding: 5%;
+  padding: 10%;
   position: relative;
 
   width: var(--card-size);
@@ -228,7 +240,7 @@
   /*filter: blur(var(--blur));*/
 
   /* ! DEBUGGING STYLES 
-  display: none;
+  display: none; 
   background-color: yellow; 
   border: 0.125rem solid red; */
 }
@@ -328,7 +340,7 @@
   font-size: 0.95rem;
 
   position: absolute;
-  top: calc(10% - 1.5em);
+  top: calc(10% - 2em);
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
@@ -348,7 +360,9 @@
   .gradient-text {
     /* Set through JS @setAlphaX - carousel animation
    value between 0 and 1 */
-    --alphaX: 0;
+    --alphaX-text: 0;
+
+    transition: --alphaX-text 0.75s ease-out;
 
     /* Webkit prefix (required for most browsers) */
     -webkit-background-clip: text;
@@ -360,17 +374,196 @@
 
     background-image: linear-gradient(
         to right,
-        rgba(236, 119, 251, var(--alphaX)) -50%,
-        rgba(0, 255, 187, var(--alphaX)) 250%
+        rgba(236, 119, 251, var(--alphaX-text)) -50%,
+        rgba(0, 255, 187, var(--alphaX-text)) 250%
       ),
       linear-gradient(
         to right,
-        rgba(74, 43, 128, calc(1 - var(--alphaX))) -50%,
-        rgba(251, 96, 129, calc(1 - var(--alphaX))) 250%
+        rgba(74, 43, 128, calc(1 - var(--alphaX-text))) -50%,
+        rgba(251, 96, 129, calc(1 - var(--alphaX-text))) 250%
       );
 
-    transition: --alphaX 10s ease-out;
+    /* transition: --alphaX 10s ease-out; */
   }
+}
+
+#carousel .chart-image {
+  /* Set through JS @setAlphaX - carousel animation
+   value between 0 and 1 */
+  --alphaX-bg: 0;
+
+  transition: --alphaX-bg 0.75s ease-in-out;
+
+  position: relative;
+  width: calc(100% - 2px); /* ! SET TO DYNAMIC VALUES */
+  height: calc(100% - 2px); /* ! SET TO DYNAMIC VALUES */
+  top: 1px; /* ! SET TO DYNAMIC VALUES */
+  left: 1px; /* ! SET TO DYNAMIC VALUES */
+
+  padding: var(--sm);
+
+  /* Stack the main image and reflection */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /*
+  rgb(251, 96, 130)
+  rgb(235, 119, 251)
+  rgb(216, 252, 242)
+  rgb(53, 81, 138)
+  rgba(53, 81, 138, 0.4)
+  */
+
+  background-image: linear-gradient(to bottom, black -50%, transparent 100%),
+    linear-gradient(
+      to top,
+      rgba(216, 252, 242, calc(0.9 * var(--alphaX-bg))) -50%,
+      transparent 50%
+    ),
+    linear-gradient(
+      to top,
+      rgba(235, 119, 251, calc(0.8 * calc(1 - var(--alphaX-bg)))) -50%,
+      transparent 50%
+    );
+
+  background-color: rgba(53, 81, 138, 0.8);
+
+  /* overflow: hidden; */
+
+  /* ! DEBUGGING */
+  /* BLUR effect not working */
+
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: var(--card-size);
+}
+
+#carousel .chart-image::before,
+#carousel .chart-image::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+}
+
+#carousel .chart-image::before {
+  transform: translateY(101%) scaleY(-1);
+
+  background-color: inherit;
+  background-image: inherit;
+  filter: blur(4px) brightness(1.5) saturate(1.3);
+
+  /* Gradient mask for fading effect */
+  mask: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 60%);
+  -webkit-mask: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 60%);
+
+  /* ! DEBUGGING 
+  display: none; */
+}
+
+#carousel .chart-image::after {
+  transform: translateY(2%) translateX(-5%) scaleY(-1) rotateX(-100deg);
+  transform-origin: center bottom;
+
+  width: 110%;
+
+  background-color: inherit;
+  background-image: inherit;
+  filter: blur(12px) brightness(1.5) saturate(1.3);
+
+  /* Gradient mask for fading effect */
+  mask: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 60%),
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(0, 0, 0, 0.4) 5%,
+      rgba(0, 0, 0, 0.4) 95%,
+      transparent
+    );
+  -webkit-mask: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 60%),
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(0, 0, 0, 0.4) 5%,
+      rgba(0, 0, 0, 0.4) 95%,
+      transparent
+    );
+
+  mask-composite: intersect;
+
+  /* ! DEBUGGING 
+  ! FOR some unknown reason applying transform to this element
+  ! affects the carousel functioning - inconstant translation
+  
+  background-color: red; */
+  display: none;
+}
+
+/* Reflection image */
+#carousel .chart-image .chart-reflex {
+  position: absolute;
+
+  /* Create the mirror effect */
+  /* Position it below the main image */
+  transform-origin: bottom;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%) scaleY(-1);
+
+  /* Create the fade and blur effect */
+  opacity: 1; /* 0.3; */
+  filter: blur(6px);
+
+  /* Gradient mask for fading effect */
+  mask: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.4) 34%,
+    transparent 34%,
+    transparent 36%,
+    rgba(0, 0, 0, 0.15) 36%,
+    transparent 80%
+  );
+  -webkit-mask: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.4) 34%,
+    transparent 34%,
+    transparent 36%,
+    rgba(0, 0, 0, 0.15) 36%,
+    transparent 80%
+  );
+
+  z-index: 1;
+}
+
+#carousel .chart-image .chart-reflex::before,
+#carousel .chart-image .chart-reflex::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  filter: blur(3px);
+  opacity: 0.6;
+  mask: linear-gradient(
+    to top,
+    transparent 20%,
+    rgba(0, 0, 0, 0.6) 60%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(
+    to top,
+    transparent 20%,
+    rgba(0, 0, 0, 0.6) 60%,
+    transparent 100%
+  );
+  z-index: 2;
 }
 
 @keyframes spinLine {

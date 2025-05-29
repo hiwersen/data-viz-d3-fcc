@@ -282,9 +282,10 @@ export function initCarousel() {
       const x = normalizeX(i);
       let alphaX = 0;
 
-      const fadeStartDistance = 0.2;
+      const fadeStartDistance = 0.25;
       const fadeEndDistance = 1.0;
 
+      /*
       if (x <= fadeStartDistance) {
         alphaX = 1;
       } else if (x >= fadeEndDistance) {
@@ -296,10 +297,21 @@ export function initCarousel() {
         const easedProgress = 1 - Math.pow(1 - fadeProgress, 7.5);
         alphaX = 1 - easedProgress;
       }
+        */
+
+      const fadeProgress =
+        (x - fadeStartDistance) / (fadeEndDistance - fadeStartDistance);
+
+      const easedProgress = 1 - Math.pow(1 - fadeProgress, 7.5);
+      alphaX = 1 - easedProgress;
 
       card
-        .querySelector(".chart-label.gradient-text")
-        .style.setProperty("--alphaX", alphaX);
+        .querySelector(".chart-label")
+        .style.setProperty("--alphaX-text", alphaX);
+
+      card
+        .querySelector(".chart-image")
+        .style.setProperty("--alphaX-bg", alphaX);
 
       //const blur = `${4 * (1 - alphaX)}px`;
 

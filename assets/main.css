@@ -23,7 +23,7 @@
   --background-color: #0d0010; /* #000000; */
   --pixel-color: #200008dc; /* #6200755e; /* #200008dc; /* #130f19; /* #270009dc; /* #1f1f1f;  */
 
-  --spotlight-color: #41296e48; /* #35518a1d; /* #41296e48; */
+  --spotlight-color: #41296e90; /* #41296e48; /* #35518a1d; /* #41296e48; */
 
   /* Fonts */
   --font-main: monospace, "Courier New", Roboto, sans-serif;
@@ -197,12 +197,12 @@ body::after,
 /* Spotlight effect */
 body::before {
   background-image: conic-gradient(
-      transparent 0% 20%,
+      transparent 0% 30%,
       var(--spotlight-color) 49% 51%,
-      transparent 80% 100%
+      transparent 70% 100%
     ),
-    radial-gradient(ellipse 30% 18% at center 110%, #35518acd, transparent),
-    radial-gradient(ellipse 150% 18% at center 110%, #4a2b80c4, transparent);
+    radial-gradient(ellipse 30% 18% at center 110%, #35518add, transparent),
+    radial-gradient(ellipse 150% 18% at center 110%, #4a2b80d6, transparent);
 
   /*conic-gradient(
       transparent 0% 20%,
@@ -236,7 +236,7 @@ body::before {
 
 /* Ambient light effect */
 #ambient-light {
-  --ambient-light: #ff00372f;
+  --ambient-light: #ff003739;
   top: 0;
   bottom: unset;
   height: 100%;
@@ -286,6 +286,7 @@ nav a {
   text-transform: uppercase;
   position: relative;
   font-size: 0.8rem;
+  font-weight: bold;
 }
 
 h1 {
@@ -318,6 +319,15 @@ a:visited:hover {
 
 li {
   list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto; /* auto */
+  object-fit: contain;
+
+  /* ! DEBUGGING 
+  background-color: rgba(255, 255, 255, 0.468); */
 }
 
 footer {
@@ -617,7 +627,7 @@ footer {
 }
 
 /*
- * CHART STYLES
+ * CHART PAGE STYLES
  */
 
 :root {
@@ -640,6 +650,21 @@ footer {
     --chart-height: calc(var(--chart-width) / var(--svg-ratio));
   }
 }
+
+/* ! EDITING  */
+html:has(#chart-page) {
+  background-color: black;
+}
+
+#chart-page::before,
+#chart-page::after,
+#chart-page #navbar,
+#chart-page #header,
+#chart-page #footer,
+#chart-page #legend {
+  display: none;
+}
+/* ! EDITING  */
 
 #chart-page::before {
   /* Turn off spotlight in the charts */

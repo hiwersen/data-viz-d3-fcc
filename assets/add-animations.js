@@ -1,7 +1,7 @@
-export function addAnimations(elements, animations, timeout) {
-  elements.forEach((el, i) => {
-    setTimeout(() => {
-      el.classList.add(...animations);
-    }, timeout[i]);
+export function addAnimations(elements, animations) {
+  elements.forEach((el) => {
+    el.classList.add(...animations);
   });
+
+  console.log(elements);
 }

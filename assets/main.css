@@ -2,7 +2,7 @@
   /* Colors */
   --text-color: #8d8d8d;
   --text-color-light: #d2d2d2;
-  --text-color-dark: rgba(255, 255, 255, 0.3); /* #474747; */
+  --text-color-dark: #474747;
 
   --primary-color: #ff0037;
 
@@ -96,6 +96,12 @@
   display: flex;
 }
 
+.flex-center-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .flex-col-center-center {
   display: flex;
   flex-direction: column;
@@ -147,7 +153,16 @@
 .slowFadeIn {
   animation-name: showUp;
   animation-duration: 0.75s;
-  animation-delay: 8.75s;
+  animation-delay: 9.35s;
+  animation-timing-function: var(--timing-function1);
+  animation-fill-mode: both;
+}
+
+.fadeOut {
+  animation-name: showUp;
+  animation-direction: reverse;
+  animation-duration: 0.75s;
+  animation-delay: 9.35s;
   animation-timing-function: var(--timing-function1);
   animation-fill-mode: both;
 }
@@ -234,32 +249,6 @@ body::before {
   display: none; */
 }
 
-/* Ambient light effect */
-#ambient-light {
-  --ambient-light: #ff003739;
-  top: 0;
-  bottom: unset;
-  height: 100%;
-
-  background-size: 100% 220%;
-  background-repeat: no-repeat;
-  background-position: center 95%;
-
-  background-image: radial-gradient(
-      ellipse 135% 18% at 130% 110%,
-      var(--ambient-light),
-      transparent
-    ),
-    radial-gradient(
-      ellipse 135% 18% at -30% 110%,
-      var(--ambient-light),
-      transparent
-    );
-
-  filter: blur(24px);
-  z-index: -99;
-}
-
 /* Pixel effect */
 body::after {
   --pixel: max(var(--xs), 3px);
@@ -341,6 +330,35 @@ footer {
 }
 
 /*
+ * Ambient light effect
+ */
+
+#ambient-light {
+  --ambient-light: #ff003739;
+  top: 0;
+  bottom: unset;
+  height: 100%;
+
+  background-size: 100% 220%;
+  background-repeat: no-repeat;
+  background-position: center 95%;
+
+  background-image: radial-gradient(
+      ellipse 135% 18% at 130% 110%,
+      var(--ambient-light),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 135% 18% at -30% 110%,
+      var(--ambient-light),
+      transparent
+    );
+
+  filter: blur(24px);
+  z-index: -99;
+}
+
+/*
  * PAGE LAYOUT
  */
 
@@ -357,21 +375,21 @@ footer {
   background-color: rgba(255, 0, 0, 0.418); */
 }
 
-#gallery-page #carousel {
+#carousel {
   z-index: 2;
 }
 
-#gallery-page #navbar,
-#gallery-page #title-container,
-#gallery-page #footer {
+#navbar,
+#title-container,
+#footer {
   z-index: 3;
 }
 
-#gallery-page #info {
+#info {
   z-index: 4;
 }
 
-#gallery-page #page-container.grid {
+#page-container.grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto auto 1fr auto;
@@ -417,12 +435,12 @@ footer {
   background-color: rgb(255, 255, 0); */
 }
 
-#gallery-page #footer {
+#footer {
   grid-area: footer;
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-areas: "author . . social";
+  grid-template-areas: "contact . . social";
 
   gap: var(--xs);
 
@@ -432,11 +450,11 @@ footer {
   background-color: purple;  */
 }
 
-#gallery-page #footer #author {
-  grid-area: author;
+#contact {
+  grid-area: contact;
 }
 
-#gallery-page #footer #social-icons {
+#social-icons {
   grid-area: social;
 
   /*
@@ -444,7 +462,7 @@ footer {
 }
 
 @media screen and (orientation: portrait) {
-  #gallery-page #page-container.grid {
+  #page-container.grid {
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
       "title title"
@@ -453,15 +471,15 @@ footer {
       "footer footer";
   }
 
-  #gallery-page #footer {
+  #footer {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-areas: "author social";
+    grid-template-areas: "contact social";
   }
 }
 
 @media screen and (max-width: 743px) and (orientation: portrait) {
   /* --------- Small devices ------------ */
-  #gallery-page #page-container.grid {
+  #page-container.grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -472,12 +490,12 @@ footer {
       "footer";
   }
 
-  #gallery-page #title-container,
-  #gallery-page #info {
+  #title-container,
+  #info {
     margin: var(--md) 0;
   }
 
-  #gallery-page #footer {
+  #footer {
     display: flex;
     justify-content: space-between;
   }
@@ -485,7 +503,7 @@ footer {
 
 @media screen and (max-height: 743px) and (orientation: landscape) {
   /* --------- Small devices ------------ */
-  #gallery-page #page-container.grid {
+  #page-container.grid {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto auto 1fr;
     grid-template-areas:
@@ -494,9 +512,9 @@ footer {
       "carousel carousel carousel carousel";
   }
 
-  #gallery-page #footer {
+  #footer {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-areas: ". author social social";
+    grid-template-areas: ". contact social social";
 
     position: absolute;
     left: var(--page-padding);
@@ -584,7 +602,7 @@ footer {
   letter-spacing: var(--xs);
 }
 
-/* INFO */
+/* INFO STYLES @ /assets/text-scramble/styles.css */
 #info {
   color: var(--text-color);
 
@@ -606,8 +624,8 @@ footer {
   visibility: hidden;
   display: block;
 
-  /* ! DEBUGGING */
-  background-color: blue;
+  /* ! DEBUGGING 
+  background-color: blue; */
 }
 
 /* ! DEBUGGING 
@@ -615,7 +633,7 @@ footer {
   background-color: rgba(255, 0, 0, 0.436);
 } */
 
-/* CAROUSEL STYLES @assets/carousel/styles.css */
+/* CAROUSEL STYLES @ /assets/carousel/styles.css */
 
 #carousel {
   align-self: end;
@@ -627,10 +645,10 @@ footer {
 }
 
 /*
- * CHART PAGE STYLES
+ * CHART
  */
 
-:root {
+#chart-section {
   --svg-ratio: 1.6;
 
   --snap-threshold: 0.3; /* When to trigger snap */
@@ -639,207 +657,22 @@ footer {
   --snapping-from-duration: 0.75s;
 
   /* Chart is full-screen height in landscape orientation */
-  --chart-height: calc(100dvh - 2 * var(--page-padding));
+  --chart-height: calc(80dvh - 2 * var(--page-padding));
   --chart-width: calc(var(--chart-height) * var(--svg-ratio));
 }
 
 @media (max-aspect-ratio: 1.6) {
-  :root {
+  #chart-section {
     /* Chart is full-screen width in portrait orientation */
-    --chart-width: calc(100dvw - 2 * var(--page-padding));
+    --chart-width: calc(80dvw - 2 * var(--page-padding));
     --chart-height: calc(var(--chart-width) / var(--svg-ratio));
   }
 }
 
 /* ! EDITING  */
-html:has(#chart-page) {
-  background-color: black;
-}
-
-#chart-page::before,
-#chart-page::after,
-#chart-page #navbar,
-#chart-page #header,
-#chart-page #footer,
-#chart-page #legend {
-  display: none;
-}
-/* ! EDITING  */
-
-#chart-page::before {
-  /* Turn off spotlight in the charts */
-  display: none;
-}
-
-#chart-page #page-container {
-  flex-direction: row;
-  /* background-color: blue; */
-}
-
-/* CHART SNAPPING */
-
-#chart-page #chart-container,
-#chart-page #header,
-#chart-page #footer,
-#chart-page #header *,
-#chart-page #footer * {
-  /* Applied when coming FROM snapped state */
-  transition: all var(--snapping-from-duration) var(--timing-function1);
-}
-
-#chart-page #chart-container {
-  position: relative;
-  height: var(--chart-height);
-  width: var(--chart-width);
-  z-index: 1;
-
-  /* ! DEBUGGING 
-  background-color: purple;
-  border: 1px solid black; */
-}
-
-#chart-page #header,
-#chart-page #footer,
-#chart-page #header *,
-#chart-page #footer * {
-  /* Show header and footer when non-snapped */
-  opacity: 1;
-  visibility: visible;
-}
-
-#chart-page #chart-container.snapped,
-#chart-page:has(#chart-container.snapped) #header,
-#chart-page:has(#chart-container.snapped) #footer,
-#chart-page:has(#chart-container.snapped) #header *,
-#chart-page:has(#chart-container.snapped) #footer * {
-  /* Applied when going TO snapped state */
-  transition: all var(--snapping-to-duration) var(--timing-function1);
-}
-
-#chart-page #chart-container.snapped {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* ! DEBUGGING 
-  background-color: red; */
-}
-
-#chart-page:has(#chart-container.snapped) #header,
-#chart-page:has(#chart-container.snapped) #footer,
-#chart-page:has(#chart-container.snapped) #header *,
-#chart-page:has(#chart-container.snapped) #footer * {
-  /* Hide header and footer when snapped */
-  opacity: 0;
-  visibility: hidden;
-
-  /* ! DEBUGGING 
-  background-color: red; */
-}
-
-/* TEXT ORIENTATION: vertical when chart is full screen height */
-
-#chart-page #title-container {
-  height: 100%;
-  margin-left: var(--page-padding);
-  flex-direction: row;
-  gap: var(--sm);
-
-  /* ! DEBUGGING 
-  background-color: red; */
-}
-
-#chart-page #title,
-#chart-page #title-description {
-  align-self: flex-end;
-  justify-self: flex-end;
-
-  /* ! DEBUGGING 
-  background-color: yellow; */
-}
-
-#chart-page #title,
-#chart-page #title-description,
-#chart-page footer {
-  writing-mode: sideways-lr;
-  text-orientation: mixed;
-}
-
-#chart-page footer svg {
-  transform-origin: center center;
-  transform: rotate(-90deg);
-}
-
-/* TEXT ORIENTATION: horizontal when chart is full screen width */
-@media (max-aspect-ratio: 16/9) {
-  #chart-page #page-container {
-    flex-direction: column;
-  }
-
-  /* ! DEBUGGING 
-  #chart-page #navbar {
-    background-color: blue !important;
-  } */
-
-  #chart-page #title-container {
-    margin-left: unset;
-    flex-direction: column;
-  }
-
-  #chart-page #title,
-  #chart-page #title-description {
-    align-self: flex-start;
-    justify-self: flex-start;
-  }
-
-  #chart-page #title,
-  #chart-page #title-description,
-  #chart-page footer {
-    writing-mode: unset;
-    text-orientation: unset;
-  }
-
-  #chart-page footer,
-  #chart-page header {
-    width: var(--chart-width);
-    height: auto !important;
-  }
-
-  footer .footer-section {
-    flex-direction: row !important;
-  }
-
-  #chart-page footer #author {
-    margin-top: unset !important;
-    margin-right: auto;
-  }
-
-  #chart-page footer svg {
-    transform-origin: center center;
-    transform: rotate(0);
-  }
-}
-
 /* ! TODO: BUG to fix */
-#chart-page #navbar {
-  transform: translateX(calc(-100% - var(--page-padding)));
-}
 
-#chart-page #header,
-#chart-page #footer {
-  z-index: 2;
-  pointer-events: none;
-
-  /* ! DEBUGGING 
-  background-color: blue; */
-}
-
-#chart-page #header {
-  justify-content: flex-end;
-}
-
-#chart-page #navbar {
+#chart-navbar {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -850,6 +683,7 @@ html:has(#chart-page) {
 
   z-index: 6;
 
+  transform: translateX(calc(-100% - var(--page-padding)));
   /* Slower transition when returning (hover-out) */
   transition: transform 2s var(--timing-function1);
 
@@ -857,7 +691,7 @@ html:has(#chart-page) {
   background-color: red; */
 }
 
-#chart-page #navbar::before {
+#chart-navbar::before {
   /* Increase hovering area */
   content: "";
   display: block;
@@ -888,20 +722,20 @@ html:has(#chart-page) {
   background-color: rgba(255, 255, 0, 0.355); */
 }
 
-#chart-page #navbar:hover {
+#chart-navbar:hover {
   /* Faster transition when hovering (hover-in) */
   transition: transform 1.25s var(--timing-function1);
   transform: translate(0) !important;
 }
 
-#chart-page #navbar ul {
+#chart-navbar ul {
   position: relative;
   align-items: flex-end;
   /* ! DEBUGGING:
   background-color: rgba(255, 255, 0, 0.456); */
 }
 
-#chart-page #navbar .arrow-right {
+#chart-navbar .arrow-right {
   left: unset;
   right: -2em;
 
@@ -909,22 +743,285 @@ html:has(#chart-page) {
   background-color: blue; */
 }
 
-#chart-page #navbar .nav-link:hover .arrow-right {
+#chart-navbar .nav-link:hover .arrow-right {
   transform: translateX(0);
 }
 
-#chart-page #chart {
-  position: absolute;
-  inset: 0;
+/* ! EDITING *******************************/
 
-  width: 100%;
-  height: 100%;
+#chart-section.chart-viewport {
+  position: fixed;
+  top: 50%;
+  left: 50%;
 
-  /*
-  background-color: rgba(255, 255, 0, 0.382); */
+  width: 80dvw;
+  height: 80dvh;
+
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  pointer-events: none; /* ! Inherited property */
+
+  /* ! BUILDING
+   ! "activate" element on hover 
+  Hidden by default 
+  opacity: 0;
+  visibility: hidden;
+  backdrop-filter: blur(2px);
+  /* Smooth transitions */ /*
+  transition:
+    opacity 0.6s var(--timing-function2),
+    visibility 0.6s var(--timing-function2);
+    */
+
+  /* ! DEBUGGING */
+  background-color: greenyellow;
 }
 
-#chart-page #legend {
+/* Border effect */
+#chart-section::before {
+  /* Line settings */
+  --line-thin: 0.25rem; /* 0.0625rem; /* 1px at rem 16px*/
+  --line-c: #9eeafb;
+  --line-step1: 0%;
+  --line-step2: calc(var(--line-step1) + var(--line-thin));
+  --line-step3: calc(100% - var(--line-thin));
+  --line-step4: 100%;
+
+  --mask: radial-gradient(circle at center, black 50%, transparent 150%);
+  --mask-line: conic-gradient(
+    rgba(0, 0, 0, 0.3) var(--offset3),
+    rgba(0, 0, 0, 1) var(--offset2),
+    rgba(0, 0, 0, 0.3) var(--offset1)
+  );
+
+  content: "";
+  position: absolute;
+  inset: calc(var(--line-thin) * -1);
+  z-index: -2;
+
+  background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      transparent 0%,
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
+      transparent 100%
+    );
+
+  mask-image: var(--mask), var(--mask-line);
+  -webkit-mask-image: var(--mask), var(--mask-line);
+
+  mask-composite: intersect;
+  -webkit-mask-composite: intersect;
+
+  /* DEBUGGING STYLE 
+  display: none; */
+}
+
+#chart-modal {
+  width: inherit;
+  height: inherit;
+
+  border: none;
+  outline: none;
+  background-color: initial;
+
+  /*  ! DEBUGGING  */
+  background-color: rgb(255, 0, 0);
+}
+
+#chart-modal-content {
+  width: inherit;
+  height: inherit;
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr;
+  grid-template-areas: "title chart footer";
+
+  row-gap: var(--md);
+  column-gap: var(--lg);
+
+  padding: var(--page-padding);
+
+  /* ! DEBUGGING */
+  background-color: rgb(128, 0, 128);
+  border: 1px solid black;
+}
+
+#chart-title-container {
+  grid-area: "title";
+}
+
+#chart-container {
+  grid-area: "chart";
+}
+
+#chart-footer {
+  grid-area: "footer";
+}
+
+/* CHART SNAPPING */
+#chart-modal-content,
+#chart-title-container,
+#chart-footer,
+#chart-title-container *,
+#chart-footer * {
+  /* Applied when coming FROM snapped state */
+  transition: all var(--snapping-from-duration) var(--timing-function1);
+}
+
+#chart-title-container,
+#chart-footer,
+#chart-title-container *,
+#chart-footer * {
+  /* Show header and footer when non-snapped */
+  opacity: 1;
+  visibility: visible;
+}
+
+#chart-container.snapped,
+#chart-section:has(#chart-container.snapped) #chart-title-container,
+#chart-section:has(#chart-container.snapped) #chart-footer,
+#chart-section:has(#chart-container.snapped) #chart-title-container *,
+#chart-section:has(#chart-container.snapped) #chart-footer * {
+  /* Applied when going TO snapped state */
+  transition: all var(--snapping-to-duration) var(--timing-function1);
+}
+
+#chart-container.snapped {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* ! DEBUGGING 
+  background-color: red; */
+}
+
+#chart-section:has(#chart-container.snapped) #chart-title-container,
+#chart-section:has(#chart-container.snapped) #chart-footer,
+#chart-section:has(#chart-container.snapped) #chart-title-container *,
+#chart-section:has(#chart-container.snapped) #chart-footer * {
+  /* Hide header and footer when snapped */
+  opacity: 0;
+  visibility: hidden;
+
+  /* ! DEBUGGING 
+  background-color: red; */
+}
+
+/* TEXT ORIENTATION: vertical when chart is full screen height 
+  - landscape viewport */
+#chart-title,
+#chart-title-description,
+#chart-footer {
+  writing-mode: sideways-lr;
+}
+
+#chart-title-container {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+
+  gap: var(--sm);
+
+  /* ! DEBUGGING 
+  display: none; */
+}
+
+#chart-title,
+#chart-title-description {
+  /* ! DEBUGGING */
+  background-color: yellow;
+  color: black;
+}
+
+#chart-title-container,
+#chart-footer {
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+
+  /* ! DEBUGGING  */
+  background-color: red;
+}
+
+#chart-footer {
+  justify-content: flex-end;
+}
+
+#chart-footer .footer-section {
+  /* ! DEBUGGING  */
+  background-color: yellow;
+}
+
+/* TEXT ORIENTATION: horizontal when chart is full screen width
+  - portrait viewport */
+@media (max-aspect-ratio: 1.6) {
+  #chart-modal-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "title"
+      "chart"
+      "footer";
+  }
+
+  #chart-title-container {
+    flex-direction: column;
+  }
+
+  #chart-title,
+  #chart-title-description,
+  #chart-footer {
+    writing-mode: unset;
+    text-orientation: unset;
+  }
+
+  #chart-title-container,
+  #chart-footer {
+    width: 100%;
+    height: initial;
+  }
+
+  #chart-container {
+    /* ! DEBUGGING */
+    background-color: blue;
+  }
+}
+
+#chart-container {
+  /* ! DEBUGGING */
+  background-color: red;
+}
+
+#chart {
+  width: var(--chart-width);
+  height: var(--chart-height);
+  /* ! DEBUGGING */
+  background-color: deeppink;
+}
+
+#legend {
   z-index: 2;
   pointer-events: none;
 
@@ -932,6 +1029,8 @@ html:has(#chart-page) {
   background-color: red;
   width: 16rem; /* ! TODO: REMOVE THIS AFTER DEBUGGING ! */
   height: 0.75rem; /* ! TODO: REMOVE THIS AFTER DEBUGGING ! */
+
+  display: none;
 }
 
 #legend-svg {
@@ -1173,6 +1272,7 @@ html:has(#chart-page) {
 
 footer .footer-section {
   display: flex;
+  flex-direction: row !important;
   align-items: flex-start;
   justify-content: flex-start;
 
@@ -1216,7 +1316,7 @@ footer .social-icon svg {
   background-color: blue; */
 }
 
-footer #author {
+footer #contact {
   transition: color var(--time) var(--timing-function1);
 
   margin-right: auto;
@@ -1235,7 +1335,7 @@ footer #author {
   /*display: none;*/
 }
 
-#chart-page footer #author {
+#chart-page footer #contact {
   margin-top: auto;
 
   /* ! DEBUGGING 

@@ -1,4 +1,4 @@
-const navbar = document.querySelector("#navbar ul");
+const navbar = document.querySelector("#chart-navbar ul");
 const chartContainer = document.getElementById("chart-container");
 const pageContainer = document.getElementById("page-container");
 const pagePadding = parseFloat(

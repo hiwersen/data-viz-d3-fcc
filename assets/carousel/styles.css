@@ -35,10 +35,10 @@
 }
 
 /* Hide scrollbar */
-#carousel #cards-container {
+#cards-container {
   scrollbar-width: none; /* Firefox and latest Chromium */
 }
-#carousel #cards-container::-webkit-scrollbar {
+#cards-container::-webkit-scrollbar {
   display: none; /* Safari and legacy Chromium */
 }
 
@@ -89,7 +89,7 @@
   }
 }
 
-#carousel #cards-container {
+#cards-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -210,6 +210,10 @@
 
   /* Linear movement in the carousel */
   transition: all 600ms linear;
+
+  /* Each card creates its own stacking context */
+  /* ! DEBUGGING */
+  transform-style: preserve-3d;
 }
 
 /* showUP and spinUp animations when loading the scene */
@@ -243,6 +247,9 @@
   display: none; 
   background-color: yellow; 
   border: 0.125rem solid red; */
+
+  /* ! DEBUGGING REFLEX */
+  z-index: 2;
 }
 
 /* Grid effect with lines */
@@ -350,14 +357,14 @@
   display: none; */
 }
 
-.gradient-text {
+#carousel .card .chart-label.gradient-text {
   /* Fallback color for unsupported browsers */
   color: var(--text-color-light);
 }
 
 /* Only apply gradient text if background-clip is supported */
 @supports (-webkit-background-clip: text) or (background-clip: text) {
-  .gradient-text {
+  #carousel .card .chart-label.gradient-text {
     /* Set through JS @setAlphaX - carousel animation
    value between 0 and 1 */
     --alphaX-text: 0;
@@ -429,6 +436,8 @@
     );
 
   background-color: rgba(53, 81, 138, 0.8);
+
+  opacity: 1;
 
   /* overflow: hidden; */
 
@@ -535,7 +544,8 @@
     transparent 80%
   );
 
-  z-index: 1;
+  /* ! DEBUGGING REFLEX */
+  z-index: -1;
 }
 
 #carousel .chart-image .chart-reflex::before,
@@ -564,6 +574,16 @@
     transparent 100%
   );
   z-index: 2;
+}
+
+/* ! BUILDING */
+#carousel .chart-image-placeholder {
+  content: "";
+  position: absolute;
+  inset: 10%;
+  padding: var(--sm);
+
+  z-index: -1;
 }
 
 @keyframes spinLine {

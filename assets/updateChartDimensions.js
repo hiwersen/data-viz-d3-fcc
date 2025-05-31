@@ -113,8 +113,8 @@ export class UpdateChartDimensions {
 
   setDimensions() {
     // Get current viewport dimensions
-    this.viewportWidth = window.innerWidth;
-    this.viewportHeight = window.innerHeight;
+    this.viewportWidth = this.chartViewport.offsetWidth;
+    this.viewportHeight = this.chartViewport.offsetHeight;
     this.viewportRatio = this.viewportWidth / this.viewportHeight;
 
     // Calculate how close the viewport ratio is to the chart ratio
@@ -171,14 +171,12 @@ export class UpdateChartDimensions {
       finalWidth = baseWidth * scaleFactor;
 
       // Update CSS variables
-      document.documentElement.style.setProperty(
-        "--chart-height",
-        `${finalHeight}px`
-      );
-      document.documentElement.style.setProperty(
-        "--chart-width",
-        `${finalWidth}px`
-      );
+      document
+        .getElementById("chart-section")
+        .style.setProperty("--chart-height", `${finalHeight}px`);
+      document
+        .getElementById("chart-section")
+        .style.setProperty("--chart-width", `${finalWidth}px`);
     } else {
       // Portrait orientation - width is the limiting factor
       baseWidth = this.viewportWidth - 2 * pagePadding;
@@ -189,17 +187,13 @@ export class UpdateChartDimensions {
       finalHeight = baseHeight * scaleFactor;
 
       // Update CSS variables
-      document.documentElement.style.setProperty(
-        "--chart-width",
-        `${finalWidth}px`
-      );
-      document.documentElement.style.setProperty(
-        "--chart-height",
-        `${finalHeight}px`
-      );
+      document
+        .getElementById("chart-section")
+        .style.setProperty("--chart-width", `${finalWidth}px`);
+      document
+        .getElementById("chart-section")
+        .style.setProperty("--chart-height", `${finalHeight}px`);
     }
-
-    console.log(finalWidth / finalHeight);
   }
 
   handleWheel(e) {
@@ -302,9 +296,19 @@ export class UpdateChartDimensions {
   init() {
     console.log("@updateChartDimensions.init");
 
+    const chartViewport = document.getElementById("chart-modal-content");
     const chartContainer = document.getElementById("chart-container");
-    const header = document.getElementById("header");
-    const footer = document.getElementById("footer");
+    const chartTitleContainer = document.getElementById(
+      "chart-title-container"
+    );
+    const chartFooter = document.getElementById("chart-footer");
+
+    if (chartViewport) {
+      this.chartViewport = chartViewport;
+    } else {
+      console.log("chartViewport not found.");
+      return;
+    }
 
     if (chartContainer) {
       this.chartContainer = chartContainer;
@@ -313,13 +317,13 @@ export class UpdateChartDimensions {
       return;
     }
 
-    if (header) {
-      this.header = header;
-      this.headerHeight = this.header.offsetHeight;
+    if (chartTitleContainer) {
+      this.chartTitleContainer = chartTitleContainer;
+      this.chartTitleContainerHeight = this.chartTitleContainer.offsetHeight;
     }
-    if (footer) {
-      this.footer = footer;
-      this.footerHeight = this.footer.offsetHeight;
+    if (chartFooter) {
+      this.chartFooter = chartFooter;
+      this.footerHeight = this.chartFooter.offsetHeight;
     }
 
     // Add wheel listener(s)
@@ -336,6 +340,6 @@ export class UpdateChartDimensions {
     // Add keyboard listener(s)
     window.addEventListener("keydown", this.handleKeyDown);
 
-    this.handleResize();
+    requestAnimationFrame(this.handleResize);
   }
 }

@@ -30,6 +30,13 @@
     />
 
     <script src="./assets/common.js" type="module" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7" defer=""></script>
+    <script src="https://unpkg.com/topojson@3" defer></script>
+    <script
+      src="./projects/choroplethmap/script.js"
+      type="module"
+      defer
+    ></script>
   </head>
   <body id="gallery-page" class="preload">
     <div id="ambient-light"></div>
@@ -89,15 +96,13 @@
         </p>
       </section>
       <section id="carousel">
-        <!--<section id="carousel" class="showUp spinUp">-->
-
         <div id="cards-container">
           <div class="card-wrapper-1">
             <div class="card-wrapper-2">
               <div id="bar-chart" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">bar chart</span>
-                <div class="chart-image flex-col-center-center">
+                <div class="chart-image flex-col-center-center slowFadeIn">
                   <img
                     id="choropleth-map-image"
                     src="./assets/images/choropleth.png"
@@ -113,7 +118,7 @@
               <div id="heat-map" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">heat map</span>
-                <div class="chart-image flex-col-center-center">
+                <div class="chart-image flex-col-center-center slowFadeIn">
                   <img
                     id="choropleth-map-image"
                     src="./assets/images/choropleth.png"
@@ -129,7 +134,16 @@
               <div id="choropleth-map" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">choropleth map</span>
-                <div class="chart-image flex-col-center-center">
+                <div
+                  class="chart-image-placeholder flex-col-center-center fadeOut"
+                >
+                  <img
+                    id="choropleth-map-image"
+                    src="./assets/images/choropleth.png"
+                    alt="USA choropleth map image dark blue and purple image"
+                  />
+                </div>
+                <div class="chart-image flex-col-center-center slowFadeIn">
                   <img
                     id="choropleth-map-image"
                     src="./assets/images/choropleth.png"
@@ -150,7 +164,7 @@
               <div id="scatter-plot" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">scatter plot</span>
-                <div class="chart-image flex-col-center-center">
+                <div class="chart-image flex-col-center-center slowFadeIn">
                   <img
                     id="choropleth-map-image"
                     src="./assets/images/choropleth.png"
@@ -166,7 +180,7 @@
               <div id="tree-map" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">tree map</span>
-                <div class="chart-image flex-col-center-center">
+                <div class="chart-image flex-col-center-center slowFadeIn">
                   <img
                     id="choropleth-map-image"
                     src="./assets/images/choropleth.png"
@@ -178,8 +192,71 @@
           </div>
         </div>
       </section>
+
+      <section id="chart-section" class="chart-viewport">
+        <dialog id="chart-modal">
+          <div id="tooltip" class="screen showUp"></div>
+          <div id="chart-modal-content">
+            <!--          <div id="chart-modal-content" class="flex-col-center-between">
+-->
+            <!--
+            <nav id="chart-navbar">
+              <ul class="flex-col-start-between">
+                <li id="bar-chart-link" class="nav-link">
+                  <a href="./projects/barchart/index.html" target="_blank"
+                    ><span class="arrow-right">→</span>bar chart</a
+                  >
+                </li>
+                <li id="choropleth-map-link" class="nav-link">
+                  <a href="./projects/choroplethmap/index.html" target="_blank"
+                    ><span class="arrow-right">→</span>choropleth map</a
+                  >
+                </li>
+                <li id="heat-map-link" class="nav-link">
+                  <a href="./projects/heatmap/index.html" target="_blank"
+                    ><span class="arrow-right">→</span>heat map</a
+                  >
+                </li>
+                <li id="scatter-plot-link" class="nav-link">
+                  <a href="./projects/scatterplot" target="_blank"
+                    ><span class="arrow-right">→</span>scatter plot</a
+                  >
+                </li>
+                <li id="tree-map-link" class="nav-link">
+                  <a href="./projects/treemap/index.html" target="_blank"
+                    ><span class="arrow-right">→</span>tree map</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            -->
+
+            <div id="chart-title-container" class="flex">
+              <h1 id="chart-title"></h1>
+              <p id="chart-title-description"></p>
+            </div>
+
+            <main id="chart-container" class="flex-center-center">
+              <svg id="chart"></svg>
+              <svg id="legend"></svg>
+            </main>
+
+            <footer id="chart-footer" class="flex">
+              <div id="chart-metadata">
+                <div id="chart-source" class="footer-section">
+                  <span>data source:</span>
+                  <span>
+                    <a target="_blank"></a>
+                  </span>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </dialog>
+      </section>
+
       <footer id="footer" class="slowFadeIn">
-        <div id="author" class="footer-section">
+        <div id="contact" class="footer-section">
           <span>by</span>
           <a href="https://github.com/hiwersen/" target="_black">Hiwersen </a>
         </div>

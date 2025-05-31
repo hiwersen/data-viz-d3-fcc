@@ -20,27 +20,43 @@ function drawChart() {
   const counties = chartSvg.append("g").attr("id", "counties");
   const states = chartSvg.append("g").attr("id", "states");
 
-  const tooltip = d3
+  const tooltip = d3.select("#tooltip");
+  /*
     .select("#chart-page")
     .append("div")
     .attr("id", "tooltip")
     .attr("class", "screen showUp");
+    */
 
-  d3.select("#chart-title")
+  d3.select("#chart-title").text("United States Educational Attainment");
+  /*.select("#chart-title")
     .append("h1")
     .text("United States Educational Attainment")
     .attr("id", "title");
+    */
 
-  d3.select("#chart-title")
+  d3.select("#chart-title-description").text(
+    "Percentage of adults age 25 and older with a bachelor's degree or higher"
+  );
+  /*.select("#chart-title")
     .append("p")
     .text(
       "Percentage of adults age 25 and older with a bachelor's degree or higher"
     )
     .attr("id", "title-description");
+    */
 
-  d3.select("#chart-source").html(
+  d3.select("#chart-source a")
+    .text("USDA Economic Research Service")
+    .attr(
+      "href",
+      "https://www.ers.usda.gov/data-products/county-level-data-sets/download-data.aspx"
+    );
+  /*
+  .select("#chart-source").html(
     `Source: <a href="https://www.ers.usda.gov/data-products/county-level-data-sets/download-data.aspx" target="_blank">USDA Economic Research Service</a>`
   );
+  */
 
   const req = new XMLHttpRequest();
 
@@ -240,9 +256,9 @@ function drawChart() {
       const legendViewBox = `0 0 ${legendViewBoxWidth + legendPadding * 2} ${legendViewBoxHeight + legendPadding * 1.5}`;
 
       const legend = d3
-        .select("#chart-footer")
-        .append("svg")
-        .attr("id", "legend")
+        .select("#legend")
+        //.append("svg")
+        //.attr("id", "legend")
         .attr("viewBox", legendViewBox)
         .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
@@ -300,11 +316,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   new UpdateChartDimensions(
     svgRatio,
-    0.25, // 25% max-discount
-    0.35
+    0.1, // 25% max-discount
+    0.2
   );
 
-  updateNavbarPosition();
+  document.getElementById("chart-modal").show();
+
+  //updateNavbarPosition();
   drawChart();
 
   // Re-enable transitions/animations
@@ -315,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("resize", () => {
-  updateNavbarPosition();
+  // updateNavbarPosition();
 });
 
 // ! TODO: add dynamic max and min data to tooltip:

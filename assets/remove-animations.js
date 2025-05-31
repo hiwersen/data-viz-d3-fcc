@@ -1,7 +1,7 @@
-export function removeAnimations(elements, animations, timeout) {
-  elements.forEach((el, i) => {
-    setTimeout(() => {
-      el.classList.remove(...animations);
-    }, timeout[i]);
+export function removeAnimations(elements, animations) {
+  elements.forEach((el) => {
+    el.classList.remove(...animations);
   });
+
+  // console.log(elements);
 }

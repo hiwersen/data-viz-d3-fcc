@@ -31,6 +31,7 @@ export class UpdateChartDimensions {
     if (!this.shouldSnap()) return;
 
     this.isSnapped = true;
+
     this.flip("snapped", "add");
     this.handleResize();
   }
@@ -39,6 +40,7 @@ export class UpdateChartDimensions {
     console.log("@updateChartDimensions.unsnap");
 
     this.isSnapped = false;
+
     this.flip("snapped", "remove");
     this.handleResize();
   }
@@ -57,58 +59,85 @@ export class UpdateChartDimensions {
     // Apply FLIP technique (First, Last, invert and play):
 
     // Hide changes in state
-    this.chartContainer.style.visibility = "hidden";
-    this.chartContainer.style.transition = "none";
+    this.chartViewport.style.visibility = "hidden";
+    this.chartViewport.style.transition = "none";
 
     // FIRST: Record current state
-    const first = this.chartContainer.getBoundingClientRect();
+    const first = this.chartViewport.getBoundingClientRect();
 
     // LAST: Apply the final styles temporarily to measure final state
     if (action === "add") {
-      this.chartContainer.classList.add(styles);
+      this.chartViewport.classList.add(styles);
     } else {
-      this.chartContainer.classList.remove(styles);
+      this.chartViewport.classList.remove(styles);
     }
 
     // Force reflow to apply styles
-    this.chartContainer.offsetHeight;
+    this.chartViewport.offsetHeight;
 
     // Get final state with all CSS applied
-    const last = this.chartContainer.getBoundingClientRect();
+    const last = this.chartViewport.getBoundingClientRect();
 
     // Calculate the center point differences
-    const firstCenterX = first.left + first.width / 2;
-    const firstCenterY = first.top + first.height / 2;
-    const lastCenterX = last.left + last.width / 2;
-    const lastCenterY = last.top + last.height / 2;
+    const deltaX = first.left - last.left;
+    const deltaY = first.top - last.top;
+    const scaleX = first.width / last.width;
+    const scaleY = first.height / last.height;
 
-    const deltaX = firstCenterX - lastCenterX;
-    const deltaY = firstCenterY - lastCenterY;
+    // INVERT: Apply transforms to make it look like the first state
+    this.chartViewport.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) scale(${scaleX}, ${scaleY})`;
 
-    // INVERT: Apply inverted transforms
-    if (action === "remove") {
-      // Calculate scale difference
-      const scaleX = first.width / last.width;
-      const scaleY = first.height / last.height;
-
-      // Apply both position and scale transforms
-      this.chartContainer.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
-    } else {
-      this.chartContainer.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
-    }
+    // Make visible
+    this.chartViewport.style.visibility = "visible";
 
     // Force reflow
-    this.chartContainer.offsetHeight;
+    this.chartViewport.offsetHeight;
 
-    // PLAY: Clear inline styles and animate to final position with snapped transition
-    this.chartContainer.style.visibility = "visible";
-    this.chartContainer.style.position = "";
-    this.chartContainer.style.top = "";
-    this.chartContainer.style.left = "";
-    this.chartContainer.style.width = "";
-    this.chartContainer.style.height = "";
-    this.chartContainer.style.transform = "";
-    this.chartContainer.style.transition = "";
+    // PLAY: Set up the transition and animate to final state
+    const duration =
+      action === "add"
+        ? "var(--snapping-to-duration)"
+        : "var(--snapping-from-duration)";
+
+    this.chartViewport.style.transition = `transform ${duration} var(--timing-function1)`;
+    this.chartViewport.style.transform = "translate(-50%, -50%) scale(1, 1)";
+
+    // Clean up after animation
+    const durationFrom =
+      parseFloat(
+        window
+          .getComputedStyle(this.chartViewport)
+          .getPropertyValue("--snapping-from-duration")
+          .slice(0, -1)
+      ) * 1000;
+    const durationTo =
+      parseFloat(
+        window
+          .getComputedStyle(this.chartViewport)
+          .getPropertyValue("--snapping-to-duration")
+          .slice(0, -1)
+      ) * 1000;
+
+    setTimeout(
+      () => {
+        this.chartViewport.style.transition = "";
+        this.chartViewport.style.transform = "";
+      },
+      action === "add" ? durationTo : durationFrom
+    );
+
+    // Cancel any pending .showModal that may have been triggered before
+    clearTimeout(this.showModal);
+
+    if (action === "add") {
+      this.showModal = setTimeout(() => {
+        this.chartModal.close();
+        this.chartModal.showModal();
+      }, durationTo);
+    } else {
+      this.chartModal.close();
+      this.chartModal.show();
+    }
   }
 
   setDimensions() {
@@ -288,15 +317,29 @@ export class UpdateChartDimensions {
   }
 
   handleKeyDown(e) {
+    // Toggle snap with keys:
     if (e.key === "f" || e.key === "F") {
       this.toggleSnap();
+    }
+
+    // Snap with arrow down:
+    if (e.key === "Escape" || e.key === "ArrowDown") {
+      this.snap();
+    }
+
+    // Unsnap with esc or arrow up:
+    if (e.key === "Escape" || e.key === "ArrowUp") {
+      this.unsnap();
     }
   }
 
   init() {
     console.log("@updateChartDimensions.init");
 
-    const chartViewport = document.getElementById("chart-modal-content");
+    const chartViewport = document.querySelector(
+      "#chart-section.chart-viewport"
+    );
+    const chartModal = document.getElementById("chart-modal");
     const chartContainer = document.getElementById("chart-container");
     const chartTitleContainer = document.getElementById(
       "chart-title-container"
@@ -307,6 +350,13 @@ export class UpdateChartDimensions {
       this.chartViewport = chartViewport;
     } else {
       console.log("chartViewport not found.");
+      return;
+    }
+
+    if (chartModal) {
+      this.chartModal = chartModal;
+    } else {
+      console.log("chartModal not found.");
       return;
     }
 

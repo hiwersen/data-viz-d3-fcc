@@ -65,6 +65,7 @@
   */
   --ar: calc(21 / 9);
   --limited-dvw: min(100dvw, calc(100dvh * var(--ar)));
+  --limited-dvh: min(100dvh, calc(100dvw * var(--ar)));
 
   /* 
    Set dynamic root font size [--dynamic-rem] to: 
@@ -146,9 +147,6 @@
 
 html {
   scroll-behavior: smooth;
-
-  /* ! DEBUGGING */
-  background-color: black;
 }
 
 /* Media query helper for responsive design */
@@ -169,8 +167,8 @@ body {
   /* Limit body width to [--limited-dvw] */
   width: var(--limited-dvw);
 
-  /* ! DEBUGGING 
-  background-color: greenyellow !important; */
+  /* Limit body height to [--limited-dvh] */
+  height: var(--limited-dvh);
 }
 
 button {

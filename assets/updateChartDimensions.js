@@ -65,7 +65,7 @@ export class UpdateChartDimensions {
     // FIRST: Record current state
     const first = this.chartViewport.getBoundingClientRect();
 
-    // LAST: Apply the final styles temporarily to measure final state
+    // LAST: Apply the final styles to measure final state
     if (action === "add") {
       this.chartViewport.classList.add(styles);
     } else {
@@ -99,7 +99,7 @@ export class UpdateChartDimensions {
         ? "var(--snapping-to-duration)"
         : "var(--snapping-from-duration)";
 
-    this.chartViewport.style.transition = `transform ${duration} var(--timing-function1)`;
+    this.chartViewport.style.transition = `all ${duration} var(--timing-function1)`;
     this.chartViewport.style.transform = "translate(-50%, -50%) scale(1, 1)";
 
     // Clean up after animation

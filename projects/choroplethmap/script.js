@@ -226,6 +226,7 @@ function drawChart() {
           }
 
           // Apply position make it visible
+
           tooltip
             .style("top", top + "px")
             .style("left", left + "px")

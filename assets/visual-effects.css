@@ -1,0 +1,229 @@
+/* ! Important to ensure variables are loaded before animations */
+@import url("./variables.css");
+@import url("./main.css");
+
+/*
+ * Scene effects
+ */
+
+body::before,
+body::after,
+#ambient-light {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* Spotlight effect */
+body::before {
+  background-image: conic-gradient(
+      transparent 0% 30%,
+      var(--spotlight-color) 49% 51%,
+      transparent 70% 100%
+    ),
+    radial-gradient(ellipse 30% 18% at center 110%, #35518add, transparent),
+    radial-gradient(ellipse 150% 18% at center 110%, #4a2b80d6, transparent);
+
+  top: 0;
+  bottom: unset;
+  height: 102%; /* +2% counteracts the unwanted black border caused by blur */
+  background-size: 100% 225%;
+  background-repeat: no-repeat;
+  background-position: center 95%;
+
+  filter: blur(8px);
+  z-index: -99;
+
+  /* Animation */
+  opacity: 0;
+  animation-name: lightUp, dim, lightCycle;
+  animation-duration: 4s, 2s, 24s;
+  animation-delay: 1.5s, 8s, 12s;
+  animation-timing-function: var(--timing-function2);
+  animation-fill-mode: both, forwards, forwards;
+  animation-iteration-count: 1, 1, infinite;
+
+  /* !DEBUGGING 
+    display: none; */
+}
+
+/* Pixel effect */
+body::after {
+  --pixel: max(var(--xs), 3px);
+
+  background-color: transparent;
+  background-image: conic-gradient(
+    var(--pixel-color) 0% 25%,
+    transparent 25% 100%
+  );
+  background-size: var(--pixel) var(--pixel);
+  margin-left: calc(var(--pixel) * -0.25);
+  margin-top: calc(var(--pixel) * 0.25);
+  z-index: -1;
+
+  /* !DEBUGGING 
+    display: none; */
+}
+
+/* Ambient light effect */
+#ambient-light {
+  top: 0;
+  bottom: unset;
+  height: 100%;
+
+  background-size: 100% 220%;
+  background-repeat: no-repeat;
+  background-position: center 95%;
+
+  background-image: radial-gradient(
+      ellipse 135% 18% at 130% 110%,
+      var(--ambient-light),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 135% 18% at -30% 110%,
+      var(--ambient-light),
+      transparent
+    );
+
+  filter: blur(24px);
+  z-index: -99;
+}
+
+/* Chart border - glass effect */
+#chart-section::before {
+  /* Line settings */
+  --line-thin: 0.25rem; /* 0.0625rem; /* 1px at rem 16px*/
+  --line-c: var(--g9);
+  --line-step1: 0%;
+  --line-step2: calc(var(--line-step1) + var(--line-thin));
+  --line-step3: calc(100% - var(--line-thin));
+  --line-step4: 100%;
+
+  content: "";
+  position: absolute;
+  inset: calc(var(--line-thin) * -1);
+  z-index: -3;
+
+  background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      transparent 0%,
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
+      transparent 100%
+    );
+  mask-image: var(--mask1);
+  -webkit-mask-image: var(--mask1);
+  mask-composite: intersect;
+  -webkit-mask-composite: intersect;
+  border-radius: var(--sm);
+}
+
+/* Chart border - glow effect */
+#chart-section::after {
+  /* Line settings */
+  --line-thin: var(--border-width);
+  --line-c: white;
+  --line-step1: 0%;
+  --line-step2: calc(var(--line-step1) + var(--line-thin));
+  --line-step3: calc(100% - var(--line-thin));
+  --line-step4: 100%;
+
+  --mask-line: conic-gradient(
+    from 65deg,
+    rgba(0, 0, 0, 0) var(--offset3),
+    rgba(0, 0, 0, 1) var(--offset2),
+    rgba(0, 0, 0, 0) var(--offset1)
+  );
+
+  content: "";
+  position: absolute;
+  inset: calc(var(--line-thin) * -1);
+  z-index: -2;
+
+  background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      transparent 0%,
+      transparent var(--line-step1),
+      var(--line-c) var(--line-step1),
+      var(--line-c) var(--line-step2),
+      transparent var(--line-step2),
+      transparent var(--line-step3),
+      var(--line-c) var(--line-step3),
+      var(--line-c) var(--line-step4),
+      transparent var(--line-step4),
+      transparent 100%
+    );
+
+  mask-image: var(--mask1), var(--mask-line);
+  -webkit-mask-image: var(--mask1), var(--mask-line);
+
+  mask-composite: intersect;
+  -webkit-mask-composite: intersect;
+
+  border-radius: var(--sm);
+
+  /* Animation settings */
+  animation-name: spinLine;
+  animation-duration: var(--t11);
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+
+  /* DEBUGGING STYLE 
+    display: none; */
+}
+
+/* Tooltip - screen effect */
+#tooltip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background-color: var(--shadow-c1);
+
+  box-shadow:
+    /* Outer shadow */
+    3px 5px 30px 10px var(--shadow-c1),
+    /* Dark inner shadow at the top/left */ inset 1px 1px 1px var(--shadow-c3),
+    /* Subtle inner shadow all around */ inset 0 0 8px 2px var(--shadow-c1),
+    /* Light inner highlight at bottom/right to simulate reflection */ inset -1px -1px
+      1px var(--shadow-c2);
+
+  border: 1px solid var(--shadow-c4);
+  backdrop-filter: grayscale(30%) contrast(1.1);
+}

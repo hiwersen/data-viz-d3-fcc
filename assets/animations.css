@@ -1,0 +1,78 @@
+/* 
+ * ANIMATIONS 
+ */
+
+@keyframes lightUp {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes dim {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes lightCycle {
+  0% {
+    opacity: 0.5;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes showUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spinUp {
+  from {
+    transform: translate(var(--xl), var(--xl));
+  }
+  to {
+    /* unset - instead of translate(0);
+       apparently this has fixed the jump at first page load */
+    transform: unset;
+  }
+}
+
+@keyframes spinLine {
+  0% {
+    --offset1: 0%;
+    --offset2: -25%;
+    --offset3: -50%;
+  }
+  35% {
+    --offset2: 35%;
+    --offset3: 0%;
+  }
+  50% {
+    --offset1: 80%;
+    --offset2: 75%;
+    --offset3: 65%;
+  }
+  100% {
+    --offset1: 150%;
+    --offset2: 125%;
+    --offset3: 100%;
+  }
+}

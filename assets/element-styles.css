@@ -1,0 +1,86 @@
+/* 
+ * ELEMENT STYLES 
+ */
+
+html {
+  overflow: hidden;
+  height: 100dvh;
+  width: 100dvw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+body {
+  position: relative;
+  font-family: var(--font-main);
+  color: var(--text-color);
+  letter-spacing: var(--xxs);
+  text-wrap: balance;
+  z-index: 0;
+  overflow: hidden !important;
+  /* Perspective settings */
+  perspective: 2000px;
+  perspective-origin: center center;
+  transform-style: preserve-3d;
+}
+
+nav {
+  overflow: hidden;
+}
+
+nav a {
+  text-transform: uppercase;
+  position: relative;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+h1 {
+  color: var(--text-color-dark);
+  font-size: 1.5rem;
+  font-weight: normal;
+  line-height: 1.1em;
+  text-transform: uppercase;
+}
+
+p {
+  line-height: 1.5em;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.6s var(--timing-function1);
+  pointer-events: auto;
+}
+
+a:visited {
+  color: var(--text-color);
+}
+
+a:hover,
+a:active {
+  color: var(--text-color-light);
+}
+
+a:visited:hover {
+  color: var(--text-color-light);
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+footer {
+  color: var(--text-color-dark);
+  font-style: italic;
+  font-size: 0.8rem;
+}

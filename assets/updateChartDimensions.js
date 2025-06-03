@@ -226,6 +226,10 @@ export class UpdateChartDimensions {
   }
 
   handleWheel(e) {
+    // ! EARLY RETURN WHILE BUILDING #############################
+    return;
+    // ! TODO: DELETE EARLY RETURN ###############################
+
     // Detect pinch gestures on trackpads (common on Mac)
     if (e.ctrlKey) {
       e.preventDefault();

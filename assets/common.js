@@ -21,8 +21,8 @@ window.addEventListener("load", () => {
     initCarousel();
 
     // Initialize card animations
-    const cards = document.querySelectorAll(".card-wrapper-2");
-    staggeredAnimation(cards, ["spinUp", "showUp"], 250);
+    const cardsW2 = document.querySelectorAll(".card-wrapper-2");
+    staggeredAnimation(cardsW2, ["spinUp", "showUp"], 250);
 
     // Remove chart images' fade in animation
     const chartImages = document.querySelectorAll(".chart-image");
@@ -30,6 +30,12 @@ window.addEventListener("load", () => {
     setTimeout(() => {
       removeAnimations(chartImages, ["slowFadeIn"]);
     }, 10100);
+
+    // Add continuous spin animation to the central card
+    const cards = document.querySelectorAll("#carousel .card-wrapper-1 .card");
+    setTimeout(() => {
+      addAnimations(cards, ["spin"]);
+    }, 12000);
 
     // logRem();
   });

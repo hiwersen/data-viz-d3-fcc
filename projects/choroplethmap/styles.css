@@ -1,5 +1,103 @@
-.county:hover {
-  --primary-color: #ff0037;
+/* ! Important to ensure variables are loaded before animations */
+@import url("../../assets/variables.css");
 
-  fill: var(--primary-color);
+.county:hover {
+  fill: var(--c1);
+}
+
+#tooltip {
+  width: 25rem;
+  height: 25rem;
+}
+
+#tooltip-title,
+#tooltip .current-county {
+  color: var(--text-color-light);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#data-container {
+  width: 100%;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#tooltip .data-max,
+#tooltip .data-min {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#tooltip .data {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+
+#tooltip .current-county .data-value {
+  font-size: 3.5rem;
+}
+
+#tooltip .data:not(.current-county) {
+  --b-max: 0.5px solid var(--shadow-c3);
+  --b-min: 0.5px solid var(--shadow-c2);
+  padding: 0.25rem 0;
+}
+
+#tooltip .data-max .data {
+  border-top: var(--b-max);
+  border-bottom: var(--b-max);
+}
+
+#tooltip .data-min .data {
+  border-top: var(--b-min);
+  border-bottom: var(--b-min);
+}
+
+#county-minimap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: -2;
+}
+
+#county-minimap svg {
+  width: 100%;
+  height: 100%;
+}
+
+#county-minimap path {
+  stroke-width: 0.5px;
+  fill: none;
+  stroke: white;
+  stroke-width: 0.1px;
+
+  /* ! TODO: import --mask3 from  variables.css */
+  /* Importing not working */
+  --mask3: conic-gradient(
+    from 45deg,
+    rgba(0, 0, 0, 0) var(--offset3),
+    rgb(0, 0, 0) var(--offset2),
+    rgba(0, 0, 0, 0) var(--offset1)
+  );
+
+  mask-image: var(--mask3);
+  -webkit-mask-image: var(--mask3);
+
+  /* Animation settings */
+  animation-name: spinLine;
+  animation-duration: var(--t10);
+  animation-delay: 0s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
 }

@@ -1,0 +1,124 @@
+:root {
+  /* Colors */
+  --text-color: #8d8d8d;
+  --text-color-light: #d2d2d2;
+  --text-color-dark: #474747;
+
+  --background-color: #0d0010;
+  --pixel-color: #200008dc;
+  --spotlight-color: #41296e90;
+  --ambient-light: #ff003739;
+
+  --c1: #ff0037;
+  --c2: #00ffb9;
+  --c3: #e100ff;
+
+  --g1: #620075;
+  --g2: #4a2b80;
+  --g3: #35518a;
+  --g4: #1b8097;
+  --g5: #00b0a4;
+
+  --g6: #eb77fb;
+  --g7: #d8fcf2;
+  --g8: #fb6082;
+
+  --g9: #9eeafb;
+
+  /* Shadows*/
+  --shadow-c1: #0000006e;
+  --shadow-c2: #ec77fb8c;
+  --shadow-c3: #9eeafb92;
+  --shadow-c4: #9eeafb27;
+
+  /* Gradients */
+  --gradient1: linear-gradient(to right, #eb77fb -50%, #00ffb9 200%);
+  --gradient2: linear-gradient(to bottom, #35518a, #fb6081a8 200%);
+
+  /* Masks */
+  --mask1: radial-gradient(circle at center, black 50%, transparent 150%);
+  --mask2: conic-gradient(
+    from 65deg,
+    rgba(0, 0, 0, 0) var(--offset3),
+    rgba(0, 0, 0, 1) var(--offset2),
+    rgba(0, 0, 0, 0) var(--offset1)
+  );
+
+  /* Fonts */
+  --font-main: monospace, "Courier New";
+  --font-secondary: "Courier New", monospace;
+
+  /* Spacing */
+  --xxs: 0.125rem;
+  --xs: 0.25rem;
+  --sm: 0.5rem;
+  --md: 1rem;
+  --lg: 2rem;
+  --xl: 4rem;
+  --xxl: 8rem;
+
+  /* Page */
+  --page-padding: var(--md);
+
+  /* Animation */
+  --t1: 125ms;
+  --t2: 250ms;
+  --t3: 500ms;
+  --t4: 750ms;
+  --t5: 1000ms;
+  --t6: 1250ms;
+  --t7: 1500ms;
+  --t8: 1750ms;
+  --t9: 2s;
+  --t10: 12s;
+  --t11: 24s;
+
+  --timing-function1: cubic-bezier(0.19, 1, 0.22, 1); /* Popup */
+  --timing-function2: cubic-bezier(0.34, 1.1, 0.64, 1); /* Dramatic pause */
+  --timing-function3: cubic-bezier(0.57, 0.4, 0.5, 1.4); /* Bounce */
+
+  /* Registered custom properties  */
+  --offset1: 0%;
+  --offset2: 0%;
+  --offset3: 0%;
+}
+
+/* 
+ * REGISTERED CUSTOM PROPERTIES
+ */
+
+@property --offset1 {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: false;
+}
+
+@property --offset2 {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: false;
+}
+
+@property --offset3 {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: false;
+}
+
+@property --normalizedX {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --alphaX-text {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --alphaX-bg {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}

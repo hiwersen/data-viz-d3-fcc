@@ -5,7 +5,7 @@
     transparent calc(100%)
   );
 
-  /* ! ATTENTION: when setting position to other values
+  /* ! ATTENTION: setting position to other values
     causes layout side effect as animation plays  */
   position: absolute;
   top: 0;
@@ -14,31 +14,17 @@
   width: 100%;
   padding-bottom: 0.5em;
 
-  /* min-width: calc(100% + 0.5em); */
-  /*padding-top: 0.2em;*/
-
   mask-image: var(--mask);
   -webkit-mask-image: var(--mask);
-
-  /*word-break: normal;  When scrambling: break-all */
-
-  /* ! DEBUGGING   
-  background-color: rgba(255, 255, 0, 0.305); */
 }
 
 .scramble-text,
 #info::before {
-  /* Creates perfect squares:
-   █ (Full Block) 
-   ░ ▒ ▓ (Shade Blocks)
-  */
-  font-family: "Courier New", monospace;
-
-  text-wrap: balance;
+  font-family: var(--font-secondary);
 
   /* manually adjusted for better visual effect */
   --char-space: 0.25em;
   --char-width: 1ch;
-  line-height: calc(var(--char-width) + var(--char-space) * 2);
+  line-height: calc(var(--char-width) + var(--char-space) * 2.5);
   /*letter-spacing: var(--char-space);*/
 }

@@ -1,0 +1,91 @@
+/*
+ * UTILITY CLASSES 
+ */
+
+.no-transitions * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Prevent any animations until ready */
+.preload * {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  visibility: hidden !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col-center-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col-center-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-col-start-between {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.flex-col-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.showUp {
+  animation-name: showUp;
+  animation-duration: 4s;
+  animation-delay: 2s;
+  animation-timing-function: var(--timing-function1);
+  animation-fill-mode: both;
+}
+
+.spinUp {
+  animation-name: spinUp, showUp;
+}
+
+.fastFadeIn {
+  animation-name: showUp;
+  animation-duration: 0.75s;
+  animation-delay: 0.25s;
+  animation-timing-function: var(--timing-function1);
+  animation-fill-mode: both;
+}
+
+.slowFadeIn {
+  animation-name: showUp;
+  animation-duration: 0.75s;
+  animation-delay: 9.35s;
+  animation-timing-function: var(--timing-function1);
+  animation-fill-mode: both;
+}
+
+.fadeOut {
+  animation-name: showUp;
+  animation-direction: reverse;
+  animation-duration: 0.75s;
+  animation-delay: 9.35s;
+  animation-timing-function: var(--timing-function1);
+  animation-fill-mode: both;
+}

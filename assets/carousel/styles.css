@@ -67,13 +67,6 @@
   overscroll-behavior: contain;
   overflow: visible;
 
-  /* Line effect settings - animation  */
-  animation-name: spinLine;
-  animation-duration: 10s; /* Manually adjusted for synchronization */
-  animation-delay: var(--t7);
-  animation-timing-function: var(--timing-function2);
-  animation-fill-mode: both;
-
   /* ! These masks don't work when defined in the .card */
   --mask-line: conic-gradient(
     rgba(0, 0, 0, 0.3) var(--offset3),
@@ -87,6 +80,16 @@
     rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
     transparent calc(var(--offset1) + 2%)
   );
+
+  /* Animation setup */
+  animation-name: spinLine;
+  animation-fill-mode: both;
+  animation-timing-function: var(--timing-function2);
+  animation-duration: 10s;
+  animation-delay: var(--t7);
+
+  /* ! It is impossible to set a second animation at the container level 
+   the infinite animation is set at the .card level, despite being async */
 }
 
 /* Carousel animation applied to wrapper 1 */
@@ -105,6 +108,11 @@
 }
 
 #carousel .card {
+  /* Set by JS @setAlphaX - carousel animation
+   value between 0 and 1 */
+  --alphaX: 1;
+  transition: --alphaX var(--t4) ease-in-out;
+
   /* Frame effect settings */
   /* Line */
   --line-thin: 0.125rem;
@@ -194,44 +202,28 @@
   -webkit-mask-image: var(--mask), var(--mask-glow);
 }
 
-.spin {
-  --mask-line: conic-gradient(
-    from 45deg,
-    rgba(0, 0, 0, 0.2) var(--offset3),
-    rgba(0, 0, 0, 0.45) var(--offset2),
-    rgba(0, 0, 0, 0.2) var(--offset1)
-  );
-  --mask-glow: conic-gradient(
-    from 45deg,
-    transparent var(--offset3),
-    rgba(0, 0, 0, 0.2) var(--offset2),
-    rgba(0, 0, 0, 0.45) var(--offset1),
-    rgba(0, 0, 0, 0.2) calc(var(--offset1) + 1%),
-    transparent calc(var(--offset1) + 2%)
-  );
-
-  /* Override animation properties only for this card */
-  animation-name: spinLine;
-  animation-duration: var(--t11);
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-#carousel .card-wrapper-1:nth-child(4) .spin {
+#cards-container.infiniteSpin .card {
   --mask-line: conic-gradient(
     from 45deg,
     rgba(0, 0, 0, 0.3) var(--offset3),
-    rgba(0, 0, 0, 1) var(--offset2),
+    rgba(0, 0, 0, var(--alphaX)) var(--offset2),
     rgba(0, 0, 0, 0.3) var(--offset1)
   );
   --mask-glow: conic-gradient(
     from 45deg,
     transparent var(--offset3),
     rgba(0, 0, 0, 0.3) var(--offset2),
-    rgba(0, 0, 0, 0.85) var(--offset1),
+    rgba(0, 0, 0, calc(0.85 * var(--alphaX))) var(--offset1),
     rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
     transparent calc(var(--offset1) + 2%)
   );
+
+  animation-name: spinLine;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  animation-duration: var(--t11);
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
 }
 
 #carousel .card .chart-label {
@@ -245,6 +237,10 @@
 }
 
 #carousel .card .chart-label.gradient-text {
+  --alphaX: inherit;
+  /* ! transition set to inherit doesn't work */
+  transition: --alphaX var(--t4) ease-in-out;
+
   /* Fallback color for unsupported browsers */
   color: var(--text-color-light);
 }
@@ -252,12 +248,6 @@
 /* Only apply gradient text if background-clip is supported */
 @supports (-webkit-background-clip: text) or (background-clip: text) {
   #carousel .card .chart-label.gradient-text {
-    /* Set through JS @setAlphaX - carousel animation
-   value between 0 and 1 */
-    --alphaX-text: 0;
-
-    transition: --alphaX-text 0.75s ease-out;
-
     /* Webkit prefix (required for most browsers) */
     -webkit-background-clip: text;
     background-clip: text;
@@ -268,25 +258,21 @@
 
     background-image: linear-gradient(
         to right,
-        rgba(236, 119, 251, var(--alphaX-text)) -50%,
-        rgba(0, 255, 187, var(--alphaX-text)) 250%
+        rgba(236, 119, 251, var(--alphaX)) -50%,
+        rgba(0, 255, 187, var(--alphaX)) 250%
       ),
       linear-gradient(
         to right,
-        rgba(74, 43, 128, calc(1 - var(--alphaX-text))) -50%,
-        rgba(251, 96, 129, calc(1 - var(--alphaX-text))) 250%
+        rgba(74, 43, 128, calc(1 - var(--alphaX))) -50%,
+        rgba(251, 96, 129, calc(1 - var(--alphaX))) 250%
       );
-
-    /* transition: --alphaX 10s ease-out; */
   }
 }
 
 #carousel .chart-image {
-  /* Set by JS @setAlphaX - carousel animation
-   value between 0 and 1 */
-  --alphaX-bg: 0;
-
-  transition: --alphaX-bg 0.75s ease-in-out;
+  --alphaX: inherit;
+  /* ! transition set to inherit doesn't work */
+  transition: --alphaX var(--t4) ease-in-out;
 
   position: relative;
   width: calc(100% - 2px); /* ! SET TO DYNAMIC VALUES */
@@ -312,15 +298,19 @@
 
   background-image: linear-gradient(
       to bottom,
-      rgba(216, 252, 242, calc(0.9 * var(--alphaX-bg))) -50%,
+      rgba(216, 252, 242, calc(0.9 * var(--alphaX))) -50%,
       transparent 50%
     ),
     linear-gradient(
       to bottom,
-      rgba(235, 119, 251, calc(0.8 * calc(1 - var(--alphaX-bg)))) -50%,
+      rgba(235, 119, 251, calc(0.8 * calc(1 - var(--alphaX)))) -50%,
       transparent 50%
     ),
-    linear-gradient(to top, black -150%, transparent 100%),
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, calc(1 - var(--alphaX))) -100%,
+      transparent 100%
+    ),
     linear-gradient(to top, #fb6081c7 -150%, transparent 100%);
 
   background-color: rgb(53, 81, 138, 0.8);
@@ -476,9 +466,9 @@
 
 @keyframes spinLine {
   0% {
-    --offset1: -2%;
-    --offset2: -7%;
-    --offset3: -12%;
+    --offset1: -5%;
+    --offset2: -10%;
+    --offset3: -15%;
   }
   35% {
     --offset3: 0%;

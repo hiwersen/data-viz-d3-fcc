@@ -31,11 +31,18 @@ window.addEventListener("load", () => {
       removeAnimations(chartImages, ["slowFadeIn"]);
     }, 10100);
 
-    // Add continuous spin animation to the central card
-    const cards = document.querySelectorAll("#carousel .card-wrapper-1 .card");
+    // Add infiniteSpin to #cardsContainer after first spin
+    const cardsContainer = document.querySelector("#cards-container");
     setTimeout(() => {
-      addAnimations(cards, ["spin"]);
-    }, 12000);
+      // Stop current animation completely
+      cardsContainer.style.animation = "none";
+
+      // Force reflow to ensure animation stops
+      cardsContainer.offsetHeight;
+
+      // Start new infinite animation
+      cardsContainer.classList.add("infiniteSpin");
+    }, 10000);
 
     // logRem();
   });

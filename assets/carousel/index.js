@@ -276,46 +276,25 @@ export function initCarousel() {
   }
 
   function setAlphaX() {
-    const cards = [...cardsContainer.children];
+    const cardsW1 = [...cardsContainer.children];
 
-    cards.forEach((card, i) => {
+    cardsW1.forEach((cardW1, i) => {
       const x = normalizeX(i);
       let alphaX = 0;
 
       const fadeStartDistance = 0.25;
       const fadeEndDistance = 1.0;
 
-      /*
-      if (x <= fadeStartDistance) {
-        alphaX = 1;
-      } else if (x >= fadeEndDistance) {
-        alphaX = 0;
-      } else {
-        const fadeProgress =
-          (x - fadeStartDistance) / (fadeEndDistance - fadeStartDistance);
-
-        const easedProgress = 1 - Math.pow(1 - fadeProgress, 7.5);
-        alphaX = 1 - easedProgress;
-      }
-        */
-
       const fadeProgress =
         (x - fadeStartDistance) / (fadeEndDistance - fadeStartDistance);
 
       const easedProgress = 1 - Math.pow(1 - fadeProgress, 7.5);
-      alphaX = 1 - easedProgress;
+      alphaX = Math.min(1 - easedProgress, 1);
 
-      card
-        .querySelector(".chart-label")
-        .style.setProperty("--alphaX-text", alphaX);
+      console.log(alphaX);
 
-      card
-        .querySelector(".chart-image")
-        .style.setProperty("--alphaX-bg", alphaX);
-
-      //const blur = `${4 * (1 - alphaX)}px`;
-
-      // card.querySelector(".card").style.setProperty("--blur", blur);
+      const card = cardW1.querySelector(".card");
+      card?.style.setProperty("--alphaX", alphaX);
     });
   }
 

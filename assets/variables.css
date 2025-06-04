@@ -90,19 +90,19 @@
 @property --offset1 {
   syntax: "<percentage>";
   initial-value: 0%;
-  inherits: false;
+  inherits: true;
 }
 
 @property --offset2 {
   syntax: "<percentage>";
   initial-value: 0%;
-  inherits: false;
+  inherits: true;
 }
 
 @property --offset3 {
   syntax: "<percentage>";
   initial-value: 0%;
-  inherits: false;
+  inherits: true;
 }
 
 @property --normalizedX {
@@ -111,13 +111,7 @@
   inherits: false;
 }
 
-@property --alphaX-text {
-  syntax: "<number>";
-  initial-value: 0;
-  inherits: false;
-}
-
-@property --alphaX-bg {
+@property --alphaX {
   syntax: "<number>";
   initial-value: 0;
   inherits: false;

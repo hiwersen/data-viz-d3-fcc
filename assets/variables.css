@@ -114,5 +114,5 @@
 @property --alphaX {
   syntax: "<number>";
   initial-value: 0;
-  inherits: false;
+  inherits: true;
 }

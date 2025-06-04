@@ -42,7 +42,7 @@ window.addEventListener("load", () => {
 
       // Start new infinite animation
       cardsContainer.classList.add("infiniteSpin");
-    }, 10000);
+    }, 10000); // timing manually adjusted
 
     // logRem();
   });

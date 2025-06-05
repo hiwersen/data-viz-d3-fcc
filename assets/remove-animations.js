@@ -3,5 +3,5 @@ export function removeAnimations(elements, animations) {
     el.classList.remove(...animations);
   });
 
-  // console.log(elements);
+  console.log(elements);
 }

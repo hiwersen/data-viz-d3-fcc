@@ -81,12 +81,13 @@
     transparent calc(var(--offset1) + 2%)
   );
 
-  /* Animation setup */
+  /* ! Animation setup - REACTIVATE
   animation-name: spinLine;
   animation-fill-mode: both;
   animation-timing-function: var(--timing-function2);
   animation-duration: 10s;
   animation-delay: var(--t7);
+  */
 
   /* It is almost impossible to set a second animation at the container level 
    - Fix: infinite animation is set at the .card level, despite being async */
@@ -290,7 +291,7 @@
   align-items: center;
 
   /* Color channels: a reference for gradients
-
+  
   --g3: rgb(53, 81, 138);
   --g6: rgb(235, 119, 251);
   --g7: rgb(216, 252, 242);
@@ -317,6 +318,9 @@
 
   transform-style: preserve-3d;
   perspective: var(--card-size);
+
+  /* ! BUILDING */
+  visibility: hidden;
 }
 
 /* Chart background gradient reflex on floor */
@@ -378,6 +382,64 @@
   -webkit-mask: var(--mask);
   filter: blur(8px);
   z-index: -2;
+}
+
+#carousel .chart-image-glow-wrapper {
+  position: absolute;
+  content: "";
+  inset: 0;
+  visibility: visible;
+  overflow: visible;
+}
+
+#carousel .chart-image-glow-wrapper::before,
+#carousel .chart-image-glow-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+
+  /* Revert image back to container's size */
+  --wrapper-size: calc(100% / 1.6);
+  --padding: 1.25rem;
+  --image-size: calc(var(--wrapper-size) - 2 * var(--padding));
+
+  background-image: url("../../assets/images/choropleth.png");
+  background-size: var(--image-size);
+  background-repeat: no-repeat;
+  background-position: center;
+
+  /* Create an inverted mask - show everything EXCEPT the image area */
+  --image: linear-gradient(black, black),
+    url("../../assets/images/choropleth.png");
+  --size: 100% 100%, var(--image-size);
+  --repeat: no-repeat, no-repeat;
+  --position: center, center;
+
+  mask-image: var(--image);
+  mask-size: var(--size);
+  mask-repeat: var(--repeat);
+  mask-position: var(--position);
+  mask-composite: subtract; /* Cut out the image shape */
+
+  /* Webkit prefixes */
+  -webkit-mask-image: var(--image);
+  -webkit-mask-size: var(--size);
+  -webkit-mask-repeat: var(--repeat);
+  -webkit-mask-position: var(--position);
+  -webkit-mask-composite: source-out; /* Webkit equivalent of subtract */
+}
+
+#carousel .chart-image-glow-wrapper::before {
+  filter: saturate(2) brightness(3) blur(12px);
+
+  z-index: -1;
+  opacity: 1;
+}
+
+#carousel .chart-image-glow-wrapper::after {
+  filter: saturate(2) brightness(3) blur(50px);
+  z-index: -2;
+  opacity: 0.5;
 }
 
 @keyframes spinLine {

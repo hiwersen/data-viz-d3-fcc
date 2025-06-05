@@ -100,7 +100,7 @@ export function initCarousel() {
 
     // Translate cards to the end position with transition enabled for smooth effect
     [...cardsContainer.children].forEach((card) => {
-      card.style.transition = `all ${transitionDurationSnap}ms cubic-bezier(0.34, 1.1, 0.64, 1)`;
+      card.style.transition = `all ${transitionDurationSnap}ms ease-in-out`;
     });
 
     translate();

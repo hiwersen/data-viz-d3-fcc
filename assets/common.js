@@ -15,20 +15,22 @@ window.addEventListener("load", () => {
 
     // Initialize scramble text animation
     const scrambleText = document.querySelector(".scramble-text");
-    new TextScramble(scrambleText).start();
+    // new TextScramble(scrambleText).start();
 
     // Initialize carousel animation
     initCarousel();
 
     // Initialize card animations
     const cardsW2 = document.querySelectorAll(".card-wrapper-2");
-    staggeredAnimation(cardsW2, ["spinUp", "showUp"], 250);
+    // staggeredAnimation(cardsW2, ["spinUp", "showUp"], 250);
 
     // Remove chart images' fade in animation
-    const chartImages = document.querySelectorAll(".chart-image");
+    const chartImageWrappers = document.querySelectorAll(
+      ".chart-image-wrapper"
+    );
 
     setTimeout(() => {
-      removeAnimations(chartImages, ["slowFadeIn"]);
+      removeAnimations(chartImageWrappers, ["slowFadeIn"]);
     }, 10100);
 
     // Add infiniteSpin to #cardsContainer after first spin
@@ -41,7 +43,7 @@ window.addEventListener("load", () => {
       cardsContainer.offsetHeight;
 
       // Start new infinite animation
-      cardsContainer.classList.add("infiniteSpin");
+      // cardsContainer.classList.add("infiniteSpin");
     }, 10000); // timing manually adjusted
 
     // logRem();

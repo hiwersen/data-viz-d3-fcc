@@ -44,8 +44,8 @@ body::before {
   animation-fill-mode: both, forwards, forwards;
   animation-iteration-count: 1, 1, infinite;
 
-  /* !DEBUGGING 
-    display: none; */
+  /* !DEBUGGING */
+  display: none;
 }
 
 /* Pixel effect */

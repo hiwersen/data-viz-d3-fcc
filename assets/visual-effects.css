@@ -38,14 +38,14 @@ body::before {
   /* Animation */
   opacity: 0;
   animation-name: lightUp, dim, lightCycle;
-  animation-duration: 4s, 2s, 24s;
-  animation-delay: 1.5s, 8s, 12s;
+  animation-duration: var(--t9), var(--t6), var(--t11);
+  animation-delay: 10s, 12.4s, 13.7s;
   animation-timing-function: var(--timing-function2);
   animation-fill-mode: both, forwards, forwards;
   animation-iteration-count: 1, 1, infinite;
 
-  /* !DEBUGGING */
-  display: none;
+  /* !DEBUGGING 
+  display: none; */
 }
 
 /* Pixel effect */

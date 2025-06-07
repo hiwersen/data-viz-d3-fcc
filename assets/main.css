@@ -28,13 +28,13 @@
 
 #page-container.grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: auto repeat(3, 1fr);
   grid-template-rows: auto auto 1fr auto;
   grid-template-areas:
-    "title title . ."
+    ". title . ."
     "navbar . . info"
     "carousel carousel carousel carousel"
-    "footer footer footer footer";
+    ". footer footer footer";
   gap: var(--xs);
   height: 100%;
 }
@@ -146,6 +146,7 @@
 
 #navbar {
   width: 100%;
+  padding-right: 1rem;
 }
 
 #navbar ul {
@@ -196,6 +197,12 @@
 #title-container,
 #navbar {
   letter-spacing: var(--xs);
+}
+
+#title {
+  font-size: 2rem;
+  font-weight: bolder;
+  letter-spacing: 0.5rem;
 }
 
 /* INFO STYLES @ /assets/text-scramble/styles.css */

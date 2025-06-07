@@ -54,9 +54,9 @@
   </head>
   <body id="gallery-page" class="preload">
     <div id="ambient-light"></div>
-    <div id="page-container" class="grid">
+    <div id="page-container" class="grid fastFadeIn">
       <!--<div id="page-container" class="grid fastFadeIn">-->
-      <nav id="navbar">
+      <nav id="navbar" class="slowFadeIn">
         <!--<nav id="navbar" class="slowFadeIn">-->
         <ul class="flex-col-start-between">
           <li id="bar-chart-link" class="nav-link">
@@ -89,7 +89,7 @@
           </li>
         </ul>
       </nav>
-      <section id="title-container" class="flex-col-start-between">
+      <section id="title-container" class="flex-col-start-between slowFadeIn">
         <!--<section id="title-container" class="flex-col-start-between slowFadeIn">-->
         <h1 id="title" data-text="Data Visualisation">Data Visualisation</h1>
       </section>
@@ -113,7 +113,7 @@
         </p>
       </section>
       <section id="carousel" class="flex-center-center">
-        <div id="cards-container" class="flex-center-center">
+        <div id="cards-container" class="flex-center-center initialSpin">
           <div class="card-wrapper-1">
             <div class="card-wrapper-2">
               <div id="bar-chart" class="card">
@@ -137,30 +137,39 @@
               <div id="choropleth-map" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">choropleth map</span>
+                <div class="chart-image-container">
+                  <div
+                    class="chart-image-wrapper flex-col-center-center slowFadeIn"
+                  >
+                    <!--<div
+                    class="chart-image-wrapper flex-col-center-center slowFadeIn"
+                  >-->
+                    <img
+                      class="chart-image"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-background"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-floor"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                  </div>
 
-                <div class="chart-image-wrapper flex-col-center-center">
+                  <div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>
                   <!--<div
-                  class="chart-image-wrapper flex-col-center-center slowFadeIn"
-                >-->
-                  <img
-                    class="chart-image"
-                    id="choropleth-map-image"
-                    src="./assets/images/choropleth.png"
-                    alt="USA choropleth map image dark blue and purple image"
-                  />
-                  <img
-                    class="chart-image-reflex-background"
-                    id="choropleth-map-image"
-                    src="./assets/images/choropleth.png"
-                    alt="USA choropleth map image dark blue and purple image"
-                  />
-                  <img
-                    class="chart-image-reflex-floor"
-                    id="choropleth-map-image"
-                    src="./assets/images/choropleth.png"
-                    alt="USA choropleth map image dark blue and purple image"
-                  />
-                  <div class="chart-image-glow-wrapper"></div>
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>-->
                 </div>
               </div>
             </div>

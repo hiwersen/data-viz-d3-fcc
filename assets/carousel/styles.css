@@ -66,8 +66,9 @@
 
   overscroll-behavior: contain;
   overflow: visible;
+}
 
-  /* ! These masks don't work when defined in the .card */
+#cards-container.initialSpin {
   --mask-line: conic-gradient(
     rgba(0, 0, 0, 0.3) var(--offset3),
     rgba(0, 0, 0, 1) var(--offset2),
@@ -75,22 +76,44 @@
   );
   --mask-glow: conic-gradient(
     transparent var(--offset3),
-    rgba(0, 0, 0, 0.3) var(--offset2),
-    rgba(0, 0, 0, 0.75) var(--offset1),
-    rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
-    transparent calc(var(--offset1) + 2%)
+    rgba(0, 0, 0, 0.3) var(--offset3),
+    rgba(0, 0, 0, 0.75) var(--offset2),
+    rgba(0, 0, 0, 0.3) var(--offset1),
+    transparent var(--offset1)
   );
 
-  /* ! Animation setup - REACTIVATE
   animation-name: spinLine;
   animation-fill-mode: both;
   animation-timing-function: var(--timing-function2);
   animation-duration: 10s;
   animation-delay: var(--t7);
-  */
+}
 
-  /* It is almost impossible to set a second animation at the container level 
-   - Fix: infinite animation is set at the .card level, despite being async */
+#cards-container.infiniteSpin .card {
+  /* Ideally it should be set at the container level 
+   for synchronization effect but it's almost impossible */
+
+  --mask-line: conic-gradient(
+    from 45deg,
+    rgba(0, 0, 0, 0.3) var(--offset3),
+    rgba(0, 0, 0, var(--alphaX)) var(--offset2),
+    rgba(0, 0, 0, 0.3) var(--offset1)
+  );
+  --mask-glow: conic-gradient(
+    from 45deg,
+    transparent var(--offset3),
+    rgba(0, 0, 0, 0.3) var(--offset2),
+    rgba(0, 0, 0, calc(0.85 * var(--alphaX))) var(--offset1),
+    rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
+    transparent calc(var(--offset1) + 2%)
+  );
+
+  animation-name: spinLine;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  animation-duration: var(--t11);
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
 }
 
 /* Carousel animation applied to wrapper 1 */
@@ -110,9 +133,16 @@
 
 #carousel .card {
   /* Set by JS @setAlphaX - carousel animation
-   value between 0 and 1 */
+   values between 0 and 1 */
   --alphaX: 1;
-  transition: --alphaX var(--t4) ease-in-out;
+
+  /* Set by JS @setHemisphere - carousel animation
+   value: -1 = left, 0 = center and 1 = right */
+  --hemisphere: 0;
+
+  transition:
+    --alphaX var(--t4) ease-in-out,
+    --hemisphere var(--t4) ease-in-out;
 
   /* Frame effect settings */
   /* Line */
@@ -203,32 +233,6 @@
   -webkit-mask-image: var(--mask), var(--mask-glow);
 }
 
-#cards-container.infiniteSpin .card {
-  --mask-line: conic-gradient(
-    from 45deg,
-    rgba(0, 0, 0, 0.3) var(--offset3),
-    rgba(0, 0, 0, var(--alphaX)) var(--offset2),
-    rgba(0, 0, 0, 0.3) var(--offset1)
-  );
-  --mask-glow: conic-gradient(
-    from 45deg,
-    transparent var(--offset3),
-    rgba(0, 0, 0, 0.3) var(--offset2),
-    rgba(0, 0, 0, calc(0.85 * var(--alphaX))) var(--offset1),
-    rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
-    transparent calc(var(--offset1) + 2%)
-  );
-
-  /* Ideally it should be set at the container level 
-   - for synchronization effect */
-  animation-name: spinLine;
-  animation-fill-mode: both;
-  animation-timing-function: linear;
-  animation-duration: var(--t11);
-  animation-delay: 0s;
-  animation-iteration-count: infinite;
-}
-
 #carousel .card .chart-label {
   font-size: 1rem;
   letter-spacing: 0.5em;
@@ -271,25 +275,56 @@
   }
 }
 
-/* Chart background gradient */
-#carousel .chart-image-wrapper {
-  /* transition set to inherit doesn't work */
-  transition: --alphaX var(--t4) ease-in-out;
+/* 
+ * CHART IMAGES 
+*/
 
-  position: relative;
+/* Image container */
+#carousel .chart-image-container {
+  position: relative; /* ! Absolute position doesn't respect padding */
   width: calc(100% - 2px); /* ! SET TO DYNAMIC VALUES */
   height: calc(100% - 2px); /* ! SET TO DYNAMIC VALUES */
   top: 1px; /* ! SET TO DYNAMIC VALUES */
   left: 1px; /* ! SET TO DYNAMIC VALUES */
 
-  padding: var(--sm);
+  /* ! DEBUGGING  
+  background-color: red; */
+}
 
-  /* Stack the main image and reflection */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* Image common settings: */
+#carousel .chart-image-wrapper,
+#carousel .chart-image-wrapper::before,
+#carousel .chart-image-glow,
+#carousel .chart-image,
+#carousel .chart-image-reflex-background,
+#carousel .chart-image-reflex-floor,
+#carousel .chart-image-glow::before,
+#carousel .chart-image-glow::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+  overflow: visible;
+}
 
+#carousel .chart-image,
+#carousel .chart-image-reflex-background,
+#carousel .chart-image-reflex-floor,
+#carousel .chart-image-glow::before,
+#carousel .chart-image-glow::after {
+  /* Padding effect */
+  --padding: var(--sm);
+  --size: calc(100% - var(--padding) * 2);
+  width: var(--size);
+  height: var(--size);
+
+  /* Center elements */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Chart background gradient */
+#carousel .chart-image-wrapper {
   /* Color channels: a reference for gradients
   
   --g3: rgb(53, 81, 138);
@@ -301,33 +336,35 @@
   background-image: linear-gradient(
       to bottom,
       rgba(216, 252, 242, calc(0.9 * var(--alphaX))) -50%,
-      transparent 50%
+      transparent 75%
     ),
     linear-gradient(
       to bottom,
       rgba(235, 119, 251, calc(0.8 * calc(1 - var(--alphaX)))) -50%,
-      transparent 50%
+      transparent 75%
     ),
     linear-gradient(
       to top,
       rgba(0, 0, 0, calc(1 - var(--alphaX))) -100%,
-      transparent 100%
+      transparent 50%
     ),
-    linear-gradient(to top, rgba(251, 96, 130, 0.78) -150%, transparent 100%);
-  background-color: rgb(53, 81, 138, 0.8);
+    linear-gradient(to top, rgba(251, 96, 130, 1) -150%, transparent 50%);
+
+  background-color: rgb(53, 81, 138, 0.4);
 
   transform-style: preserve-3d;
   perspective: var(--card-size);
 
-  /* ! BUILDING */
-  visibility: hidden;
+  /* transition set to inherit doesn't work */
+  transition: --alphaX var(--t4) ease-in-out;
+
+  /* ! BUILDING   
+  background-color: yellow; 
+  display: none; */
 }
 
 /* Chart background gradient reflex on floor */
 #carousel .chart-image-wrapper::before {
-  position: absolute;
-  content: "";
-  inset: 0;
   transform: translateY(101%) scaleY(-1);
   background-color: inherit;
   background-image: inherit;
@@ -337,45 +374,40 @@
   -webkit-mask: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent 80%);
 }
 
-/* Chart image
-/* Chart image - reflex on chart background gradient */
-/* Chart image - reflex on floor */
-/* Common settings, fade and blur effect effects */
-#carousel .chart-image,
-#carousel .chart-image-reflex-background,
-#carousel .chart-image-reflex-floor {
-  position: absolute;
-  content: "";
-  inset: 0;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  padding: 1.25rem;
-  transform: translate(-50%, -50%);
-}
-
+/* Translate image reflection on background 
+  based on alphaX and hemisphere */
 #carousel .chart-image-reflex-background {
-  --cut: 2%;
-  transform: translate(calc((50% - var(--cut)) * -1), -40%);
+  --x: calc(4% * (1 - var(--alphaX)) * var(--hemisphere));
+  --absX: calc(100% + (4% * (1 - var(--alphaX))));
+
+  transform: translate(calc((50% - var(--x)) * -1), -45%)
+    scale(var(--absX), 1.1);
+
   --mask: linear-gradient(
     to left,
     transparent,
-    transparent var(--cut),
-    rgba(0, 0, 0, 0.6) var(--cut),
-    rgba(0, 0, 0, 0.6)
+    transparent calc(1% + var(--x) - var(--padding)),
+    rgba(0, 0, 0, 0.6) calc(1% + var(--x) - var(--padding)),
+    rgba(0, 0, 0, 0.6) calc(99% + var(--x) + var(--padding)),
+    transparent calc(99% + var(--x) + var(--padding)),
+    transparent 100%
   );
+
   mask: var(--mask);
   -webkit-mask: var(--mask);
-  filter: blur(6px);
+  filter: blur(6px) grayscale(75%);
   z-index: -1;
+
+  /* !DEBUGGING 
+  background-color: yellow; 
+  display: none; */
 }
 
 #carousel .chart-image-reflex-floor {
   transform: translate(-50%, 51%) scaleY(-1);
   --mask: linear-gradient(
     to top,
-    rgba(0, 0, 0, max(var(--alphaX), 0.35)),
+    rgba(0, 0, 0, max(var(--alphaX), 0.15)),
     transparent
   );
   mask: var(--mask);
@@ -384,81 +416,127 @@
   z-index: -2;
 }
 
-#carousel .chart-image-glow-wrapper {
-  position: absolute;
-  content: "";
-  inset: 0;
-  visibility: visible;
-  overflow: visible;
-}
+#carousel .chart-image-glow::before,
+#carousel .chart-image-glow::after {
+  width: 150%;
+  height: 150%;
 
-#carousel .chart-image-glow-wrapper::before,
-#carousel .chart-image-glow-wrapper::after {
-  content: "";
-  position: absolute;
-  inset: -30%;
+  /* Scaled down the bg image to element's initial size
+    - account for padding */
+  --original-size: calc((100% / 1.5) - (var(--padding) * 2));
 
-  /* Revert image back to container's size */
-  --wrapper-size: calc(100% / 1.6);
-  --padding: 1.25rem;
-  --image-size: calc(var(--wrapper-size) - 2 * var(--padding));
+  /* Stretch the image vertically */
+  --stretched-size: var(--original-position);
 
   background-image: url("../../assets/images/choropleth.png");
-  background-size: var(--image-size);
+  background-size: var(--original-size) calc(var(--original-size) * 0.67); /* account for ar */
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center calc(50% - 4%); /* Reposition vertically */
 
-  /* Create an inverted mask - show everything EXCEPT the image area */
-  --image: linear-gradient(black, black),
-    url("../../assets/images/choropleth.png");
-  --size: 100% 100%, var(--image-size);
-  --repeat: no-repeat, no-repeat;
-  --position: center, center;
+  /*
+    Create an inverted mask - show everything EXCEPT the image area */
+  --gradient: conic-gradient(
+    transparent,
+    rgba(0, 0, 0, 0.25) var(--offset4),
+    rgba(0, 0, 0, 0.25) var(--offset3),
+    rgba(0, 0, 0, 1) var(--offset2),
+    rgba(0, 0, 0, 0.25) var(--offset1),
+    transparent var(--offset1)
+  );
 
-  mask-image: var(--image);
-  mask-size: var(--size);
-  mask-repeat: var(--repeat);
-  mask-position: var(--position);
+  /* ! TODO: BUILDING - DELETE !
+  --gradient: conic-gradient(
+    transparent,
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 1) 90%,
+    rgba(0, 0, 0, 0.25) 100%,
+    transparent
+  );
+  */
+
+  --m-image: var(--gradient), url("../../assets/images/choropleth.png");
+  --m-size: 100% 100%, var(--original-size);
+  --m-repeat: no-repeat, no-repeat;
+  --m-position: center, center;
+
+  mask-image: var(--m-image);
+  mask-size: var(--m-size);
+  mask-repeat: var(--m-repeat);
+  mask-position: var(--m-position);
   mask-composite: subtract; /* Cut out the image shape */
 
   /* Webkit prefixes */
-  -webkit-mask-image: var(--image);
-  -webkit-mask-size: var(--size);
-  -webkit-mask-repeat: var(--repeat);
-  -webkit-mask-position: var(--position);
+  -webkit-mask-image: var(--m-image);
+  -webkit-mask-size: var(--m-size);
+  -webkit-mask-repeat: var(--m-repeat);
+  -webkit-mask-position: var(--m-position);
   -webkit-mask-composite: source-out; /* Webkit equivalent of subtract */
+
+  /* ! DEBUGGING 
+  display: none; */
 }
 
-#carousel .chart-image-glow-wrapper::before {
+#carousel .chart-image-glow::before {
   filter: saturate(2) brightness(3) blur(12px);
-
   z-index: -1;
-  opacity: 1;
+
+  /* ! BUILDING
+  display: none; */
 }
 
-#carousel .chart-image-glow-wrapper::after {
+#carousel .chart-image-glow::after {
   filter: saturate(2) brightness(3) blur(50px);
   z-index: -2;
-  opacity: 0.5;
+
+  /* ! BUILDING 
+  display: none; */
+}
+
+/* Fade glow effect after initial spin */
+#cards-container.infiniteSpin .chart-image-glow {
+  /* Transition didn't work in this effect */
+  /* A separate animation was needed */
+  animation: fadeOutGlow var(--t7) var(--timing-function1) forwards;
 }
 
 @keyframes spinLine {
   0% {
-    --offset1: -5%;
-    --offset2: -10%;
-    --offset3: -15%;
+    --offset1: 0%;
+    --offset2: 0%;
+    --offset3: 0%;
+    --offset4: 0%;
   }
   35% {
-    --offset3: 0%;
+    --offset3: 10%;
   }
   50% {
     --offset1: 80%;
     --offset2: 75%;
     --offset3: 65%;
+    --offset4: 35%;
   }
   100% {
-    --offset1: 102%;
-    --offset2: 102%;
-    --offset3: 102%;
+    --offset1: 100%;
+    --offset2: 100%;
+    --offset3: 100%;
+    --offset4: 0%;
+  }
+}
+
+@keyframes fadeOutGlow {
+  0% {
+    opacity: 1;
+    --offset1: 100%;
+    --offset2: 100%;
+    --offset3: 100%;
+    --offset4: 0%;
+  }
+  100% {
+    opacity: 0;
+    --offset1: 100%;
+    --offset2: 100%;
+    --offset3: 100%;
+    --offset4: 0%;
   }
 }

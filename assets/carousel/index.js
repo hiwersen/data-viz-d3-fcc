@@ -291,10 +291,29 @@ export function initCarousel() {
       const easedProgress = 1 - Math.pow(1 - fadeProgress, 7.5);
       alphaX = Math.min(1 - easedProgress, 1);
 
-      console.log(alphaX);
-
       const card = cardW1.querySelector(".card");
       card?.style.setProperty("--alphaX", alphaX);
+    });
+
+    setHemisphere();
+  }
+
+  function setHemisphere() {
+    const cardsW1 = [...cardsContainer.children];
+
+    cardsW1.forEach((cardW1, i) => {
+      let hemisphere = 0;
+
+      const carouselCenter = getCarouselCenter();
+      // Card's center to the carousel's left
+      const cardCenter = i * (cardWidth + gap) + cardWidth / 2;
+      const distance = cardCenter + translateX - carouselCenter;
+
+      if (distance < 0) hemisphere = -1;
+      if (distance > 0) hemisphere = 1;
+
+      const card = cardW1.querySelector(".card");
+      card?.style.setProperty("--hemisphere", hemisphere);
     });
   }
 

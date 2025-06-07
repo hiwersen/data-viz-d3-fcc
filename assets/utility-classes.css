@@ -76,7 +76,7 @@
 .slowFadeIn {
   animation-name: showUp;
   animation-duration: 0.75s;
-  animation-delay: 9.35s;
+  animation-delay: 10.35s;
   animation-timing-function: var(--timing-function1);
   animation-fill-mode: both;
 }

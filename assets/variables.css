@@ -2,7 +2,7 @@
   /* Colors */
   --text-color: #ffffff9e;
   --text-color-light: #9eeafb;
-  --text-color-dark: #869bc543;
+  --text-color-dark: #869bc543; /* #869bc543; */
   --text-color-dark-active: #869bc5d3; /* !TODO: create class */
 
   --background-color: #0d0010;
@@ -59,7 +59,7 @@
   --xxl: 8rem;
 
   /* Page */
-  --page-padding: var(--md);
+  --page-padding: var(--sm);
 
   /* Animation */
   --t1: 125ms;
@@ -106,6 +106,12 @@
   inherits: true;
 }
 
+@property --offset4 {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: true;
+}
+
 @property --normalizedX {
   syntax: "<number>";
   initial-value: 0;
@@ -113,6 +119,12 @@
 }
 
 @property --alphaX {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+@property --hemisphere {
   syntax: "<number>";
   initial-value: 0;
   inherits: true;

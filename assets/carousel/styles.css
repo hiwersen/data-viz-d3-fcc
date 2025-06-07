@@ -66,54 +66,49 @@
 
   overscroll-behavior: contain;
   overflow: visible;
+
+  /* Base animation setup */
+  animation-name: spinLine;
+  animation-fill-mode: both;
 }
 
 #cards-container.initialSpin {
-  --mask-line: conic-gradient(
-    rgba(0, 0, 0, 0.3) var(--offset3),
-    rgba(0, 0, 0, 1) var(--offset2),
-    rgba(0, 0, 0, 0.3) var(--offset1)
-  );
-  --mask-glow: conic-gradient(
-    transparent var(--offset3),
-    rgba(0, 0, 0, 0.3) var(--offset3),
-    rgba(0, 0, 0, 0.75) var(--offset2),
-    rgba(0, 0, 0, 0.3) var(--offset1),
-    transparent var(--offset1)
-  );
-
-  animation-name: spinLine;
-  animation-fill-mode: both;
   animation-timing-function: var(--timing-function2);
   animation-duration: 10s;
   animation-delay: var(--t7);
+  animation-iteration-count: 1;
 }
 
-#cards-container.infiniteSpin .card {
-  /* Ideally it should be set at the container level 
-   for synchronization effect but it's almost impossible */
+#cards-container.infiniteSpin {
+  animation-timing-function: linear;
+  animation-duration: var(--t11);
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+}
 
+/* Cards inherit the animated offset values */
+#cards-container .card {
+  --angle: 0deg;
+
+  /* Cards use their own alphaX-based masks but inherit offsets */
   --mask-line: conic-gradient(
-    from 45deg,
+    from var(--angle),
     rgba(0, 0, 0, 0.3) var(--offset3),
     rgba(0, 0, 0, var(--alphaX)) var(--offset2),
     rgba(0, 0, 0, 0.3) var(--offset1)
   );
   --mask-glow: conic-gradient(
-    from 45deg,
+    from var(--angle),
     transparent var(--offset3),
     rgba(0, 0, 0, 0.3) var(--offset2),
     rgba(0, 0, 0, calc(0.85 * var(--alphaX))) var(--offset1),
     rgba(0, 0, 0, 0.3) calc(var(--offset1) + 1%),
     transparent calc(var(--offset1) + 2%)
   );
+}
 
-  animation-name: spinLine;
-  animation-fill-mode: both;
-  animation-timing-function: linear;
-  animation-duration: var(--t11);
-  animation-delay: 0s;
-  animation-iteration-count: infinite;
+#cards-container.infiniteSpin .card {
+  --angle: 45deg;
 }
 
 /* Carousel animation applied to wrapper 1 */

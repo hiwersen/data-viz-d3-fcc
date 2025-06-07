@@ -40,13 +40,15 @@ window.addEventListener("load", () => {
       cardsContainer.classList.remove("initialSpin");
 
       // Stop current animation completely
-      cardsContainer.style.animation = "none";
+      // cardsContainer.style.animation = "none";
 
       // Force reflow to ensure animation stops
       cardsContainer.offsetHeight;
 
       // Start new infinite spin animation
-      cardsContainer.classList.add("infiniteSpin");
+      requestAnimationFrame(() => {
+        cardsContainer.classList.add("infiniteSpin");
+      });
 
       console.log(cardsContainer.classList);
     }, 11500); // timing manually adjusted

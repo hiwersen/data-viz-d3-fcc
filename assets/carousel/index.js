@@ -1,3 +1,5 @@
+import { chartManager } from "../common.js";
+
 export function initCarousel() {
   // console.log("hello carousel");
   // Get carousel elements
@@ -117,22 +119,23 @@ export function initCarousel() {
     // Disable transitions before DOM manipulation
     disableTransitions();
 
+    let clone;
+
     if (direction === "left") {
       // Remove left card
       cardsContainer.removeChild(cardsContainer.firstElementChild);
 
       // Clone and append left card
-      const leftClone = cardsContainer.children[cardsCloned].cloneNode(true);
-      cardsContainer.append(leftClone);
+      clone = cardsContainer.children[cardsCloned].cloneNode(true);
+      cardsContainer.append(clone);
     } else {
       // Remove right card
       cardsContainer.removeChild(cardsContainer.lastElementChild);
 
       // Clone and prepend right card
       const rightCloneIndex = cardsContainer.children.length - 1 - cardsCloned;
-      const rightClone =
-        cardsContainer.children[rightCloneIndex].cloneNode(true);
-      cardsContainer.prepend(rightClone);
+      clone = cardsContainer.children[rightCloneIndex].cloneNode(true);
+      cardsContainer.prepend(clone);
     }
 
     // reset translation to 0 immediately after the DOM is reorganized
@@ -144,6 +147,11 @@ export function initCarousel() {
 
     // Re-enable regular translation and preset transition effect
     enableTranslationAndTransition();
+
+    // Set event listeners for chart management
+    chartManager.cardEventListeners(document.querySelector(".chart-image"));
+
+    console.log(document.querySelector(".chart-image"));
   }
 
   // Function to temporarily disable transitions

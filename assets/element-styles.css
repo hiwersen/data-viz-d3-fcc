@@ -39,8 +39,8 @@ nav a {
 
 h1 {
   color: var(--text-color-dark);
-  font-size: 1.5rem;
-  font-weight: normal;
+  font-size: 1rem;
+  font-weight: bolder;
   line-height: 1.1em;
   text-transform: uppercase;
 }
@@ -49,24 +49,21 @@ p {
   line-height: 1.5em;
 }
 
-a {
-  color: var(--text-color);
+a,
+a:visited {
+  color: var(--text-color-light);
   text-decoration: none;
   transition: color 0.6s var(--timing-function1);
   pointer-events: auto;
 }
 
-a:visited {
-  color: var(--text-color);
-}
-
 a:hover,
 a:active {
-  color: var(--text-color-light);
+  color: white;
 }
 
 a:visited:hover {
-  color: var(--text-color-light);
+  color: white;
 }
 
 li {

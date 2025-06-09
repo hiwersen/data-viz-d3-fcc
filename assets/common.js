@@ -1,24 +1,48 @@
-import { initCarousel } from "./carousel/index.js";
 import { TextScramble } from "./text-scramble/index.js";
 import { staggeredAnimation } from "./staggered-animation.js";
 import { addAnimations } from "./add-animations.js";
 import { removeAnimations } from "./remove-animations.js";
+import { UpdateChartDimensions } from "./updateChartDimensions.js";
+import { ChartManager } from "./chartManager.js";
+
+// Create and export ChartManager's instance
+export const chartManager = new ChartManager();
+
+const svgRatio = 1.6;
 
 window.addEventListener("load", () => {
   // ! TODO: synchronize animation -
   // it is out of sync when you load the page from the address bar
   // the carousel initial position isn't consistent
 
+  // Disable all transitions/animations for initial calculations
+  document.body.classList.add("no-transitions");
+
+  // document.getElementById("chart-modal").show();
+
+  new UpdateChartDimensions(
+    svgRatio,
+    0.1, // 25% max-discount
+    0.2
+  );
+
+  // Use RAF to ensure all layout calculations are complete
   requestAnimationFrame(() => {
     // Remove preload
     document.body.classList.remove("preload");
+
+    // Re-enable transitions/animations
+    document.body.classList.remove("no-transitions");
 
     // Initialize scramble text animation
     const scrambleText = document.querySelector(".scramble-text");
     new TextScramble(scrambleText).start();
 
-    // Initialize carousel animation
-    initCarousel();
+    // Import carousel dynamically to avoid circular dependency
+    // Otherwise: common.js imports carousel/index.js imports common.js (circular!)
+    import("./carousel/index.js").then(({ initCarousel }) => {
+      initCarousel();
+    });
 
     // Initialize card animations
     const cardsW2 = document.querySelectorAll(".card-wrapper-2");
@@ -50,8 +74,8 @@ window.addEventListener("load", () => {
         cardsContainer.classList.add("infiniteSpin");
       });
 
-      console.log(cardsContainer.classList);
-    }, 11500); // timing manually adjusted
+      // console.log(cardsContainer.classList);
+    }, 11100); // timing manually adjusted
 
     // logRem();
   });

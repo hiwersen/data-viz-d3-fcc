@@ -25,7 +25,7 @@ export class UpdateChartDimensions {
   }
 
   snap() {
-    console.log("@updateChartDimensions.snap");
+    // console.log("@updateChartDimensions.snap");
 
     // Only snap if there will be meaningful chart dimensions change to full-screen mode
     if (!this.shouldSnap()) return;
@@ -169,7 +169,7 @@ export class UpdateChartDimensions {
   }
 
   handleResize() {
-    console.log("@updateChartDimensions.handleResize");
+    // console.log("@updateChartDimensions.handleResize");
 
     // Set current viewport dimensions
     this.setDimensions();
@@ -192,7 +192,7 @@ export class UpdateChartDimensions {
 
     if (this.viewportRatio >= this.chartRatio) {
       // Landscape orientation - height is the limiting factor
-      baseHeight = this.viewportHeight - 2 * pagePadding;
+      baseHeight = this.viewportHeight - 4 * pagePadding; // double padding
       baseWidth = baseHeight * this.chartRatio;
 
       // Apply scaling
@@ -338,7 +338,7 @@ export class UpdateChartDimensions {
   }
 
   init() {
-    console.log("@updateChartDimensions.init");
+    // console.log("@updateChartDimensions.init");
 
     const chartViewport = document.querySelector(
       "#chart-section.chart-viewport"

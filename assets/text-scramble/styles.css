@@ -25,6 +25,6 @@
   /* manually adjusted for better visual effect */
   --char-space: 0.25em;
   --char-width: 1ch;
-  line-height: calc(var(--char-width) + var(--char-space));
+  line-height: calc(var(--char-width) + var(--char-space) * 2);
   letter-spacing: var(--char-space);
 }

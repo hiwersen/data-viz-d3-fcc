@@ -1,12 +1,11 @@
 import { colorThemes } from "../../color-themes.js";
-import { UpdateChartDimensions } from "../../assets/updateChartDimensions.js";
-import { updateNavbarPosition } from "../../assets/updateNavbarPosition.js";
 
-const svgRatio = 1.6;
-const viewBoxWidth = 960;
-const viewBoxHeight = viewBoxWidth / svgRatio;
+export default function () {
+  console.log("hello choropleth map");
 
-function drawChart() {
+  const svgRatio = 1.6;
+  const viewBoxWidth = 960;
+  const viewBoxHeight = viewBoxWidth / svgRatio;
   const colorTheme = colorThemes[1].reverse();
   const stateStroke = colorTheme.at(3); // "white";
 
@@ -16,6 +15,9 @@ function drawChart() {
     //.attr("id", "svg")
     .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
+
+  // Clear previous chart
+  chartSvg.selectAll("*").remove();
 
   const counties = chartSvg.append("g").attr("id", "counties");
   const states = chartSvg.append("g").attr("id", "states");
@@ -311,6 +313,8 @@ function drawChart() {
   };
 }
 
+/* ! TODO: remove this block once chartManager is implemented
+
 document.addEventListener("DOMContentLoaded", () => {
   // Disable all transitions/animations for initial calculations
   document.body.classList.add("no-transitions");
@@ -336,6 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("resize", () => {
   // updateNavbarPosition();
 });
+*/
 
 // ! TODO: add dynamic max and min data to tooltip:
 

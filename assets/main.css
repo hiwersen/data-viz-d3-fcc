@@ -31,7 +31,7 @@
   grid-template-columns: auto repeat(3, 1fr);
   grid-template-rows: auto auto 1fr auto;
   grid-template-areas:
-    ". title . ."
+    ". title title ."
     "navbar . . info"
     "carousel carousel carousel carousel"
     ". footer footer footer";
@@ -58,8 +58,8 @@
 #footer {
   grid-area: footer;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-areas: "contact . . social";
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: "contact . social";
   gap: var(--xs);
   height: 100%;
 }
@@ -146,7 +146,11 @@
 
 #navbar {
   width: 100%;
-  padding-right: 1rem;
+  padding-right: 2rem;
+  position: relative;
+  overflow: visible;
+
+  background-color: yellow;
 }
 
 #navbar ul {
@@ -187,6 +191,15 @@
   transform: translateX(0.25rem);
 }
 
+#navbar a {
+  color: var(--text-color-dark);
+}
+
+#navbar a:hover,
+#navbar a:active {
+  color: var(--text-color-light);
+}
+
 /* TITLE */
 
 #title-container {
@@ -200,9 +213,9 @@
 }
 
 #title {
-  font-size: 2rem;
-  font-weight: bolder;
-  letter-spacing: 0.5rem;
+  letter-spacing: 1rem;
+  position: relative;
+  padding-bottom: var(--page-padding);
 }
 
 /* INFO STYLES @ /assets/text-scramble/styles.css */
@@ -240,6 +253,14 @@
   --snapping-to-duration: var(--t6);
   --snapping-from-duration: var(--t4);
   --border-width: 0.325rem;
+
+  --text-color: #9eeafbda;
+  --text-color-light: #9eeafb;
+  --text-color-dark: #869bc5b0;
+
+  --transition-duration: var(--t9);
+  --transition: opacity var(--transition-duration) var(--timing-function1),
+    visibility var(--transition-duration) var(--timing-function1);
 }
 
 #chart-section.chart-viewport {
@@ -256,24 +277,10 @@
   transform-origin: top left !important;
   transform: translate(-50%, -50%) scale(1, 1);
   transition: all var(--snapping-from-duration) var(--timing-function1);
-  z-index: 1000;
-  pointer-events: none; /* ! Revert to auto when snapped */
   box-shadow: 5px 5px 30px 10px var(--shadow-c4);
 
-  /* ! BUILDING
-   ! "activate" element on hover 
-  Hidden by default */
-  opacity: 0;
-  visibility: hidden;
-
-  /* Smooth transitions */ /*
-  transition:
-    opacity 0.6s var(--timing-function2),
-    visibility 0.6s var(--timing-function2);
-    */
-
-  /* ! DEBUGGING 
-  background-color: greenyellow; */
+  z-index: 1000;
+  pointer-events: none; /* ! Revert to auto when snapped */
 }
 
 /* CHART SNAPPED */
@@ -303,8 +310,8 @@
   /* Slower transition when returning (hover-out) */
   transition: transform 2s var(--timing-function1);
 
-  /* ! DEBUGGING 
-  background-color: red; */
+  /* ! DEBUGGING  
+  background-color: blue; */
 }
 
 #chart-navbar::before {
@@ -380,6 +387,63 @@
   background-color: red; */
 }
 
+/* Hidden by default */
+#chart-section.chart-viewport,
+#chart-modal {
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+}
+
+/* ! DEBUGGING
+#chart-section.chart-viewport {
+  /*background-color: red;
+
+  width: 600px;
+  height: 600px;
+}
+*/
+
+#chart-section.chart-viewport.chart-visible,
+#chart-modal.chart-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.chart-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.chart-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--error-color);
+  text-align: center;
+  z-index: 10;
+}
+
 #chart-modal-content {
   width: inherit;
   height: inherit;
@@ -389,7 +453,7 @@
   grid-template-areas: "title chart footer";
   row-gap: var(--md);
   column-gap: var(--lg);
-  padding: var(--page-padding);
+  padding: calc(var(--page-padding) * 2);
 }
 
 #chart-title-container {
@@ -404,10 +468,6 @@
   grid-area: "footer";
 }
 
-#chart-section.snapped #chart-modal-content {
-  padding: var(--page-padding) calc(2 * var(--page-padding));
-}
-
 #chart-title-container,
 #chart-footer {
   height: 100%;
@@ -415,10 +475,12 @@
   pointer-events: none; /* ! Revert to auto for links */
 }
 
+/*
 #chart-title,
 #chart-footer {
   color: var(--text-color);
 }
+  */
 
 #chart-footer a {
   pointer-events: initial;
@@ -444,9 +506,12 @@
   text-wrap: balance;
 }
 
-#chart-title-description,
-#chart-footer a {
-  color: var(--text-color-light);
+#chart-title {
+  letter-spacing: 0.5rem;
+}
+
+#chart-title-description {
+  color: var(--text-color);
 }
 
 #chart-footer a:hover,

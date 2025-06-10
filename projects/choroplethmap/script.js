@@ -6,7 +6,7 @@ export default function () {
   const svgRatio = 1.6;
   const viewBoxWidth = 960;
   const viewBoxHeight = viewBoxWidth / svgRatio;
-  const colorTheme = colorThemes[1].reverse();
+  const colorTheme = [...colorThemes[1]].reverse(); // CAUTION: reverse "in place" will change the original array
   const stateStroke = colorTheme.at(3); // "white";
 
   const chartSvg = d3
@@ -15,9 +15,6 @@ export default function () {
     //.attr("id", "svg")
     .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
-
-  // Clear previous chart
-  chartSvg.selectAll("*").remove();
 
   const counties = chartSvg.append("g").attr("id", "counties");
   const states = chartSvg.append("g").attr("id", "states");

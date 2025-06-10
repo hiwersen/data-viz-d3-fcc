@@ -280,7 +280,7 @@
   box-shadow: 5px 5px 30px 10px var(--shadow-c4);
 
   z-index: 1000;
-  pointer-events: none; /* ! Revert to auto when snapped */
+  /* ! pointer-events: none;  Revert to auto when snapped */
 }
 
 /* CHART SNAPPED */
@@ -396,6 +396,12 @@
 }
 
 /* ! DEBUGGING
+#chart-modal {
+  background-color: red;
+}
+  */
+
+/* ! DEBUGGING
 #chart-section.chart-viewport {
   /*background-color: red;
 
@@ -405,7 +411,7 @@
 */
 
 #chart-section.chart-viewport.chart-visible,
-#chart-modal.chart-visible {
+#chart-section.chart-viewport.chart-visible #chart-modal {
   opacity: 1;
   visibility: visible;
 }
@@ -551,6 +557,8 @@
 #chart {
   width: var(--chart-width); /* Set by JS */
   height: var(--chart-height); /* Set by JS */
+
+  background-color: blue;
 }
 
 #legend {

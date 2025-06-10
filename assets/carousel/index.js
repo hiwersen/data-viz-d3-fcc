@@ -149,9 +149,9 @@ export function initCarousel() {
     enableTranslationAndTransition();
 
     // Set event listeners for chart management
-    chartManager.cardEventListeners(document.querySelector(".chart-image"));
+    chartManager.cardEventListeners(clone.querySelector(".chart-image"));
 
-    console.log(document.querySelector(".chart-image"));
+    console.log(clone.querySelector(".chart-image"));
   }
 
   // Function to temporarily disable transitions

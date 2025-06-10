@@ -7,15 +7,18 @@ import drawTreeMap from "../projects/treemap/script.js";
 
 export class ChartManager {
   constructor() {
+    this.chartSVG = document.getElementById("chart");
+    this.legendSVG = document.getElementById("legend");
     this.chartViewport = document.querySelector(".chart-viewport");
     this.dialog = document.getElementById("chart-modal");
     this.navbar = document.getElementById("navbar");
     this.navLinks = document.querySelectorAll("#navbar .nav-link");
     this.cards = document.querySelectorAll("#carousel .chart-image");
 
-    this.delay = 11100; // 11s100ms
+    this.delay = 12000; // 12s
     this.currentChart = null;
     this.hoverTimeout = null;
+    this.closeDialogTimeout = null;
     this.isMouseOverNavbar = false;
     this.isMouseOverAnyCard = false;
     this.isChartOpen = false;
@@ -29,12 +32,14 @@ export class ChartManager {
       "tree-map": drawTreeMap,
     };
 
-    this.transitionDuration = parseFloat(
-      window
-        .getComputedStyle(document.getElementById("chart-section"))
-        .getPropertyValue("--transition-duration")
-        .slice(0, -2)
-    );
+    // ! TODO: parse --transition-duration as both ms and s
+    this.transitionDuration =
+      parseFloat(
+        window
+          .getComputedStyle(document.getElementById("chart-section"))
+          .getPropertyValue("--transition-duration")
+          .slice(0, -1)
+      ) * 1000;
 
     this.cardEventListeners = this.cardEventListeners.bind(this);
     this.init = this.init.bind(this);
@@ -48,10 +53,11 @@ export class ChartManager {
     }
   }
 
-  /*
   async loadChart(chartType) {
     // Prevent loading same chart or concurrent loads
     if (this.currentChart === chartType || this.isLoading) return;
+
+    console.log("@loadChart");
 
     this.isLoading = true;
     // this.showLoading();
@@ -63,6 +69,9 @@ export class ChartManager {
       if (!drawChart) {
         throw new Error(`Unknown chart type: ${chartType}`);
       }
+
+      // Clear any previous drawn chart
+      this.clearChart();
 
       // Draw the chart
       await drawChart();
@@ -76,7 +85,21 @@ export class ChartManager {
       this.isLoading = false;
     }
   }
-    */
+
+  clearChart() {
+    // Clear previous chart
+    const chartElements = this.chartSVG.querySelectorAll("*");
+    const legendElements = this.legendSVG.querySelectorAll("*");
+
+    chartElements.forEach((el) => {
+      el.remove();
+    });
+
+    legendElements.forEach((el) => {
+      el.remove();
+    });
+  }
+
   /*
   showLoading() {
     const chartContainer = document.getElementById("chart-container");
@@ -104,7 +127,6 @@ export class ChartManager {
     document.getElementById("legend").style.opacity = "1";
   }
   */
-
   /*
   showError(chartType) {
     const chartContainer = document.getElementById("chart-container");
@@ -124,10 +146,7 @@ export class ChartManager {
     this.chartViewport.classList.add("chart-visible");
     this.isChartOpen = true;
 
-    /*
-    // this.dialog.classList.add("chart-visible");
-    //this.dialog.show(); // Non-modal
-    */
+    this.dialog.show(); // Non-modal
   }
 
   hideChart() {
@@ -138,23 +157,18 @@ export class ChartManager {
     this.chartViewport.classList.remove("chart-visible");
     this.isChartOpen = false;
 
-    /*
-    // this.dialog.classList.remove("chart-visible");
-    // Get transition duration
-    
-
-    // close dialog after chart section has finished fading out
-    setTimeout(() => {
-      // this.dialog.close();
+    this.closeDialogTimeout = setTimeout(() => {
+      this.dialog.close();
     }, this.transitionDuration);
-    */
   }
 
   cancelHideTimer() {
     console.log("@cancelHideTimer");
 
     clearTimeout(this.hoverTimeout);
+    clearTimeout(this.closeDialogTimeout);
     this.hoverTimeout = null;
+    this.closeDialogTimeout = null;
   }
 
   startHideTimer() {
@@ -168,7 +182,6 @@ export class ChartManager {
 
     this.hoverTimeout = setTimeout(() => {
       this.hideChart();
-      // this.hideDialog();
     }, delay);
   }
 
@@ -191,7 +204,7 @@ export class ChartManager {
       const chartType = link.id.replace("-link", "");
       link.addEventListener("mouseenter", () => {
         this.showChart();
-        // this.loadChart(chartType);
+        this.loadChart(chartType);
       });
     });
   }
@@ -226,13 +239,15 @@ export class ChartManager {
   cardEventListeners(card) {
     console.log("@cardEventListeners");
 
+    if (!card) return;
+
     const chartType = card.id.replace("-image", "");
 
     card.addEventListener("mouseenter", () => {
       this.isMouseOverAnyCard = true;
       this.cancelHideTimer();
       this.showChart();
-      // this.loadChart(chartType);
+      this.loadChart(chartType);
     });
 
     card.addEventListener("mouseleave", () => {

@@ -200,8 +200,9 @@ export default function () {
           const viewportHeight = window.innerHeight;
 
           // Define initial position and margin
-          let top = event.pageY - 30;
-          let left = event.pageX + 15;
+          let top = event.clientY - 30;
+          let left = event.clientX + 15;
+
           const margin = 5;
 
           // Check if tooltip would extend beyond right edge of viewport

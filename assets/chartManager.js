@@ -19,6 +19,7 @@ export class ChartManager {
     this.currentChart = null;
     this.hoverTimeout = null;
     this.closeDialogTimeout = null;
+    this.clearChartTimeout = null;
     this.isMouseOverNavbar = false;
     this.isMouseOverAnyCard = false;
     this.isChartOpen = false;
@@ -60,7 +61,9 @@ export class ChartManager {
     console.log("@loadChart");
 
     this.isLoading = true;
-    // this.showLoading();
+
+    // Clear any previous drawn chart
+    this.clearChart();
 
     try {
       // Get the chart drawing function
@@ -69,9 +72,6 @@ export class ChartManager {
       if (!drawChart) {
         throw new Error(`Unknown chart type: ${chartType}`);
       }
-
-      // Clear any previous drawn chart
-      this.clearChart();
 
       // Draw the chart
       await drawChart();
@@ -83,67 +83,61 @@ export class ChartManager {
       this.showError(chartType);
     } finally {
       this.isLoading = false;
+
+      // Initiate fading in effect - transition
+      this.dialog.classList.remove("chart-loading");
+      this.dialog.classList.add("chart-loaded");
     }
   }
 
-  clearChart() {
-    // Clear previous chart
-    const chartElements = this.chartSVG.querySelectorAll("*");
-    const legendElements = this.legendSVG.querySelectorAll("*");
+  async clearChart() {
+    this.dialog.classList.remove("chart-loaded");
+    this.dialog.classList.add("chart-loading");
 
-    chartElements.forEach((el) => {
-      el.remove();
+    // Clear SVG elements
+    this.chartSVG.innerHTML = "";
+    this.legendSVG.innerHTML = "";
+
+    // Clear text content
+    document.getElementById("chart-title").textContent = "";
+    document.getElementById("chart-title-description").textContent = "";
+    document.getElementById("chart-source").querySelector("a").textContent = "";
+    document.getElementById("chart-source").querySelector("a").href = "";
+
+    /* TODO & BUG TO FIX: possible implementation with promise
+     there is sync bug to solve with this approach
+    return new Promise((resolve) => {
+      // Initiate fading out effect - transition
+      this.dialog.classList.remove("chart-loaded");
+      this.dialog.classList.add("chart-loading");
+
+      // clearTimeout(this.clearChartTimeout);
+
+      // Clear previous chart after fading is fully complete
+      this.clearChartTimeout = setTimeout(() => {
+        const chartElements = this.chartSVG.querySelectorAll("*");
+        const legendElements = this.legendSVG.querySelectorAll("*");
+
+        chartElements.forEach((el) => {
+          el.remove();
+        });
+
+        legendElements.forEach((el) => {
+          el.remove();
+        });
+
+        resolve();
+      }, this.transitionDuration);
     });
-
-    legendElements.forEach((el) => {
-      el.remove();
-    });
-  }
-
-  /*
-  showLoading() {
-    const chartContainer = document.getElementById("chart-container");
-    const loadingDiv = document.createElement("div");
-    loadingDiv.className = "chart-loading";
-    loadingDiv.innerHTML =
-      '<div class="loading-spinner"></div><p>Loading chart...</p>';
-
-    // Hide charts but keep container structure
-    document.getElementById("chart").style.opacity = "0.1";
-    document.getElementById("legend").style.opacity = "0.1";
-
-    chartContainer.appendChild(loadingDiv);
-  }
     */
-  /*
-  hideLoading() {
-    const loadingDiv = document.querySelector(".chart-loading");
-    if (loadingDiv) {
-      loadingDiv.remove();
-    }
-
-    // Show charts
-    document.getElementById("chart").style.opacity = "1";
-    document.getElementById("legend").style.opacity = "1";
   }
-  */
-  /*
-  showError(chartType) {
-    const chartContainer = document.getElementById("chart-container");
-    const errorDiv = document.createElement("div");
-    errorDiv.className = "chart-error";
-    errorDiv.innerHTML = `<p>Error loading ${chartType.replace("-", " ")}</p>`;
-
-    chartContainer.appendChild(errorDiv);
-  }
-    */
 
   showChart() {
     console.log("@showChart");
 
     if (this.isChartOpen) return;
 
-    this.chartViewport.classList.add("chart-visible");
+    this.chartViewport.classList.add("viewport-visible");
     this.isChartOpen = true;
 
     this.dialog.show(); // Non-modal
@@ -154,7 +148,7 @@ export class ChartManager {
 
     if (!this.isChartOpen) return;
 
-    this.chartViewport.classList.remove("chart-visible");
+    this.chartViewport.classList.remove("viewport-visible");
     this.isChartOpen = false;
 
     this.closeDialogTimeout = setTimeout(() => {
@@ -188,12 +182,10 @@ export class ChartManager {
   navbarEventListeners() {
     this.navbar.addEventListener("mouseenter", () => {
       this.isMouseOverNavbar = true;
-      this.cancelHideTimer();
     });
 
     this.navbar.addEventListener("mouseleave", () => {
       this.isMouseOverNavbar = false;
-      this.startHideTimer();
     });
   }
 
@@ -222,16 +214,17 @@ export class ChartManager {
         e.clientY >= viewportRect.top &&
         e.clientY <= viewportRect.bottom;
 
-      if (this.isChartOpen) {
-        if (isMouseOverChartViewport) {
-          if (this.hoverTimeout) {
-            this.cancelHideTimer();
-          }
-        } else {
-          if (!this.isMouseOverNavbar && !this.isMouseOverAnyCard) {
-            this.startHideTimer();
-          }
-        }
+      const closingConditions = [
+        this.isChartOpen,
+        !isMouseOverChartViewport,
+        !this.isMouseOverNavbar,
+        !this.isMouseOverAnyCard,
+      ];
+
+      if (closingConditions.every((condition) => condition)) {
+        this.startHideTimer();
+      } else if (this.isChartOpen) {
+        this.cancelHideTimer();
       }
     });
   }
@@ -245,14 +238,19 @@ export class ChartManager {
 
     card.addEventListener("mouseenter", () => {
       this.isMouseOverAnyCard = true;
-      this.cancelHideTimer();
       this.showChart();
       this.loadChart(chartType);
     });
 
     card.addEventListener("mouseleave", () => {
       this.isMouseOverAnyCard = false;
-      this.startHideTimer();
+      /* ! BUG FIXED: chart open and closes intermittently
+      when this.startHideTimer(); is set to mouseleave event handler.
+      Possibly, when the chart opens in front of the card
+      the mouseleave is triggered and, if there isn't mouse movement
+      after that event, the chard closes, since the mouse is considered
+      to be outside any card area.
+      */
     });
   }
 

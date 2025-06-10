@@ -8,6 +8,7 @@
 #tooltip {
   width: 25rem;
   height: 25rem;
+  /* min-height looks awkward when dynamically changing hights */
 }
 
 #tooltip-title,

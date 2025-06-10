@@ -1,9 +1,10 @@
 :root {
   /* Colors */
-  --text-color: #869bc5d7; /*#ffffff9e;*/
-  --text-color-light: #abc7fe; /*  #9eeafb; */
-  --text-color-dark: #869bc550; /* #869bc543; */
-  --text-color-accent: #9eeafb; /* !TODO: create class */
+  --text-color-dark: #869bc543;
+  --text-color: #869bc5df;
+  --text-color-light: #bdd2fd;
+
+  --text-color-accent: white;
 
   --background-color: #0d0010;
   --pixel-color: #200008dc;

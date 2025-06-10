@@ -254,9 +254,9 @@
   --snapping-from-duration: var(--t4);
   --border-width: 0.325rem;
 
-  --text-color: #9eeafbda;
-  --text-color-light: #9eeafb;
-  --text-color-dark: #869bc5b0;
+  --text-color-dark: #869bc582;
+  --text-color: #bdd2fd;
+  --text-color-light: white;
 
   --transition-duration: var(--t9);
   --transition: opacity var(--transition-duration) var(--timing-function1),
@@ -468,7 +468,8 @@
   letter-spacing: 0.5rem;
 }
 
-#chart-title-description {
+#chart-title-description,
+#chart-footer a {
   color: var(--text-color);
 }
 
@@ -543,14 +544,17 @@
   position: fixed;
   top: -1000px;
   left: -1000px;
-  visibility: hidden;
   padding: 1.5rem;
-  color: var(--text-color);
   font-size: 0.65rem;
   line-height: 1.3;
   overflow: visible;
-  z-index: 3;
+  z-index: 1001;
   border-radius: var(--xs);
+
+  /*visibility: hidden;*/
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 10s var(--timing-function1);
 }
 
 #tooltip-content {

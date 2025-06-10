@@ -200,8 +200,8 @@ export default function () {
           const viewportHeight = window.innerHeight;
 
           // Define initial position and margin
-          let top = event.clientY - 30;
-          let left = event.clientX + 15;
+          let top = event.pageY - 30;
+          let left = event.pageX + 15;
 
           const margin = 5;
 
@@ -230,13 +230,13 @@ export default function () {
           tooltip
             .style("top", top + "px")
             .style("left", left + "px")
-            .style("visibility", "visible");
+            .style("opacity", "1");
         })
         .on("mouseout", () => {
           tooltip
             .style("top", "-1000px")
             .style("left", "-1000px")
-            .style("visibility", "hidden");
+            .style("opacity", "0");
         });
 
       states

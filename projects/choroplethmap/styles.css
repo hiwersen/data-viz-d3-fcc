@@ -7,13 +7,13 @@
 
 #tooltip {
   width: 25rem;
-  height: 25rem;
-  /* min-height looks awkward when dynamically changing hights */
+  min-height: 25rem;
+  color: var(--text-color-light);
 }
 
 #tooltip-title,
 #tooltip .current-county {
-  color: var(--text-color-light);
+  color: var(--text-color-accent);
   font-size: 1.5rem;
   text-align: center;
 }
@@ -79,7 +79,7 @@
 #county-minimap path {
   stroke-width: 0.5px;
   fill: none;
-  stroke: white;
+  stroke: var(--text-color-light);
   stroke-width: 0.1px;
 
   /* ! TODO: import --mask3 from  variables.css */

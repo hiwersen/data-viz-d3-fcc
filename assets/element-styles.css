@@ -51,19 +51,25 @@ p {
 
 a,
 a:visited {
-  color: var(--text-color-light);
+  color: var(--text-color);
   text-decoration: none;
-  transition: color 0.6s var(--timing-function1);
   pointer-events: auto;
+
+  /* Slower when hovering out */
+  transition:
+    color var(--t6) var(--timing-function1),
+    background-color var(--t6) var(--timing-function1);
 }
 
 a:hover,
-a:active {
-  color: white;
-}
-
+a:active,
 a:visited:hover {
-  color: white;
+  color: var(--text-color-light);
+
+  /* Faster when hovering in */
+  transition:
+    color var(--t3) var(--timing-function1),
+    background-color var(--t3) var(--timing-function1);
 }
 
 li {

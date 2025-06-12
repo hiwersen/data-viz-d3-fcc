@@ -219,6 +219,12 @@ export function initCarousel() {
         if (link && !link.classList.contains("pushed")) {
           link.classList.add("pushed");
         }
+
+        // Load chart if viewport is visible
+        if (chartManager.isChartOpen) {
+          const chartType = cardId;
+          chartManager.loadChart(chartType);
+        }
       } else if (link) {
         link.classList.remove("pushed");
       }

@@ -199,6 +199,8 @@ export class ChartManager {
         this.loadChart(chartType);
       });
     });
+
+    // ! TODO: add click event listeners
   }
 
   chartViewportEventListeners() {
@@ -277,10 +279,6 @@ export class ChartManager {
       this.isMouseOverAnyCard = false;
       /* ! BUG FIXED: chart open and closes intermittently
       when this.startHideTimer(); is set to mouseleave event handler.
-      Possibly, when the chart opens in front of the card
-      the mouseleave is triggered and, if there isn't mouse movement
-      after that event, the chard closes, since the mouse is considered
-      to be outside any card area.
       */
     });
   }

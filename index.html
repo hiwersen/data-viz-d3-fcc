@@ -92,7 +92,11 @@
       </nav>
       <section id="title-container" class="flex-col-start-between">
         <!--<section id="title-container" class="flex-col-start-between slowFadeIn">-->
-        <h1 id="title" data-text="Data Visualisation">Data Visualisation</h1>
+        <h1 id="title" data-text="Data Visualisation">
+          Data Visualisation<span id="title-description"
+            >with data-driven documents</span
+          >
+        </h1>
       </section>
 
       <section
@@ -201,6 +205,59 @@
       </section>
 
       <section id="chart-section" class="chart-viewport">
+        <div id="chart-controls">
+          <button
+            id="chart-minimize"
+            class="chart-control-btn"
+            title="Minimize to window"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g fill="none" stroke="currentcolor" stroke-width="3.5">
+                <path d="M24 8H16V0" />
+                <path d="M24 16H16V24" />
+                <path d="M0 8H8V0" />
+                <path d="M0 16H8V24" />
+              </g>
+            </svg>
+          </button>
+
+          <button
+            id="chart-maximize"
+            class="chart-control-btn"
+            title="Maximize to fullscreen"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0.5 0.5 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g fill="none" stroke="currentcolor" stroke-width="3.5">
+                <path d="M10 22H2V14" />
+                <path d="M10 2H2V10" />
+                <path d="M14 22H22V14" />
+                <path d="M14 2H22V10" />
+              </g>
+            </svg>
+          </button>
+
+          <button
+            id="chart-close"
+            class="chart-control-btn"
+            title="Close chart"
+          >
+            <svg viewBox="5 5 14 14" width="24" height="24">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
+            </svg>
+          </button>
+        </div>
         <dialog id="chart-modal">
           <div id="chart-modal-content">
             <!--          <div id="chart-modal-content" class="flex-col-center-between">

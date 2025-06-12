@@ -204,8 +204,7 @@ export class ChartManager {
   chartViewportEventListeners() {
     console.log("@chartViewportEventListeners");
 
-    // Global mousemove tracking
-    document.addEventListener("mousemove", (e) => {
+    const getInteractionState = (e) => {
       const viewportRect = this.chartViewport.getBoundingClientRect();
 
       const isMouseOverChartViewport =
@@ -214,18 +213,50 @@ export class ChartManager {
         e.clientY >= viewportRect.top &&
         e.clientY <= viewportRect.bottom;
 
-      const closingConditions = [
-        this.isChartOpen,
-        !isMouseOverChartViewport,
-        !this.isMouseOverNavbar,
-        !this.isMouseOverAnyCard,
-      ];
+      this.isSnapped = this.chartViewport.classList.contains("snapped");
 
-      if (closingConditions.every((condition) => condition)) {
+      return {
+        shouldClose: [
+          this.isChartOpen,
+          !isMouseOverChartViewport,
+          !this.isMouseOverNavbar,
+          !this.isMouseOverAnyCard,
+          !this.isSnapped,
+        ].every((condition) => condition),
+        isChartOpen: this.isChartOpen,
+      };
+    };
+
+    // Event handlers
+    const handleMouseMove = (e) => {
+      const { shouldClose, isChartOpen } = getInteractionState(e);
+
+      if (shouldClose) {
         this.startHideTimer();
-      } else if (this.isChartOpen) {
+      } else if (isChartOpen) {
         this.cancelHideTimer();
       }
+    };
+
+    const handleClick = (e) => {
+      const { shouldClose } = getInteractionState(e);
+
+      if (shouldClose) {
+        console.log("@close with click");
+        this.cancelHideTimer();
+        this.hideChart();
+      }
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("click", handleClick);
+
+    const chartClose = document.getElementById("chart-close");
+
+    chartClose.addEventListener("click", () => {
+      console.log("@chartClose click");
+      this.cancelHideTimer();
+      this.hideChart();
     });
   }
 

@@ -225,6 +225,32 @@ export class UpdateChartDimensions {
     }
   }
 
+  handleClick() {
+    const chartMaximize = document.getElementById("chart-maximize");
+
+    chartMaximize.addEventListener("click", () => {
+      if (!this.isSnapped) {
+        this.snap();
+      }
+    });
+
+    const chartMinimize = document.getElementById("chart-minimize");
+
+    chartMinimize.addEventListener("click", () => {
+      if (this.isSnapped) {
+        this.unsnap();
+      }
+    });
+
+    const chartClose = document.getElementById("chart-close");
+
+    chartClose.addEventListener("click", () => {
+      if (this.isSnapped) {
+        this.unsnap();
+      }
+    });
+  }
+
   handleWheel(e) {
     // ! EARLY RETURN WHILE BUILDING #############################
     return;
@@ -326,13 +352,13 @@ export class UpdateChartDimensions {
       this.toggleSnap();
     }
 
-    // Snap with arrow down:
-    if (e.key === "Escape" || e.key === "ArrowDown") {
+    // Snap with arrow up:
+    if (e.key === "ArrowUp") {
       this.snap();
     }
 
-    // Unsnap with esc or arrow up:
-    if (e.key === "Escape" || e.key === "ArrowUp") {
+    // Unsnap with esc or arrow down:
+    if (e.key === "Escape" || e.key === "ArrowDown") {
       this.unsnap();
     }
   }
@@ -379,6 +405,8 @@ export class UpdateChartDimensions {
       this.chartFooter = chartFooter;
       this.footerHeight = this.chartFooter.offsetHeight;
     }
+
+    this.handleClick();
 
     // Add wheel listener(s)
     window.addEventListener("wheel", this.handleWheel, { passive: false });

@@ -13,17 +13,28 @@
 }
 
 #carousel {
+  z-index: 1;
+}
+
+#title-container,
+#footer {
   z-index: 2;
 }
 
-#navbar,
-#title-container,
-#footer {
+#info {
   z-index: 3;
 }
 
-#info {
+#chart-section {
   z-index: 4;
+}
+
+#navbar {
+  z-index: 5;
+}
+
+#chart-title-container {
+  z-index: 6;
 }
 
 #page-container.grid {
@@ -31,7 +42,7 @@
   grid-template-columns: auto repeat(3, 1fr);
   grid-template-rows: auto auto 1fr auto;
   grid-template-areas:
-    ". title title ."
+    ". title title title"
     ". . . info"
     "carousel carousel carousel carousel"
     ". . . footer";
@@ -42,7 +53,6 @@
 #navbar {
   grid-column: 1;
   grid-row: 2 / 4;
-  z-index: 1002;
 }
 
 #title-container {
@@ -224,6 +234,11 @@
   padding-bottom: var(--page-padding);
 }
 
+#title-description {
+  font-size: 0.5rem; /* Ornamental text */
+  letter-spacing: 1rem;
+}
+
 /* INFO STYLES @ /assets/text-scramble/styles.css */
 #info {
   color: var(--text-color-dark);
@@ -269,19 +284,39 @@
  */
 
 #chart-section {
+  --text-color-dark: #b0cafdb8;
+  --text-color: #c6d7fa;
+  --text-color-light: white;
+
   --svg-ratio: 1.6;
   --snap-threshold: 0.3; /* When to trigger snap */
   --snapping-to-duration: var(--t6);
   --snapping-from-duration: var(--t4);
   --border-width: 0.325rem;
-
-  --text-color-dark: #869bc582;
-  --text-color: #bdd2fd;
-  --text-color-light: white;
+  --chart-padding: calc(var(--page-padding) * 2);
 
   --transition-duration: var(--t9);
   --transition: opacity var(--transition-duration) var(--timing-function1),
     visibility var(--transition-duration) var(--timing-function1);
+}
+
+#page-container:has(#chart-section.chart-viewport.snapped) #navbar:hover {
+  --text-color-dark: #b0cafdb8;
+  --text-color: #c6d7fa;
+  --text-color-light: white;
+}
+
+#page-container:has(#navbar:hover) #chart-section.chart-viewport.snapped,
+#page-container:has(#chart-section.chart-viewport.snapped) #navbar {
+  --text-color-dark: #869bc543;
+  --text-color: #869bc5df;
+  --text-color-light: #bdd2fd;
+}
+
+#page-container:has(#navbar:hover)
+  #chart-section.chart-viewport.snapped
+  #chart-title-container {
+  filter: blur(1px);
 }
 
 #chart-section.chart-viewport {
@@ -300,8 +335,11 @@
   transition: all var(--snapping-from-duration) var(--timing-function1);
   box-shadow: 5px 5px 30px 10px var(--shadow-c4);
 
-  z-index: 1000;
   /* ! pointer-events: none;  Revert to auto when snapped */
+
+  /* ! BUILDING 
+  visibility: visible !important;
+  opacity: 1 !important; */
 }
 
 /* CHART SNAPPED */
@@ -312,6 +350,59 @@
   background-image: var(--gradient2);
   transition: all var(--snapping-to-duration) var(--timing-function1);
   backdrop-filter: blur(12px) grayscale(50%);
+}
+
+#chart-controls {
+  position: absolute;
+  top: var(--chart-padding);
+  right: var(--chart-padding);
+
+  display: flex;
+  gap: var(--md);
+  z-index: 2;
+}
+
+#chart-controls .chart-control-btn {
+  color: var(--g9);
+  cursor: pointer;
+  line-height: 0; /* Eliminate the bottom "padding" */
+
+  /* Slower when hovering out */
+  transition: all var(--t6) var(--timing-function1);
+}
+
+#chart-controls .chart-control-btn:hover {
+  color: var(--text-color-light);
+  transform: scale(1.05);
+
+  /* Faster when hovering in */
+  transition: all var(--t3) var(--timing-function1);
+}
+
+#chart-controls .chart-control-btn svg {
+  fill: currentColor;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+#chart-section.snapped #chart-controls .chart-control-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Hide minimize when not snapped */
+#chart-section.chart-viewport #chart-minimize {
+  display: none;
+}
+
+/* Hide maximize when snapped */
+#chart-section.chart-viewport.snapped #chart-maximize {
+  display: none;
+}
+
+/* Show minimize when snapped */
+#chart-section.chart-viewport.snapped #chart-minimize {
+  display: initial;
 }
 
 /* ! EDITING *******************************/
@@ -414,13 +505,19 @@
 #chart-modal.chart-loading {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: var(--transition);
+
+  /* ! BUILDING 
+  opacity: 1;
+  visibility: visible; */
 }
 
 #chart-section.chart-viewport.viewport-visible,
 #chart-section.chart-viewport.viewport-visible #chart-modal.chart-loaded {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 #chart-modal-content {
@@ -432,7 +529,7 @@
   grid-template-areas: "title chart footer";
   row-gap: var(--md);
   column-gap: var(--lg);
-  padding: calc(var(--page-padding) * 2);
+  padding: var(--chart-padding);
 }
 
 #chart-title-container {
@@ -450,8 +547,23 @@
 #chart-title-container,
 #chart-footer {
   height: 100%;
-  z-index: 2;
   pointer-events: none; /* ! Revert to auto for links */
+}
+
+#chart-title,
+#chart-title-description {
+  /* Slower when hovering out */
+  transition: all var(--t6) var(--timing-function1);
+}
+
+#page-container:has(#navbar:hover)
+  #chart-section.chart-viewport.snapped
+  #chart-title,
+#page-container:has(#navbar:hover)
+  #chart-section.chart-viewport.snapped
+  #chart-title-description {
+  /* Faster when hovering in */
+  transition: all var(--t3) var(--timing-function1);
 }
 
 /*
@@ -528,36 +640,41 @@
   }
 }
 
+#chart-container {
+  position: relative;
+}
+
 #chart {
   width: var(--chart-width); /* Set by JS */
   height: var(--chart-height); /* Set by JS */
-
-  /* ! DEBUGGING
-  background-color: blue;
-  */
 }
 
 #legend {
+  --padding: 1rem;
+  --width: 15rem;
+  --height: 0.5rem;
+
+  color: var(--text-color-dark);
+  letter-spacing: 0;
+  font-weight: lighter;
+
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  width: calc(var(--width) + var(--padding) * 1.5);
+  height: calc(var(--height) + var(--padding) * 1.5);
+
   z-index: 2;
   pointer-events: none;
-
-  /* ! DEBUGGING */
-  background-color: red;
-  width: 16rem; /* ! TODO: REMOVE THIS AFTER DEBUGGING ! */
-  height: 0.75rem; /* ! TODO: REMOVE THIS AFTER DEBUGGING ! */
-  display: none;
 }
 
-#legend-svg {
-  --padding: 14px; /* ! EDITING */
-  --length: 250px; /* ! EDITING */
-
-  width: calc(var(--length) + var(--padding) * 2);
-  height: calc(8px + var(--padding) * 1.5);
+#chart-section.snapped #legend {
+  color: var(--text-color);
 }
 
 #legend .tick {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 #tooltip {

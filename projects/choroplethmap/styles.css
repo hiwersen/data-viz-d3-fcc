@@ -8,7 +8,7 @@
 #tooltip {
   width: 25rem;
   min-height: 25rem;
-  color: var(--text-color-light);
+  color: var(--text-color-accent);
 }
 
 #tooltip-title,
@@ -49,7 +49,7 @@
 #tooltip .data:not(.current-county) {
   --b-max: 0.5px solid var(--shadow-c3);
   --b-min: 0.5px solid var(--shadow-c2);
-  padding: 0.25rem 0;
+  padding: var(--sm) 0;
 }
 
 #tooltip .data-max .data {

@@ -250,9 +250,25 @@ export default function () {
         .attr("stroke-width", 0.7)
         .attr("d", d3.geoPath());
 
-      const legendViewBoxWidth = 250;
-      const legendViewBoxHeight = 8;
-      const legendPadding = 14;
+      const getProp = (id, prop) =>
+        parseFloat(
+          window
+            .getComputedStyle(document.getElementById(id))
+            .getPropertyValue(prop)
+        );
+
+      const rem = parseFloat(
+        window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue("font-size")
+      );
+      const legendPadding = getProp("legend", "--padding") * rem;
+      const legendWidth = getProp("legend", "--width") * rem;
+      const legendHeight = getProp("legend", "--height") * rem;
+
+      const legendViewBoxWidth = legendWidth;
+      const legendViewBoxHeight = legendHeight;
+
       const legendCellWidth = legendViewBoxWidth / colorScale.range().length;
       const legendViewBox = `0 0 ${legendViewBoxWidth + legendPadding * 2} ${legendViewBoxHeight + legendPadding * 1.5}`;
 

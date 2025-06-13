@@ -208,7 +208,7 @@ export class UpdateChartDimensions {
         .style.setProperty("--chart-width", `${finalWidth}px`);
     } else {
       // Portrait orientation - width is the limiting factor
-      baseWidth = this.viewportWidth - 2 * pagePadding;
+      baseWidth = this.viewportWidth - 4 * pagePadding;
       baseHeight = baseWidth / this.chartRatio;
 
       // Apply scaling

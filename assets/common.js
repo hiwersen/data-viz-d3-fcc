@@ -22,7 +22,7 @@ window.addEventListener("load", () => {
 
   new UpdateChartDimensions(
     svgRatio,
-    0.1, // 25% max-discount
+    0.1, // 10% max-discount
     0.2
   );
 

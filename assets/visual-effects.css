@@ -219,9 +219,9 @@ body::after {
   box-shadow:
     /* Outer shadow */
     3px 5px 30px 10px var(--shadow-c1),
-    /* Dark inner shadow at the top/left */ inset 1px 1px 1px var(--shadow-c4),
-    /* Subtle inner shadow all around */ inset 0 0 8px 2px var(--shadow-c1),
-    /* Light inner highlight at bottom/right to simulate reflection */ inset -1px -1px
+    /* Dark inner shadow at the top/left  inset 1px 1px 1px var(--shadow-c4), */
+      /* Subtle inner shadow all around inset 0 0 8px 2px var(--shadow-c1), */
+      /* Light inner highlight at bottom/right to simulate reflection */ inset -1px -1px
       1px var(--shadow-c2);
 
   border: 1px solid var(--shadow-c4);

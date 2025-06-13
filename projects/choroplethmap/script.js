@@ -230,13 +230,15 @@ export default function () {
           tooltip
             .style("top", top + "px")
             .style("left", left + "px")
-            .style("opacity", "1");
+            .style("opacity", "1")
+            .style("visibility", "visible");
         })
         .on("mouseout", () => {
           tooltip
-            .style("top", "-1000px")
-            .style("left", "-1000px")
-            .style("opacity", "0");
+            .style("top", "-1000dvh")
+            .style("left", "-1000dvw")
+            .style("opacity", "0")
+            .style("visibility", "hidden");
         });
 
       states

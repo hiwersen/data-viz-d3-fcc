@@ -213,7 +213,7 @@
 
 #navbar a:hover,
 #navbar a:active {
-  color: var(--text-color-light);
+  color: var(--text-color-light) !important;
 }
 
 /* TITLE */
@@ -301,12 +301,7 @@
     visibility var(--transition-duration) var(--timing-function1);
 }
 
-/* ! BUILDING */
-#chart-section::before,
-#chart-section::after {
-  display: none;
-}
-
+/* Snapped text colors */
 #page-container:has(#chart-section.chart-viewport.snapped) #navbar:hover {
   --text-color-dark: #b0cafdb8;
   --text-color: #c6d7fa;
@@ -336,29 +331,15 @@
   transform: translate(-50%, -50%) scale(1, 1);
   transition: all var(--snapping-from-duration) var(--timing-function1);
   box-shadow: 5px 5px 30px 10px var(--shadow-c4);
-
-  /* ! pointer-events: none;  Revert to auto when snapped */
-
-  /* ! BUILDING */
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 @media screen and (min-aspect-ratio: 1009/630) {
   #chart-section.chart-viewport {
-    --offset: 3rem;
+    --offset: calc(3rem + 10dvw);
     --base: 75dvh;
 
     height: var(--base);
-    width: calc(var(--base) * 1.6 + var(--offset));
-    /* 58dvw - 46dvw */
-
-    background-color: red !important;
-  }
-
-  #chart-title-container,
-  #chart-footer {
-    background-color: blue !important;
+    width: min(80dvw, calc(var(--base) * 1.7 + var(--offset)));
   }
 }
 
@@ -368,14 +349,7 @@
     --base: 48dvw;
 
     width: 75dvw;
-    height: calc(var(--base) + var(--offset)); /* 58dvw - 46dvw */
-
-    background-color: blue !important;
-  }
-
-  #chart-title-container,
-  #chart-footer {
-    background-color: red !important;
+    height: calc(var(--base) + var(--offset));
   }
 }
 
@@ -397,8 +371,6 @@
   display: flex;
   gap: var(--md);
   z-index: 2;
-
-  background-color: yellow;
 }
 
 #chart-controls .chart-control-btn {
@@ -444,85 +416,6 @@
   display: initial;
 }
 
-/* ! EDITING *******************************/
-
-#chart-navbar {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--page-padding);
-
-  width: fit-content;
-  overflow: visible;
-
-  z-index: 6;
-
-  transform: translateX(calc(-100% - var(--page-padding)));
-  /* Slower transition when returning (hover-out) */
-  transition: transform 2s var(--timing-function1);
-
-  /* ! DEBUGGING  
-  background-color: blue; */
-}
-
-#chart-navbar::before {
-  /* Increase hovering area */
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -1rem;
-  right: -1.25rem;
-
-  z-index: -1;
-  cursor: pointer;
-
-  /* Screen effect */
-  /*  #230008a4 */
-  background-color: #23000865;
-
-  box-shadow:
-    /* Outer shadow */
-    3px 5px 10px 2px #230008c2,
-    /* top/left */ inset 1px 1px 1px #5e848d,
-    /* all around */ inset 0 0 7px 2px #23000886,
-    /* bottom/right */ inset -1px -1px 1px #35518a;
-
-  border: 1px solid black;
-  backdrop-filter: grayscale(30%) contrast(1.1) blur(1.5px);
-
-  /* ! DEBUGGING: 
-  background-color: rgba(255, 255, 0, 0.355); */
-}
-
-#chart-navbar:hover {
-  /* Faster transition when hovering (hover-in) */
-  transition: transform 1.25s var(--timing-function1);
-  transform: translate(0) !important;
-}
-
-#chart-navbar ul {
-  position: relative;
-  align-items: flex-end;
-  /* ! DEBUGGING:
-  background-color: rgba(255, 255, 0, 0.456); */
-}
-
-#chart-navbar .arrow-right {
-  left: unset;
-  right: -2em;
-
-  /* ! DEBUGGING  
-  background-color: blue; */
-}
-
-#chart-navbar .nav-link:hover .arrow-right {
-  transform: translateX(0);
-}
-
-/* ! EDITING *******************************/
-
 #chart-modal {
   width: 100%;
   height: 100%;
@@ -535,9 +428,6 @@
   border: none;
   outline: none;
   background-color: initial;
-
-  /*  ! DEBUGGING 
-  background-color: rgba(255, 255, 0, 0.433); */
 }
 
 /* Hidden by default */
@@ -548,10 +438,6 @@
   visibility: hidden;
   pointer-events: none;
   transition: var(--transition);
-
-  /* ! BUILDING 
-  opacity: 1;
-  visibility: visible; */
 }
 
 #chart-section.chart-viewport.viewport-visible,
@@ -568,14 +454,7 @@
   grid-template-columns: max-content auto max-content;
   grid-template-rows: 1fr;
   grid-template-areas: "title chart footer";
-  /*
-  row-gap: var(--md);
-  column-gap: var(--lg);
-  */
   padding: var(--chart-padding);
-
-  /* ! BUILDING 
-  background-color: red; */
 }
 
 #chart-title-container {
@@ -595,9 +474,7 @@
 #chart-title-container,
 #chart-footer {
   height: 100%;
-  pointer-events: none; /* ! Revert to auto for links */
-
-  background-color: yellow;
+  pointer-events: none; /* ! Revert links to auto */
 }
 
 #chart-title,
@@ -615,13 +492,6 @@
   /* Faster when hovering in */
   transition: all var(--t3) var(--timing-function1);
 }
-
-/*
-#chart-title,
-#chart-footer {
-  color: var(--text-color);
-}
-  */
 
 #chart-footer a {
   pointer-events: initial;
@@ -649,13 +519,6 @@
 
 #chart-title {
   letter-spacing: 0.5rem;
-
-  /* !BUILDING */
-  background-color: deeppink;
-}
-
-#chart-title-description {
-  background-color: rgba(128, 255, 0, 0.414);
 }
 
 #chart-title-description,
@@ -699,15 +562,8 @@
 
 #chart-container {
   position: relative;
-
   width: var(--chart-width); /* Set by JS */
   height: var(--chart-height); /* Set by JS */
-
-  background-color: blue;
-}
-
-#chart {
-  background-color: yellow;
 }
 
 #legend {
@@ -715,7 +571,7 @@
   --width: 15rem;
   --height: 0.5rem;
 
-  color: var(--text-color-dark);
+  color: var(--text-color);
   letter-spacing: 0;
   font-weight: lighter;
 
@@ -730,10 +586,6 @@
   pointer-events: none;
 }
 
-#chart-section.snapped #legend {
-  color: var(--text-color);
-}
-
 #legend .tick {
   font-size: 0.8rem;
 }
@@ -741,8 +593,8 @@
 #tooltip {
   /* Some tooltip styles are defined at chart's styles */
   position: fixed;
-  top: -2000px;
-  left: -2000px;
+  top: -100dvh;
+  left: -100dvw;
   padding: 1.5rem;
   font-size: 0.65rem;
   line-height: 1.3;
@@ -750,7 +602,7 @@
   z-index: 1001;
   border-radius: var(--xs);
 
-  /* visibility: hidden; */
+  visibility: hidden;
   opacity: 0;
   pointer-events: none;
   transition: opacity 10s var(--timing-function1);
@@ -792,7 +644,7 @@
 #footer a,
 #footer a:visited {
   color: var(--c1);
-  background-color: var(--g9);
+  background-color: var(--text-color-light);
 }
 
 #footer a:hover,

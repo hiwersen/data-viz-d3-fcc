@@ -4,7 +4,7 @@ export class UpdateChartDimensions {
     this.maxDiscount = maxDiscount;
     this.sensitivity = sensitivity;
     this.isSnapped = false;
-    this.snapThreshold = 0.1;
+    this.snapThreshold = 0.05;
     this.lastDeltaY = 0;
     this.touchStartDistance = null;
 
@@ -13,7 +13,6 @@ export class UpdateChartDimensions {
     this.toggleSnap = this.toggleSnap.bind(this);
     this.flip = this.flip.bind(this);
     this.setDimensions = this.setDimensions.bind(this);
-    this.shouldSnap = this.shouldSnap.bind(this);
     this.handleResize = this.handleResize.bind(this);
     this.handleWheel = this.handleWheel.bind(this);
     this.handleTouch = this.handleTouch.bind(this);
@@ -25,10 +24,7 @@ export class UpdateChartDimensions {
   }
 
   snap() {
-    // console.log("@updateChartDimensions.snap");
-
-    // Only snap if there will be meaningful chart dimensions change to full-screen mode
-    if (!this.shouldSnap()) return;
+    console.log("@updateChartDimensions.snap");
 
     this.isSnapped = true;
 
@@ -155,19 +151,6 @@ export class UpdateChartDimensions {
       (1 - Math.min(this.ratioDifference / this.sensitivity, 1));
   }
 
-  shouldSnap() {
-    this.setDimensions();
-
-    const containerRect = this.chartContainer.getBoundingClientRect();
-    const containerRatio = parseFloat(
-      (containerRect.width / containerRect.height).toFixed(2)
-    );
-
-    const ratioDifference = Math.abs(containerRatio - this.chartRatio);
-
-    return this.discountFactor > this.snapThreshold || ratioDifference > 0.01;
-  }
-
   handleResize() {
     // console.log("@updateChartDimensions.handleResize");
 
@@ -230,6 +213,7 @@ export class UpdateChartDimensions {
 
     chartMaximize.addEventListener("click", () => {
       if (!this.isSnapped) {
+        console.log("@maximize");
         this.snap();
       }
     });

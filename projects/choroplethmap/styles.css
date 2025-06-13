@@ -47,8 +47,8 @@
 }
 
 #tooltip .data:not(.current-county) {
-  --b-max: 0.5px solid var(--shadow-c3);
-  --b-min: 0.5px solid var(--shadow-c2);
+  --b-max: 0.5px solid var(--text-color);
+  --b-min: 0.5px solid var(--text-color);
   padding: var(--sm) 0;
 }
 

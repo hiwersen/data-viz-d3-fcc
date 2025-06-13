@@ -3,7 +3,7 @@
  */
 
 html {
-  overflow: hidden;
+  overflow: hidden !important;
   height: 100dvh;
   width: 100dvw;
   display: flex;
@@ -13,13 +13,14 @@ html {
 }
 
 body {
+  overflow: hidden !important;
   position: relative;
   font-family: var(--font-main);
   color: var(--text-color);
   letter-spacing: var(--xxs);
   text-wrap: balance;
   z-index: 0;
-  overflow: hidden !important;
+
   /* Perspective settings */
   perspective: 2000px;
   perspective-origin: center center;

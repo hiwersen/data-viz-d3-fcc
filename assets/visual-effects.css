@@ -25,8 +25,14 @@ body::before {
     radial-gradient(ellipse 30% 18% at center 110%, #35518add, transparent),
     radial-gradient(ellipse 150% 18% at center 110%, #4a2b80d6, transparent);
 
+  /* ! Important to avoid overflow and scroll
+     ! since height is greater than 100% */
   top: 0;
-  bottom: unset;
+  left: 0;
+  bottom: initial;
+  right: initial;
+  transform: translate(-50%, -50%);
+
   height: 102%; /* +2% counteracts the unwanted black border caused by blur */
   background-size: 100% 225%;
   background-repeat: no-repeat;

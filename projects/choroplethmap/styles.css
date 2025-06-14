@@ -100,5 +100,5 @@
   animation-delay: 0s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: both;
-  animation-iteration-count: infinite;
+  animation-iteration-count: 1;
 }

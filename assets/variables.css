@@ -34,7 +34,7 @@
 
   /* Gradients */
   --gradient1: linear-gradient(to right, #eb77fb -50%, #00ffb9 200%);
-  --gradient2: linear-gradient(to bottom, #35518a, #fb6081a8 200%);
+  --gradient2: linear-gradient(to bottom, #35518a, #fb6081b0 200%);
 
   /* Masks */
   --mask1: radial-gradient(circle at center, black 50%, transparent 150%);

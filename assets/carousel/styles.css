@@ -9,6 +9,7 @@
   display: none; /* Safari and legacy Chromium */
 }
 
+:root,
 #carousel {
   /* 
     Card dimensions:
@@ -34,6 +35,7 @@
   screen and (max-height: 1079px) and (orientation: landscape),
   screen and (max-height: 1919px) and (orientation: portrait),
   screen and (max-width: 1079px) and (orientation: portrait) {
+  :root,
   #carousel {
     /*
       Card dimensions:

@@ -13,11 +13,15 @@
   z-index: 1;
 }
 
+#title-container {
+  z-index: 6;
+  pointer-events: none !important;
+}
+
 #carousel {
   z-index: 1;
 }
 
-#title-container,
 #footer {
   z-index: 2;
 }
@@ -35,7 +39,7 @@
 }
 
 #chart-title-container {
-  z-index: 6;
+  z-index: 7;
 }
 
 #page-container.grid {
@@ -296,6 +300,7 @@
   --snapping-from-duration: var(--t4);
   --border-width: 0.325rem;
   --chart-padding: calc(var(--page-padding) * 2);
+  --horizon: 50dvh; /* Updated @carousel setHorizon() */
 
   --transition-duration: var(--t9);
   --transition: opacity var(--transition-duration) var(--timing-function1),
@@ -359,9 +364,49 @@
   pointer-events: initial;
   width: calc(100% - var(--border-width) * 2);
   height: calc(100% - var(--border-width) * 2);
-  background-image: var(--gradient2);
   transition: all var(--snapping-to-duration) var(--timing-function1);
   backdrop-filter: blur(12px) grayscale(50%);
+
+  background-image: var(--gradient2);
+
+  --horizon-line: calc(var(--horizon) + var(--card-size) * 0.41);
+  --h-offset1: calc(var(--horizon-line) - 2%);
+  --h-offset2: calc(var(--horizon-line) + 2%);
+
+  background-image: linear-gradient(
+      to bottom,
+      rgb(53, 81, 138, 1) -50%,
+      transparent var(--horizon-line)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(216, 252, 242, 0.4) var(--horizon-line),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      transparent var(--h-offset1),
+      rgba(216, 252, 242, 0.124) var(--horizon-line),
+      transparent var(--h-offset2)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 25%,
+      rgba(251, 96, 129, 0.206) var(--horizon-line)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(251, 96, 129, 0.336) var(--horizon-line)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent var(--horizon-line),
+      rgba(0, 0, 0) 95%
+    );
+
+  background-color: rgba(53, 81, 138, 0.4);
 }
 
 #chart-controls {
@@ -543,8 +588,17 @@
       "footer";
   }
 
+  #page-container:has(#chart-section.snapped) #title-container,
+  #page-container:has(#chart-section.snapped) #info {
+    z-index: 3;
+    opacity: 0 !important;
+  }
+
   #chart-title-container {
     flex-direction: column;
+    transform: translateY(
+      calc(5dvh - 2dvw)
+    ); /* Avoid overlapping #chart-controls */
   }
 
   #chart-title,

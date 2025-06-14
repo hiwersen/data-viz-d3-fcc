@@ -1,7 +1,6 @@
 import { chartManager } from "../common.js";
 
 export function initCarousel() {
-  // console.log("hello carousel");
   // Get carousel elements
   const carousel = document.getElementById("carousel");
   const cardsContainer = document.getElementById("cards-container");
@@ -86,6 +85,7 @@ export function initCarousel() {
     setZIndex();
     setOpacity();
     setAlphaX();
+    setHorizon();
 
     // console.log("card width:", cardWidth);
     // console.log("gap:", gap);
@@ -355,6 +355,7 @@ export function initCarousel() {
         .getPropertyValue("column-gap")
         .slice(0, -2)
     );
+
     init();
   });
 
@@ -482,4 +483,20 @@ export function initCarousel() {
     snap(direction);
     keyDownTime = null;
   });
+}
+
+export function setHorizon() {
+  console.log("@setHorizon");
+
+  const cardsContainer = document.getElementById("cards-container");
+  const cardsW1 = [...cardsContainer.children];
+  const midIndex = Math.floor((cardsW1.length - 1) / 2);
+  const card = cardsW1[midIndex].querySelector(".card");
+
+  const cardRect = card.getBoundingClientRect();
+  const horizon = Math.round(cardRect.top + cardRect.height / 2);
+
+  const chartSection = document.getElementById("chart-section");
+
+  chartSection.style.setProperty("--horizon", `${horizon}px`);
 }

@@ -1,3 +1,5 @@
+import { setHorizon } from "./carousel/index.js";
+
 export class UpdateChartDimensions {
   constructor(chartRatio, maxDiscount, sensitivity) {
     this.chartRatio = chartRatio;
@@ -206,6 +208,8 @@ export class UpdateChartDimensions {
         .getElementById("chart-section")
         .style.setProperty("--chart-height", `${finalHeight}px`);
     }
+
+    setHorizon();
   }
 
   handleClick() {

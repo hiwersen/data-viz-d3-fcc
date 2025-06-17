@@ -44,7 +44,8 @@
     />
 
     <script src="./assets/common.js" type="module" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7" defer=""></script>
+    <script src="./assets/dynamicLetterSpacing.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7" defer></script>
     <script src="https://unpkg.com/topojson@3" defer></script>
     <script
       src="./projects/choroplethmap/script.js"
@@ -62,30 +63,30 @@
         <ul class="flex-col-start-between">
           <li id="bar-chart-link" class="nav-link">
             <a href="./projects/barchart/index.html" target="_blank"
-              ><span class="arrow-right">→</span>bar chart</a
+              ><span class="arrow-right">→</span><span>bar chart</span></a
             >
           </li>
 
           <li id="heat-map-link" class="nav-link">
             <a href="./projects/heatmap/index.html" target="_blank"
-              ><span class="arrow-right">→</span>heat map</a
+              ><span class="arrow-right">→</span><span>heat map</span></a
             >
           </li>
 
           <li id="choropleth-map-link" class="nav-link">
             <a href="./projects/choroplethmap/index.html" target="_blank"
-              ><span class="arrow-right">→</span>choropleth map</a
+              ><span class="arrow-right">→</span><span>choropleth map</span></a
             >
           </li>
 
           <li id="scatter-plot-link" class="nav-link">
             <a href="./projects/scatterplot" target="_blank"
-              ><span class="arrow-right">→</span>scatter plot</a
+              ><span class="arrow-right">→</span><span>scatter plot</span></a
             >
           </li>
           <li id="tree-map-link" class="nav-link">
             <a href="./projects/treemap/index.html" target="_blank"
-              ><span class="arrow-right">→</span>tree map</a
+              ><span class="arrow-right">→</span><span>tree map</span></a
             >
           </li>
         </ul>
@@ -121,7 +122,38 @@
               <div id="bar-chart" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">bar chart</span>
-                1
+                <div class="chart-image-container">
+                  <div class="chart-image-wrapper flex-col-center-center">
+                    <!--<div
+                    class="chart-image-wrapper flex-col-center-center slowFadeIn"
+                  >-->
+                    <img
+                      class="chart-image"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-background"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-floor"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                  </div>
+
+                  <div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>
+                  <!--<div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>-->
+                </div>
               </div>
             </div>
           </div>
@@ -131,7 +163,38 @@
               <div id="heat-map" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">heat map</span>
-                2
+                <div class="chart-image-container">
+                  <div class="chart-image-wrapper flex-col-center-center">
+                    <!--<div
+                    class="chart-image-wrapper flex-col-center-center slowFadeIn"
+                  >-->
+                    <img
+                      class="chart-image"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-background"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-floor"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                  </div>
+
+                  <div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>
+                  <!--<div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>-->
+                </div>
               </div>
             </div>
           </div>
@@ -142,9 +205,7 @@
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">choropleth map</span>
                 <div class="chart-image-container">
-                  <div
-                    class="chart-image-wrapper flex-col-center-center slowFadeIn"
-                  >
+                  <div class="chart-image-wrapper flex-col-center-center">
                     <!--<div
                     class="chart-image-wrapper flex-col-center-center slowFadeIn"
                   >-->
@@ -184,7 +245,38 @@
               <div id="scatter-plot" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">scatter plot</span>
-                4
+                <div class="chart-image-container">
+                  <div class="chart-image-wrapper flex-col-center-center">
+                    <!--<div
+                    class="chart-image-wrapper flex-col-center-center slowFadeIn"
+                  >-->
+                    <img
+                      class="chart-image"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-background"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-floor"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                  </div>
+
+                  <div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>
+                  <!--<div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>-->
+                </div>
               </div>
             </div>
           </div>
@@ -194,7 +286,38 @@
               <div id="tree-map" class="card">
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">tree map</span>
-                5
+                <div class="chart-image-container">
+                  <div class="chart-image-wrapper flex-col-center-center">
+                    <!--<div
+                    class="chart-image-wrapper flex-col-center-center slowFadeIn"
+                  >-->
+                    <img
+                      class="chart-image"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-background"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                    <img
+                      class="chart-image-reflex-floor"
+                      id="choropleth-map-image"
+                      src="./assets/images/choropleth.png"
+                      alt="USA choropleth map image dark blue and purple image"
+                    />
+                  </div>
+
+                  <div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>
+                  <!--<div
+                    class="chart-image-glow flex-col-center-center fastFadeIn"
+                  ></div>-->
+                </div>
               </div>
             </div>
           </div>

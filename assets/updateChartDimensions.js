@@ -209,6 +209,7 @@ export class UpdateChartDimensions {
         .style.setProperty("--chart-height", `${finalHeight}px`);
     }
 
+    // ! NOT IN USE
     setHorizon();
   }
 

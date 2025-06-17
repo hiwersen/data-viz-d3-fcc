@@ -13,7 +13,7 @@ export function staggeredAnimation(elements, animations, staggeredDelay) {
 
       baseDelay = parseFloat(baseDelay.slice(0, -1)) * 1000;
       const delay = baseDelay + staggeredDelay * Math.pow(i, 0.5);
-      const totalTime = delay + duration;
+      const totalTime = delay + duration + 1000;
 
       el.style.animationDelay = `${delay}ms`;
 

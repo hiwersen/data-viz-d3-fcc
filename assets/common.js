@@ -48,14 +48,16 @@ window.addEventListener("load", () => {
     const cardsW2 = document.querySelectorAll(".card-wrapper-2");
     staggeredAnimation(cardsW2, ["spinUp", "showUp"], 250);
 
-    // Remove chart images' fade in animation
     const chartImageWrappers = document.querySelectorAll(
       ".chart-image-wrapper"
     );
 
+    addAnimations(chartImageWrappers, ["slowFadeIn"]);
+
     setTimeout(() => {
+      // Remove chartImageWrappers's slowFadeIn in animation
       removeAnimations(chartImageWrappers, ["slowFadeIn"]);
-    }, 10100);
+    }, 12000);
 
     // Add infiniteSpin to #cardsContainer after first spin
     const cardsContainer = document.querySelector("#cards-container");

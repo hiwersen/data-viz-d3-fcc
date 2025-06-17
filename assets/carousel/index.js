@@ -151,6 +151,12 @@ export function initCarousel() {
     // Set event listeners for chart management
     chartManager.cardEventListeners(clone.querySelector(".chart-image"));
 
+    // Remove .card-wrapper-2's showUp and spinUp animation
+    clone.querySelector(".card-wrapper-2").classList.remove("spinUp", "showUp");
+
+    // Remove .chart-image-wrapper's slowFadeIn animation
+    clone.querySelector(".chart-image-wrapper").classList.remove("slowFadeIn");
+
     console.log(clone.querySelector(".chart-image"));
   }
 
@@ -187,6 +193,10 @@ export function initCarousel() {
     const carouselCenter = getCarouselCenter();
     // Card's center to the carousel's left
     const cardCenter = i * (cardWidth + gap) + cardWidth / 2;
+
+    console.log("carousel center:", carouselCenter);
+    //console.log("card center:", cardCenter);
+
     return Math.abs(cardCenter + translateX - carouselCenter);
   }
 
@@ -228,6 +238,12 @@ export function initCarousel() {
       } else if (link) {
         link.classList.remove("pushed");
       }
+
+      // console.log(card);
+      // console.log(cardId);
+      // console.log(link);
+      console.log(x);
+      // console.log(link.classList);
     });
   }
 
@@ -486,7 +502,7 @@ export function initCarousel() {
 }
 
 export function setHorizon() {
-  console.log("@setHorizon");
+  // console.log("@setHorizon");
 
   const cardsContainer = document.getElementById("cards-container");
   const cardsW1 = [...cardsContainer.children];
@@ -494,7 +510,7 @@ export function setHorizon() {
   const card = cardsW1[midIndex].querySelector(".card");
 
   const cardRect = card.getBoundingClientRect();
-  const horizon = Math.round(cardRect.top + cardRect.height / 2);
+  const horizon = Math.round(cardRect.top + cardRect.height);
 
   const chartSection = document.getElementById("chart-section");
 

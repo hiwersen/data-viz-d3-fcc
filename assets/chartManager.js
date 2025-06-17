@@ -58,7 +58,7 @@ export class ChartManager {
     // Prevent loading same chart or concurrent loads
     if (this.currentChart === chartType || this.isLoading) return;
 
-    console.log("@loadChart");
+    // console.log("@loadChart");
 
     this.isLoading = true;
 
@@ -133,7 +133,7 @@ export class ChartManager {
   }
 
   showChart() {
-    console.log("@showChart");
+    // console.log("@showChart");
 
     if (this.isChartOpen) return;
 
@@ -144,7 +144,7 @@ export class ChartManager {
   }
 
   hideChart() {
-    console.log("@hideChart");
+    // console.log("@hideChart");
 
     if (!this.isChartOpen) return;
 
@@ -166,7 +166,7 @@ export class ChartManager {
   }
 
   startHideTimer() {
-    console.log("@setupChartHiding");
+    // console.log("@setupChartHiding");
     // Set an arbitrary delay before hiding chart
     // The user may hover back onto triggering areas (navbar, cards, chart)
     const delay = 500; // ms
@@ -190,7 +190,7 @@ export class ChartManager {
   }
 
   navLinksEventListeners() {
-    console.log("@navbarHoverListeners");
+    // console.log("@navbarHoverListeners");
 
     this.navLinks.forEach((link) => {
       const chartType = link.id.replace("-link", "");
@@ -204,7 +204,7 @@ export class ChartManager {
   }
 
   chartViewportEventListeners() {
-    console.log("@chartViewportEventListeners");
+    // console.log("@chartViewportEventListeners");
 
     const getInteractionState = (e) => {
       const viewportRect = this.chartViewport.getBoundingClientRect();
@@ -256,14 +256,14 @@ export class ChartManager {
     const chartClose = document.getElementById("chart-close");
 
     chartClose.addEventListener("click", () => {
-      console.log("@chartClose click");
+      // console.log("@chartClose click");
       this.cancelHideTimer();
       this.hideChart();
     });
   }
 
   cardEventListeners(card) {
-    console.log("@cardEventListeners");
+    // console.log("@cardEventListeners");
 
     if (!card) return;
 
@@ -284,13 +284,13 @@ export class ChartManager {
   }
 
   cardsEventListeners() {
-    console.log("@cardsEventListeners");
+    // console.log("@cardsEventListeners");
 
     this.cards.forEach(this.cardEventListeners);
   }
 
   init() {
-    console.log("@initializeEventListeners");
+    // console.log("@initializeEventListeners");
 
     this.navbarEventListeners();
     this.navLinksEventListeners();

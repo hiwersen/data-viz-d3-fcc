@@ -3,5 +3,5 @@ export function addAnimations(elements, animations) {
     el.classList.add(...animations);
   });
 
-  console.log(elements);
+  // console.log(elements);
 }

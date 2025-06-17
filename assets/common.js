@@ -57,7 +57,7 @@ window.addEventListener("load", () => {
     setTimeout(() => {
       // Remove chartImageWrappers's slowFadeIn in animation
       removeAnimations(chartImageWrappers, ["slowFadeIn"]);
-    }, 12000);
+    }, 11600);
 
     // Add infiniteSpin to #cardsContainer after first spin
     const cardsContainer = document.querySelector("#cards-container");

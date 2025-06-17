@@ -40,7 +40,7 @@ export function initCarousel() {
     ) * 1000;
 
   // Set snap parameters
-  const snapThreshold = (cardWidth + gap) * 0.5;
+  let snapThreshold = (cardWidth + gap) * 0.5;
   const transitionDurationSnap = transitionDuration * 2;
   // Flag to prevent multiple concurrent translations
   let isSnapping = false;
@@ -80,7 +80,7 @@ export function initCarousel() {
       const z = getTranslateZQuadratic(i);
       card.style.transform = `translate3D(${translateX}px, 0px, ${z}px)`;
 
-      // console.log(`z i: ${i}`, Math.round(z));
+      // console.log(`i: ${i}`, `x: ${translateX}`, `z: ${z}`);
     });
     setZIndex();
     setOpacity();
@@ -206,8 +206,10 @@ export function initCarousel() {
 
     const normalized = distance / maxDistance;
 
+    console.log("distance:", distance, "maxDistance:", maxDistance);
+
     // Round very small values to 0 for the center card
-    return Math.abs(normalized) < 0.001 ? 0 : normalized;
+    return Math.abs(normalized) < 0.0001 ? 0 : normalized;
   }
 
   function getZIndex(i) {
@@ -263,6 +265,8 @@ export function initCarousel() {
   function getTranslateZQuadratic(i) {
     // Get normalized distance x to center (0-1)
     const x = normalizeX(i);
+
+    // ! console.log("i:", i, "x:", x);
 
     // Define max z translation (deepest point of the arch)
     const maxZ = Math.floor((cardsCount - 1) / 2) * (cardWidth * 0.5);
@@ -366,15 +370,23 @@ export function initCarousel() {
    */
 
   window.addEventListener("resize", () => {
-    cardWidth = cards[0].offsetWidth;
-    gap = Number(
-      window
-        .getComputedStyle(cardsContainer)
-        .getPropertyValue("column-gap")
-        .slice(0, -2)
-    );
+    // Add a debounce
+    setTimeout(() => {
+      // Reset carousel's state
+      translateX = 0;
+      cardWidth = cards[0].offsetWidth;
+      gap = Number(
+        window
+          .getComputedStyle(cardsContainer)
+          .getPropertyValue("column-gap")
+          .slice(0, -2)
+      );
+      snapThreshold = (cardWidth + gap) * 0.5;
+      isSnapping = false;
 
-    init();
+      // Reset carousel
+      init();
+    }, transitionDurationSnap + 50); // Add a 50ms delay to let the browser complete the layout
   });
 
   /**

@@ -113,9 +113,6 @@
   position: relative;
   overflow: visible;
   letter-spacing: var(--xs);
-
-  /* ! DEBUGGING */
-  display: none;
 }
 
 #navbar ul {

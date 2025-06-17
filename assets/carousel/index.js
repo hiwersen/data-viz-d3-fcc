@@ -157,7 +157,7 @@ export function initCarousel() {
     // Remove .chart-image-wrapper's slowFadeIn animation
     clone.querySelector(".chart-image-wrapper").classList.remove("slowFadeIn");
 
-    console.log(clone.querySelector(".chart-image"));
+    // console.log(clone.querySelector(".chart-image"));
   }
 
   // Function to temporarily disable transitions
@@ -185,27 +185,29 @@ export function initCarousel() {
   }
 
   function getCarouselCenter() {
-    return (cardWidth * cardsCount + gap * (cardsCount - 1)) / 2;
+    return Math.round((cardWidth * cardsCount + gap * (cardsCount - 1)) / 2);
   }
 
   // Function to get the distance from the card's center to the carousel's center
   function getCardCenterFromCarouselCenter(i) {
     const carouselCenter = getCarouselCenter();
     // Card's center to the carousel's left
-    const cardCenter = i * (cardWidth + gap) + cardWidth / 2;
+    const cardCenter = Math.round(i * (cardWidth + gap) + cardWidth / 2);
+    const distance = Math.abs(cardCenter + translateX - carouselCenter);
 
-    console.log("carousel center:", carouselCenter);
-    //console.log("card center:", cardCenter);
-
-    return Math.abs(cardCenter + translateX - carouselCenter);
+    // Add a small threshold to handle floating-point precision
+    return distance < 0.001 ? 0 : distance;
   }
 
   // Function to get the card's normalized distance (0-1) from the center on the x-axis
   function normalizeX(i) {
-    return (
-      getCardCenterFromCarouselCenter(i) /
-      (getCarouselCenter() - cardWidth * 0.5)
-    );
+    const distance = getCardCenterFromCarouselCenter(i);
+    const maxDistance = getCarouselCenter() - cardWidth * 0.5;
+
+    const normalized = distance / maxDistance;
+
+    // Round very small values to 0 for the center card
+    return Math.abs(normalized) < 0.001 ? 0 : normalized;
   }
 
   function getZIndex(i) {

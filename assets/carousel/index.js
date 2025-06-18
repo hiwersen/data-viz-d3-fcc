@@ -206,8 +206,6 @@ export function initCarousel() {
 
     const normalized = distance / maxDistance;
 
-    console.log("distance:", distance, "maxDistance:", maxDistance);
-
     // Round very small values to 0 for the center card
     return Math.abs(normalized) < 0.0001 ? 0 : normalized;
   }
@@ -300,8 +298,9 @@ export function initCarousel() {
     const cards = [...cardsContainer.children];
 
     if (now - start < startOpacity) {
-      cards.at(0).style.opacity = 0.75;
-      cards.at(-1).style.opacity = 0.75;
+      // Set clones' opacity to zero - initially:
+      leftClone.style.opacity = 0;
+      rightClone.style.opacity = 0;
       return;
     }
 
@@ -370,23 +369,25 @@ export function initCarousel() {
    */
 
   window.addEventListener("resize", () => {
-    // Add a debounce
-    setTimeout(() => {
-      // Reset carousel's state
-      translateX = 0;
-      cardWidth = cards[0].offsetWidth;
-      gap = Number(
-        window
-          .getComputedStyle(cardsContainer)
-          .getPropertyValue("column-gap")
-          .slice(0, -2)
-      );
-      snapThreshold = (cardWidth + gap) * 0.5;
-      isSnapping = false;
+    console.log("resize");
 
-      // Reset carousel
-      init();
-    }, transitionDurationSnap + 50); // Add a 50ms delay to let the browser complete the layout
+    const cards = document.querySelectorAll("#carousel .card");
+
+    // Reset carousel's state
+    translateX = 0;
+    cardWidth = cards[0].offsetWidth;
+    gap = Number(
+      window
+        .getComputedStyle(cardsContainer)
+        .getPropertyValue("column-gap")
+        .slice(0, -2)
+    );
+
+    snapThreshold = (cardWidth + gap) * 0.5;
+    isSnapping = false;
+
+    // Reset carousel
+    init();
   });
 
   /**

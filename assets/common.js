@@ -46,7 +46,7 @@ window.addEventListener("load", () => {
 
     // Initialize card animations
     const cardsW2 = document.querySelectorAll(".card-wrapper-2");
-    staggeredAnimation(cardsW2, ["spinUp", "showUp"], 250);
+    staggeredAnimation(cardsW2, ["spinUp", "showUp"], 500);
 
     const chartImageWrappers = document.querySelectorAll(
       ".chart-image-wrapper"

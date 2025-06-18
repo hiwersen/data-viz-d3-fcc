@@ -103,6 +103,22 @@
   }
 }
 
+@media screen and (max-height: 600px) {
+  /* --------- Small devices ------------ */
+  #info {
+    position: absolute !important;
+    top: 0;
+
+    background-color: red;
+
+    display: none;
+  }
+
+  #carousel {
+    background-color: yellow;
+  }
+}
+
 /* 
  * SECTION STYLES
  */

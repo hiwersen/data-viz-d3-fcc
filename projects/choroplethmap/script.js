@@ -11,8 +11,7 @@ export default function () {
 
   const chartSvg = d3
     .select("#chart")
-    //.append("svg")
-    //.attr("id", "svg")
+    .attr("class", "choropleth-map")
     .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
 

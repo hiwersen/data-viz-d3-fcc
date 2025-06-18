@@ -3,6 +3,7 @@
 
 .county:hover {
   fill: var(--c1);
+  cursor: crosshair;
 }
 
 #tooltip {
@@ -101,4 +102,9 @@
   animation-timing-function: ease-in-out;
   animation-fill-mode: both;
   animation-iteration-count: 1;
+}
+
+#chart.choropleth-map ~ #legend {
+  /* Right-align legend with chart's rightmost edge  */
+  transform: translateX(calc(1em - var(--chart-width) * 0.02));
 }

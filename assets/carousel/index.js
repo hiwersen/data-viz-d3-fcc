@@ -207,7 +207,7 @@ export function initCarousel() {
     const normalized = distance / maxDistance;
 
     // Round very small values to 0 for the center card
-    return Math.abs(normalized) < 0.0001 ? 0 : normalized;
+    return Math.abs(normalized) < 0.005 ? 0 : normalized;
   }
 
   function getZIndex(i) {
@@ -232,10 +232,11 @@ export function initCarousel() {
           link.classList.add("pushed");
         }
 
+        // ! DEBUGGING
         // Load chart if viewport is visible
         if (chartManager.isChartOpen) {
           const chartType = cardId;
-          chartManager.loadChart(chartType);
+          // ! chartManager.loadChart(chartType);
         }
       } else if (link) {
         link.classList.remove("pushed");
@@ -369,25 +370,27 @@ export function initCarousel() {
    */
 
   window.addEventListener("resize", () => {
-    console.log("resize");
+    // console.log("resize");
 
-    const cards = document.querySelectorAll("#carousel .card");
+    setTimeout(() => {
+      const cards = document.querySelectorAll("#carousel .card");
 
-    // Reset carousel's state
-    translateX = 0;
-    cardWidth = cards[0].offsetWidth;
-    gap = Number(
-      window
-        .getComputedStyle(cardsContainer)
-        .getPropertyValue("column-gap")
-        .slice(0, -2)
-    );
+      // Reset carousel's state
+      translateX = 0;
+      cardWidth = cards[0].offsetWidth;
+      gap = Number(
+        window
+          .getComputedStyle(cardsContainer)
+          .getPropertyValue("column-gap")
+          .slice(0, -2)
+      );
 
-    snapThreshold = (cardWidth + gap) * 0.5;
-    isSnapping = false;
+      snapThreshold = (cardWidth + gap) * 0.5;
+      isSnapping = false;
 
-    // Reset carousel
-    init();
+      // Reset carousel
+      init();
+    }, transitionDurationSnap + 50);
   });
 
   /**
@@ -399,7 +402,9 @@ export function initCarousel() {
       e.preventDefault();
 
       // Skip if snap translation is in progress
+      console.log("wheel before snapping check");
       if (isSnapping) return;
+      console.log("wheel after snapping check");
 
       updateTranslateX(e.deltaY, wheelSpeed);
 

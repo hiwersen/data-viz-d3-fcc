@@ -231,17 +231,17 @@
 }
 
 #carousel .card .chart-label {
-  font-size: 1rem;
-  letter-spacing: 0.5rem;
+  font-size: min(calc(var(--card-size) * 0.05), 1rem);
+  letter-spacing: 0.5em;
   position: absolute;
-  top: calc(10% - 2em);
+  top: calc(10% - 1.5em);
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
 
   width: calc(100% - var(--padding) * 2);
   text-align: center;
-  padding: var(--xxs);
+  padding-left: 0.5em;
 }
 
 #carousel .card .chart-label.gradient-text {

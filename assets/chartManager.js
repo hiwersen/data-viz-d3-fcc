@@ -292,9 +292,15 @@ export class ChartManager {
   init() {
     // console.log("@initializeEventListeners");
 
+    /*
     this.navbarEventListeners();
     this.navLinksEventListeners();
     this.chartViewportEventListeners();
     this.cardsEventListeners();
+    */
+
+    // ! DEBUGGING
+    this.showChart();
+    this.loadChart("choropleth-map");
   }
 }

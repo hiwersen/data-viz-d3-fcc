@@ -114,9 +114,11 @@
     display: none;
   }
 
+  /* ! BUILDING
   #carousel {
     background-color: yellow;
   }
+    */
 }
 
 /* 
@@ -624,6 +626,14 @@
   width: var(--chart-width); /* Set by JS */
   height: var(--chart-height); /* Set by JS */
   padding: var(--lg);
+
+  /* ! DEBUGGING */
+  background-color: blue;
+}
+
+#chart {
+  /* ! DEBUGGING */
+  background-color: yellow;
 }
 
 #legend {
@@ -636,15 +646,14 @@
   font-weight: lighter;
 
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: -0.25rem;
+  right: var(--lg); /* chart-container's padding */
 
   width: calc(var(--width) + var(--padding) * 1.5);
   height: calc(var(--height) + var(--padding) * 1.5);
 
   z-index: 2;
   pointer-events: none;
-  transform: translateY(0.25em);
 }
 
 #legend .tick {

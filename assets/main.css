@@ -106,19 +106,8 @@
 @media screen and (max-height: 600px) {
   /* --------- Small devices ------------ */
   #info {
-    position: absolute !important;
-    top: 0;
-
-    background-color: red;
-
     display: none;
   }
-
-  /* ! BUILDING
-  #carousel {
-    background-color: yellow;
-  }
-    */
 }
 
 /* 
@@ -131,6 +120,7 @@
   position: relative;
   overflow: visible;
   letter-spacing: var(--xs);
+  pointer-events: none; /* ! Revert for small screens */
 }
 
 #navbar ul {
@@ -140,29 +130,32 @@
 #navbar .nav-link {
   position: relative;
 
-  /* Slower transition when returning (hover-out) */
-  transition: transform var(--t8) var(--timing-function1);
+  /* Slower transition when hovering out */
+  transition: transform var(--t6) var(--timing-function1);
 }
 
 #navbar .nav-link.pushed,
 #navbar .nav-link:hover {
   /* Faster transition when hovering in */
-  transition: transform var(--t6) var(--timing-function1);
+  transition: transform var(--t4) var(--timing-function1);
 }
 
 #navbar .arrow-right {
   color: transparent;
   background-image: var(--gradient1);
   background-clip: text;
-  position: absolute;
   font-size: 1.1em;
-  transition: transform var(--t3) var(--timing-function3);
+  transition: transform var(--t4) var(--timing-function1);
+  position: absolute;
+  /* ! Important: use display inline-block
+     ! when applying transforms
+     ! if position is relative  */
 }
 
 @media screen and (orientation: landscape) {
   #navbar {
     width: fit-content;
-    padding-right: 2rem;
+    padding-right: 1em;
   }
 
   #navbar ul {
@@ -175,17 +168,16 @@
 
   #navbar .nav-link.pushed,
   #navbar .nav-link:hover {
-    transform: translateX(1.1em);
+    transform: translateX(1em);
   }
 
   #navbar .arrow-right {
-    margin-right: var(--sm);
-    left: -1.35em;
-    transform: translateX(-0.5em);
+    top: -0.2em;
+    transform: translateX(-1.2em);
   }
 
   #navbar .nav-link:hover .arrow-right {
-    transform: translateX(0.25rem);
+    transform: translateX(-1em);
   }
 }
 
@@ -196,10 +188,18 @@
 
     writing-mode: sideways-lr;
     height: fit-content;
-    align-self: end;
+    width: 100%;
 
-    transform: translateY(-2rem);
+    align-self: end;
+    justify-self: center;
+    padding-top: 1em;
+    bottom: 2rem;
   }
+
+  #gallery-page:has(#chart-section.snapped) #navbar {
+    width: calc(100% - var(--page-padding) * 3);
+  }
+
   #navbar ul {
     width: 100%;
   }
@@ -210,17 +210,16 @@
 
   #navbar .nav-link.pushed,
   #navbar .nav-link:hover {
-    transform: translateY(-1.1em);
+    transform: translateY(-1em);
   }
 
   #navbar .arrow-right {
-    margin-bottom: var(--sm);
-    bottom: -1.35em;
-    transform: translateY(0.5em);
+    left: -0.2em;
+    transform: translateY(1.2em);
   }
 
   #navbar .nav-link:hover .arrow-right {
-    transform: translateY(0);
+    transform: translateY(1em);
   }
 
   #navbar a {
@@ -389,17 +388,108 @@
     --base: 75dvh;
 
     height: var(--base);
-    width: min(80dvw, calc(var(--base) * 1.7 + var(--offset)));
+    width: min(85dvw, calc(var(--base) * 1.7 + var(--offset)));
   }
 }
 
 @media screen and (max-aspect-ratio: 1008/630) {
   #chart-section.chart-viewport {
-    --offset: 7rem;
-    --base: 48dvw;
+    --offset: calc(3rem + 20dvh);
+    --base: 85dvw;
 
-    width: 75dvw;
-    height: calc(var(--base) + var(--offset));
+    width: var(--base);
+    height: min(85dvh, calc(var(--base) / 1.7 + var(--offset)));
+  }
+}
+
+@media screen and (max-width: 600px), screen and (max-height: 600px) {
+  #chart-section:not(.snapped),
+  #chart-section:not(.snapped) #chart-footer {
+    font-size: 0.8rem;
+  }
+
+  #chart-section:not(.snapped) #chart-title {
+    letter-spacing: 0 !important;
+  }
+
+  #chart-section #chart-title-description {
+    display: none;
+  }
+
+  #navbar {
+    pointer-events: auto;
+    transition: transform var(--t6) var(--t1) var(--timing-function1);
+  }
+
+  #navbar:hover {
+    transition: transform var(--t4) var(--timing-function1);
+  }
+
+  #navbar ul {
+    align-items: flex-end;
+  }
+
+  #navbar a {
+    position: relative;
+  }
+
+  @media screen and (orientation: landscape) {
+    #navbar {
+      transform: translateX(-93%);
+    }
+
+    #navbar:hover {
+      transform: translateX(0);
+    }
+
+    #navbar .arrow-right {
+      right: -2.25em;
+    }
+  }
+
+  @media screen and (orientation: portrait) {
+    #navbar {
+      transform: translateY(110%);
+    }
+
+    #navbar:hover {
+      transform: translateY(35%);
+    }
+
+    #navbar .arrow-right {
+      top: -2.25em;
+    }
+  }
+
+  #gallery-page:has(#chart-section.viewport-visible) #tooltip {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+
+@media screen and (max-width: 350px), screen and (max-height: 350px) {
+  #chart-section:not(.snapped),
+  #chart-section:not(.snapped) #chart-footer {
+    font-size: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 320px), screen and (max-height: 320px) {
+  #chart-section,
+  #chart-title,
+  #tooltip * {
+    font-size: 0.8rem !important;
+  }
+
+  #chart-section #chart-title,
+  #chart-section #chart-footer {
+    letter-spacing: 0;
+  }
+
+  #chart-controls .chart-control-btn svg {
+    width: 0.6rem;
+    height: 0.6rem;
   }
 }
 
@@ -527,6 +617,7 @@
 #chart-footer {
   height: 100%;
   pointer-events: none; /* ! Revert links to auto */
+  text-align: center;
 }
 
 #chart-title,
@@ -602,9 +693,7 @@
 
   #chart-title-container {
     flex-direction: column;
-    transform: translateY(
-      calc(5dvh - 2dvw)
-    ); /* Avoid overlapping #chart-controls */
+    transform: translateY(1.5rem); /* Avoid overlapping #chart-controls */
   }
 
   #chart-title,
@@ -622,18 +711,11 @@
 }
 
 #chart-container {
+  --cc-padding: 2dvw;
   position: relative;
   width: var(--chart-width); /* Set by JS */
   height: var(--chart-height); /* Set by JS */
-  padding: var(--lg);
-
-  /* ! DEBUGGING */
-  background-color: blue;
-}
-
-#chart {
-  /* ! DEBUGGING */
-  background-color: yellow;
+  padding: var(--cc-padding);
 }
 
 #legend {
@@ -647,7 +729,7 @@
 
   position: absolute;
   bottom: -0.25rem;
-  right: var(--lg); /* chart-container's padding */
+  right: var(--cc-padding); /* chart-container's padding */
 
   width: calc(var(--width) + var(--padding) * 1.5);
   height: calc(var(--height) + var(--padding) * 1.5);
@@ -656,26 +738,27 @@
   pointer-events: none;
 }
 
-#legend .tick {
-  font-size: 0.8rem;
-}
-
 #tooltip {
   /* Some tooltip styles are defined at chart's styles */
   position: fixed;
   top: -100dvh;
   left: -100dvw;
-  padding: 1.5rem;
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   line-height: 1.3;
+  padding: 1.5em;
+  margin: 0.5em;
   overflow: visible;
-  z-index: 1001;
+  z-index: 9999 !important;
   border-radius: var(--xs);
 
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
   transition: opacity 10s var(--timing-function1);
+
+  /* ! BUILDING */
+  visibility: visible;
+  opacity: 1;
 }
 
 #tooltip-content {
@@ -684,12 +767,13 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1em;
 }
 
 #tooltip-footer {
   font-style: italic;
   justify-self: flex-end;
+  text-align: center;
 }
 
 /*

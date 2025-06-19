@@ -100,7 +100,7 @@ body::after {
 /* Chart border - glass effect */
 #chart-section::before {
   /* Line settings */
-  --line-thin: 0.25rem; /* 0.0625rem; /* 1px at rem 16px*/
+  --line-thin: 0.25rem;
   --line-c: var(--g9);
   --line-step1: 0%;
   --line-step2: calc(var(--line-step1) + var(--line-thin));
@@ -224,7 +224,7 @@ body::after {
 
   box-shadow:
     /* Outer shadow */
-    3px 5px 30px 10px var(--shadow-c1),
+    -3px -5px 30px 10px var(--shadow-c1),
     inset -1px -1px 1px var(--text-color-dark);
 
   border: 1px solid var(--shadow-c4);

@@ -7,8 +7,9 @@
 }
 
 #tooltip {
-  width: 25rem;
-  min-height: 25rem;
+  width: 35em;
+  max-width: calc(100dvw - 2em);
+  min-height: min(25em, calc(100dvh - 2em));
   color: var(--text-color-accent);
 }
 
@@ -19,6 +20,14 @@
   text-align: center;
 }
 
+@media screen and (max-width: 320px), screen and (max-height: 320px) {
+  #tooltip-title,
+  #tooltip .current-county {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+
 #data-container {
   width: 100%;
   flex: 1;
@@ -26,21 +35,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1em;
 }
 
 #tooltip .data-max,
 #tooltip .data-min {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1em;
 }
 
 #tooltip .data {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.25rem;
+  gap: 0.25em;
 }
 
 #tooltip .current-county .data-value {

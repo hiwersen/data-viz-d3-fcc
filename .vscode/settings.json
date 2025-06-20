@@ -4,6 +4,7 @@
     "choroplethmap",
     "scatterplot",
     "swipeable",
+    "topojson",
     "treemap"
   ]
 }

@@ -1,8 +1,7 @@
+import { colorThemes } from "../../color-themes.js";
+import { setTooltipPos } from "../../assets/setTooltipPos.js";
+
 export default function () {
-  console.log("hello heat map");
-
-  return;
-
   const url =
     "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
   const req = new XMLHttpRequest();
@@ -11,8 +10,7 @@ export default function () {
   req.send();
   req.onload = () => {
     const response = JSON.parse(req.responseText);
-    const { monthlyVariance: dataset } = response;
-    const { baseTemperature } = response;
+    const { monthlyVariance: dataset, baseTemperature } = response;
 
     dataset.forEach((d) => {
       --d.month;
@@ -23,158 +21,185 @@ export default function () {
     const maxX = d3.max(dataset, (d) => d.year);
     const minY = d3.min(dataset, (d) => d.month);
     const maxY = d3.max(dataset, (d) => d.month);
-    const minTemp = d3.min(dataset, (d) => d.temperature);
-    const maxTemp = d3.max(dataset, (d) => d.temperature);
 
-    const svgW = 1200;
-    const svgH = 500;
-    const paddingW = 80; // SVG area
-    const paddingH = 60; // SVG area
+    const stats = getStats(dataset);
+    const maxTemp = stats.max.temperature;
+    const maxYear = stats.max.year;
+    const maxMonth = stats.max.month;
+
+    const minTemp = stats.min.temperature;
+    const minYear = stats.min.year;
+    const minMonth = stats.min.month;
+
+    //console.log(stats);
+
+    const aspectRatio = 2.4;
+    const viewBoxWidth = 1200;
+    const viewBoxHeight = viewBoxWidth / aspectRatio;
+    const paddingWidth = 80; // Allow space for vertical axis
+    const paddingHeight = 60; // Allow space for horizontal axis
     const domainPadding = 1; // 1 year
-    const cellW = svgW / (maxX - minX + 1);
-    const cellH = (svgH - 2 * paddingH) / 12;
+    const cellWidth = viewBoxWidth / (maxX - minX + 1);
+    const cellHeight = (viewBoxHeight - 2 * paddingHeight) / 12;
 
-    const monthScale = d3
-      .scaleQuantize()
-      .domain([0, 11])
-      .range([
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ]);
+    const chart = d3
+      .select("#chart")
+      .attr("class", "heat-map")
+      .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
 
+    const tooltip = d3.select("#tooltip");
+
+    d3.select("#chart-title").text("Global Land-Surface Temperature");
+    d3.select("#chart-title-description").text(
+      `${minX} - ${maxX}: base temperature ${baseTemperature}℃`
+    );
+    d3.select("#chart-source a")
+      .text("freeCodeCamp Project Reference Data")
+      .attr("href", url);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const monthScale = d3.scaleQuantize().domain([0, 11]).range(months);
+
+    const colorTheme = colorThemes[2];
     const colorScale = d3
       .scaleQuantize()
-      .domain([minTemp, maxTemp]) // both are inclusive
-      .range([
-        "#005F73",
-        "#0A9396",
-        "#94D2BD",
-        "#F7F0DE",
-        "#FFDB99",
-        "#FDA349",
-        "#FC6722",
-        "#DE2817",
-        "#9B2226",
-      ]);
+      .domain([minTemp, maxTemp])
+      .range(colorTheme);
 
     const xScale = d3
       .scaleLinear()
       .domain([minX, maxX + domainPadding])
-      .range([paddingW, svgW - paddingW]);
+      .range([paddingWidth, viewBoxWidth - paddingWidth]);
 
     const yScale = d3
       .scaleLinear()
       .domain([minY, maxY])
-      .range([svgH - paddingH - cellH, paddingH]);
+      .range([viewBoxHeight - paddingHeight - cellHeight, paddingHeight]);
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("id", "tooltip")
-      .attr("class", "tooltip")
-      .style("opacity", 0)
-      .style("position", "absolute")
-      .style("left", "-100px")
-      .style("top", "-100px");
-
-    const svg = d3
-      .select("#chart-container")
-      .append("svg")
-      .attr("id", "svg")
-      .attr("width", svgW)
-      .attr("height", svgH);
-
-    svg
+    chart
       .selectAll("rect")
       .data(dataset)
       .enter()
       .append("rect")
       .attr("x", (d) => xScale(d.year))
       .attr("y", (d) => yScale(d.month))
-      .attr("width", cellW)
-      .attr("height", cellH)
+      .attr("width", cellWidth)
+      .attr("height", cellHeight)
       .attr("fill", (d) => colorScale(d.temperature))
       .attr("class", "cell")
       .attr("data-year", (d) => d.year)
       .attr("data-month", (d) => d.month)
       .attr("data-temp", (d) => d.temperature)
       .on("mouseover", (event, d) => {
+        // Create tooltip content
+
+        const currentYear = d.year;
+
+        const {
+          temperature: annualMaxTemp,
+          year: annualMaxYear,
+          month: annualMaxMonth,
+        } = stats.annualMax[currentYear];
+
+        const {
+          temperature: annualMinTemp,
+          year: annualMinYear,
+          month: annualMinMonth,
+        } = stats.annualMin[currentYear];
+
+        const tooltipContent = `<div id="tooltip-content">
+              <p id="tooltip-title">Global Land-Surface Temperature</p>
+              <div id="data-container">
+
+                <div class="data-section max">
+                  <div class="data total">
+                    <p class="value">Max.: ${maxTemp.toFixed(1)}℃</p>
+                    <p class="label">${maxYear} - ${monthScale(maxMonth)}</p>
+                  </div>
+                  <div class="data year">
+                    <p class="value">Annual max.: ${annualMaxTemp.toFixed(1)}℃</p>
+                    <p class="label">${annualMaxYear} - ${monthScale(annualMaxMonth)}</p>
+                  </div>
+                </div>
+                
+                <div class="data-section current">
+                <div class="data">
+                  <p class="value">${d.temperature.toFixed(1)}℃</p>
+                  <p class="label">${d.year} - ${monthScale(d.month)}</p>
+                </div>
+                </div>
+
+                <div class="data-section min">
+                  <div class="data total">
+                    <p class="value">Min.: ${minTemp.toFixed(1)}℃</p>
+                    <p class="label">${minYear} - ${monthScale(minMonth)}</p>
+                  </div>
+                  <div class="data year">
+                    <p class="value">Annual min.: ${annualMinTemp.toFixed(1)}℃</p>
+                    <p class="label">${annualMinYear} - ${monthScale(annualMinMonth)}</p>
+                  </div>
+                </div>
+                
+              </div>
+              <div id="tooltip-footer">
+                <p>Base temperature ${baseTemperature}℃</p>
+              </div>
+            </div>`;
+
+        // Set tooltip content
         tooltip
-          .html(
-            `${d.year} - ${monthScale(d.month)}<br>
-            Temperature: ${d.temperature.toFixed(1)}℃<br>
-            Variance: ${d.variance.toFixed(1)}℃`
-          )
+          .html(tooltipContent)
           .attr("data-year", d.year)
           .attr("data-month", d.month)
-          .attr("data-temp", d.temperature)
-          .style("opacity", 1)
-          .style("position", "absolute")
-          .style("top", event.pageY + "px")
-          .style("left", event.pageX + "px");
+          .attr("data-temp", d.temperature);
+
+        setTooltipPos(event, tooltip);
       })
-      .on("mouseout", () => {
-        tooltip
-          .style("opacity", 0)
-          .style("top", "-100px")
-          .style("left", "-100px");
+      .on("mouseout", (event) => {
+        setTooltipPos(event, tooltip);
       });
 
     const yearFormat = d3.format("d");
     const xAxisGenerator = d3.axisBottom(xScale).tickFormat(yearFormat);
     const yAxisGenerator = d3.axisLeft(yScale).tickFormat(monthScale);
 
-    const xAxis = svg
+    const xAxis = chart
       .append("g")
       .attr("id", "x-axis")
-      .attr("transform", `translate(0, ${svgH - paddingH})`)
+      .attr("transform", `translate(0, ${viewBoxHeight - paddingHeight})`)
       .call(xAxisGenerator);
 
-    const yAxis = svg
+    const yAxis = chart
       .append("g")
       .attr("id", "y-axis")
-      .attr("transform", `translate(${paddingW}, ${cellH / 2})`)
+      .attr("transform", `translate(${paddingWidth}, ${cellHeight / 2})`)
       .call(yAxisGenerator);
 
     xAxis.selectAll("g").attr("class", "tick");
     yAxis.selectAll("g").attr("class", "tick");
 
-    svg
-      .append("text")
-      .text("Monthly Global Land-Surface Temperature")
-      .attr("id", "title")
-      .attr("x", svgW / 2)
-      .attr("y", paddingH / 2)
-      .style("text-anchor", "middle")
-      .style("font-size", "1.5rem");
+    const legendH = colorScale.range().length * cellHeight;
 
-    svg
-      .append("text")
-      .text(`${minX} - ${maxX}: base temperature ${baseTemperature}℃`)
-      .attr("id", "description")
-      .attr("x", svgW / 2)
-      .attr("y", paddingH / 2 + 20)
-      .style("text-anchor", "middle")
-      .style("font-size", "0.9rem");
-
-    const legendH = colorScale.range().length * cellH;
-
-    const legend = svg
+    const legend = chart
       .append("g")
       .attr("id", "legend")
       .attr(
         "transform",
-        `translate(${svgW - paddingW + 15}, ${svgH / 2 + legendH / 2})`
+        `translate(${viewBoxWidth - paddingWidth + 15}, ${viewBoxHeight / 2 + legendH / 2})`
       );
 
     legend
@@ -183,15 +208,15 @@ export default function () {
       .enter()
       .append("rect")
       .attr("x", 0)
-      .attr("y", (_, i) => -(++i * cellH))
-      .attr("height", cellH)
-      .attr("width", cellW)
+      .attr("y", (_, i) => -(++i * cellHeight))
+      .attr("height", cellHeight)
+      .attr("width", cellWidth)
       .attr("fill", (d) => d);
 
     const legendScale = d3
       .scaleLinear()
       .domain([minTemp, maxTemp])
-      .range([0, -(cellH * colorScale.range().length)]);
+      .range([0, -(cellHeight * colorScale.range().length)]);
 
     const getLegendValues = (minTemp, maxTemp, tickNum) => {
       const values = [];
@@ -213,9 +238,41 @@ export default function () {
     const legendAxis = legend
       .append("g")
       .attr("id", "legend-axis")
-      .attr("transform", `translate(${cellW},0)`)
+      .attr("transform", `translate(${cellWidth},0)`)
       .call(legendAxisGenerator);
 
     legendAxis.selectAll("g").attr("class", "tick");
   };
+}
+
+function getStats(data) {
+  const stats = {
+    max: data[0],
+    min: data[0],
+    annualMax: {}, // Dynamically initialized
+    annualMin: {}, // Dynamically initialized
+  };
+
+  data.forEach((temp) => {
+    if (temp.temperature > stats.max.temperature) {
+      stats.max = temp;
+    }
+
+    if (temp.temperature < stats.min.temperature) {
+      stats.min = temp;
+    }
+
+    stats.annualMax[temp.year] = stats.annualMax[temp.year] || temp;
+    stats.annualMin[temp.year] = stats.annualMin[temp.year] || temp;
+
+    if (temp.temperature > stats.annualMax[temp.year].temperature) {
+      stats.annualMax[temp.year] = temp;
+    }
+
+    if (temp.temperature < stats.annualMin[temp.year].temperature) {
+      stats.annualMin[temp.year] = temp;
+    }
+  });
+
+  return stats;
 }

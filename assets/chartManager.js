@@ -15,7 +15,7 @@ export class ChartManager {
     this.navLinks = document.querySelectorAll("#navbar .nav-link");
     this.cards = document.querySelectorAll("#carousel .chart-image");
 
-    this.delay = 12000; // 12s
+    this.delay = 0; // ! TODO: uncomment 12000
     this.currentChart = null;
     this.hoverTimeout = null;
     this.closeDialogTimeout = null;
@@ -301,6 +301,6 @@ export class ChartManager {
 
     // ! DEBUGGING
     this.showChart();
-    this.loadChart("choropleth-map");
+    this.loadChart("bar-chart");
   }
 }

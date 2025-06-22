@@ -46,6 +46,9 @@
 #carousel {
   grid-area: carousel;
   z-index: 1;
+
+  /* ! BUILDING */
+  visibility: hidden;
 }
 
 #footer {
@@ -172,12 +175,12 @@
   }
 
   #navbar .arrow-right {
-    top: -0.2em;
-    transform: translateX(-1.2em);
+    top: -0.125em;
+    right: -1.25em;
   }
 
   #navbar .nav-link:hover .arrow-right {
-    transform: translateX(-1em);
+    transform: translateX(0.2em);
   }
 }
 
@@ -214,12 +217,12 @@
   }
 
   #navbar .arrow-right {
-    left: -0.2em;
-    transform: translateY(1.2em);
+    top: -1.25em;
+    left: -0.125em;
   }
 
   #navbar .nav-link:hover .arrow-right {
-    transform: translateY(1em);
+    transform: translateY(-0.2em);
   }
 
   #navbar a {
@@ -327,7 +330,30 @@
  * CHART
  */
 
+/* ! BUILDING: 
+  #chart-section {
+    background-color: red;
+  }
+
+  #chart-modal {
+    background-color: yellow;
+  }
+
+  #chart-modal-content {
+    background-color: blue;
+  }
+
+  #chart-container {
+    background-color: yellow;
+  }
+
+  #chart {
+    background-color: chartreuse;
+  }
+    */
+
 #chart-section {
+  --text-color-darker: #869bc543;
   --text-color-dark: #b0cafdb8;
   --text-color: #c6d7fa;
   --text-color-light: white;
@@ -443,7 +469,7 @@
     }
 
     #navbar .arrow-right {
-      right: -2.25em;
+      right: -1.25em;
     }
   }
 
@@ -457,7 +483,7 @@
     }
 
     #navbar .arrow-right {
-      top: -2.25em;
+      top: -1.25em;
     }
   }
 

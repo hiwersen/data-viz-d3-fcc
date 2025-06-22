@@ -1,123 +1,124 @@
 /* ! Important to ensure variables are loaded before animations */
 @import url("../../assets/variables.css");
 
-.county:hover {
-  fill: var(--c1);
-  cursor: crosshair;
-}
-
-#tooltip {
-  width: 35em;
-  max-width: calc(100dvw - 2em);
-  min-height: min(25em, calc(100dvh - 2em));
-  color: var(--text-color-accent);
-}
-
-#tooltip-title,
-#tooltip .current-county {
-  color: var(--text-color-accent);
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-@media screen and (max-width: 320px), screen and (max-height: 320px) {
-  #tooltip-title,
-  #tooltip .current-county {
-    text-transform: uppercase;
-    font-weight: bold;
+#gallery-page:has(#chart.choropleth-map) {
+  & .county:hover {
+    fill: var(--c1);
+    cursor: crosshair;
   }
-}
 
-#data-container {
-  width: 100%;
-  flex: 1;
+  & #tooltip {
+    width: 35em;
+    max-width: calc(100dvw - 2em);
+    min-height: min(25em, calc(100dvh - 2em));
+    color: var(--text-color-accent);
+  }
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1em;
-}
+  & #tooltip-title,
+  & #tooltip .current-county {
+    color: var(--text-color-accent);
+    font-size: 1.5rem;
+    text-align: center;
+  }
 
-#tooltip .data-max,
-#tooltip .data-min {
-  display: flex;
-  justify-content: space-between;
-  gap: 1em;
+  @media screen and (max-width: 320px), screen and (max-height: 320px) {
+    #tooltip-title,
+    #tooltip .current-county {
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
 
-  color: rgba(255, 255, 255, 0.75);
-  font-weight: lighter;
-}
+  & #data-container {
+    width: 100%;
+    flex: 1;
 
-#tooltip .data {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.25em;
-}
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1em;
+  }
 
-#tooltip .current-county .data-value {
-  font-size: 3.5rem;
-}
+  & #tooltip .data-max,
+  & #tooltip .data-min {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: lighter;
+  }
 
-#tooltip .data:not(.current-county) {
-  --b-max: 0.5px solid var(--text-color);
-  --b-min: 0.5px solid var(--text-color);
-  padding: var(--sm) 0;
-}
+  & #tooltip .data {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.25em;
+  }
 
-#tooltip .data-max .data {
-  border-top: var(--b-max);
-  border-bottom: var(--b-max);
-}
+  & #tooltip .current-county .data-value {
+    font-size: 3.5rem;
+  }
 
-#tooltip .data-min .data {
-  border-top: var(--b-min);
-  border-bottom: var(--b-min);
-}
+  & #tooltip .data:not(.current-county) {
+    --b-max: 0.5px solid var(--text-color);
+    --b-min: 0.5px solid var(--text-color);
+    padding: var(--sm) 0;
+  }
 
-#county-minimap {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  & #tooltip .data-max .data {
+    border-top: var(--b-max);
+    border-bottom: var(--b-max);
+  }
 
-  z-index: -2;
-}
+  & #tooltip .data-min .data {
+    border-top: var(--b-min);
+    border-bottom: var(--b-min);
+  }
 
-#county-minimap svg {
-  width: 100%;
-  height: 100%;
-}
+  & #county-minimap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 
-#county-minimap path {
-  stroke-width: 0.5px;
-  fill: none;
-  stroke: var(--text-color-light);
-  stroke-width: 0.1px;
+    z-index: -2;
+  }
 
-  /* ! TODO: import --mask3 from  variables.css */
-  /* Importing not working */
-  --mask3: conic-gradient(
-    from 45deg,
-    rgba(0, 0, 0, 0) var(--offset3),
-    rgb(0, 0, 0) var(--offset2),
-    rgba(0, 0, 0, 0) var(--offset1)
-  );
+  & #county-minimap svg {
+    width: 100%;
+    height: 100%;
+  }
 
-  mask-image: var(--mask3);
-  -webkit-mask-image: var(--mask3);
+  & #county-minimap path {
+    stroke-width: 0.5px;
+    fill: none;
+    stroke: var(--text-color-light);
+    stroke-width: 0.1px;
 
-  /* Animation settings */
-  animation-name: spinLine;
-  animation-duration: var(--t10);
-  animation-delay: 0s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: both;
-  animation-iteration-count: 1;
-}
+    /* ! TODO: import --mask3 from  variables.css */
+    /* Importing not working */
+    --mask3: conic-gradient(
+      from 45deg,
+      rgba(0, 0, 0, 0) var(--offset3),
+      rgb(0, 0, 0) var(--offset2),
+      rgba(0, 0, 0, 0) var(--offset1)
+    );
 
-#chart.choropleth-map ~ #legend {
-  /* Right-align legend with chart's rightmost edge  */
-  transform: translateX(calc(1em - var(--chart-width) * 0.02));
+    mask-image: var(--mask3);
+    -webkit-mask-image: var(--mask3);
+
+    /* Animation settings */
+    animation-name: spinLine;
+    animation-duration: var(--t10);
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+  }
+
+  & #legend {
+    /* Right-align legend with chart's rightmost edge  */
+    transform: translateX(calc(1em - var(--chart-width) * 0.02));
+  }
 }

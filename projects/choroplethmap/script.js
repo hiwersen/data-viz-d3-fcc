@@ -1,22 +1,21 @@
 import { colorThemes } from "../../color-themes.js";
+import { setTooltipPos } from "../../assets/setTooltipPos.js";
 
 export default function () {
-  console.log("hello choropleth map");
-
   const svgRatio = 1.6;
   const viewBoxWidth = 960;
   const viewBoxHeight = viewBoxWidth / svgRatio;
   const colorTheme = [...colorThemes[1]].reverse(); // CAUTION: reverse in "in place", thus ti will change the original array
   const stateStroke = colorTheme.at(3); // "white";
 
-  const chartSvg = d3
+  const chart = d3
     .select("#chart")
     .attr("class", "choropleth-map")
     .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
     .attr("preserveAspectRatio", "xMidYMid meet");
 
-  const counties = chartSvg.append("g").attr("id", "counties");
-  const states = chartSvg.append("g").attr("id", "states");
+  const counties = chart.append("g").attr("id", "counties");
+  const states = chart.append("g").attr("id", "states");
 
   const tooltip = d3.select("#tooltip");
 
@@ -174,54 +173,10 @@ export default function () {
             .html(tooltipContent)
             .attr("data-education", feature.properties.education);
 
-          // Get tooltip dimensions
-          const tooltipRect = tooltip.node().getBoundingClientRect();
-          const tooltipWidth = tooltipRect.width;
-          const tooltipHeight = tooltipRect.height;
-
-          // Get viewport dimensions
-          const viewportWidth = window.innerWidth;
-          const viewportHeight = window.innerHeight;
-
-          // Define initial position and margin
-          let top = event.pageY - 30;
-          let left = event.pageX + 15;
-
-          const margin = 5;
-
-          // Check if tooltip would extend beyond right edge of viewport
-          if (left + tooltipWidth > viewportWidth - margin) {
-            left = event.pageX - 15 - tooltipWidth; // Place it to the left
-          }
-
-          // Check if tooltip would extend beyond bottom edge of viewport
-          if (top + tooltipHeight > viewportHeight - margin) {
-            top = event.pageY + 30 - tooltipHeight; // Place it above cursor
-          }
-
-          // Check if tooltip would extend beyond left edge of viewport
-          if (left < margin) {
-            left = margin; // Keep it at the left margin
-          }
-
-          // Check if tooltip would extend beyond top edge of viewport
-          if (top < margin) {
-            top = margin; // Keep it at the top margin
-          }
-
-          // Apply position and make it visible
-          tooltip
-            .style("top", top + "px")
-            .style("left", left + "px")
-            .style("opacity", "1")
-            .style("visibility", "visible");
+          setTooltipPos(event, tooltip);
         })
-        .on("mouseout", () => {
-          tooltip
-            .style("top", "-100dvh")
-            .style("left", "-100dvw")
-            .style("opacity", "0")
-            .style("visibility", "hidden");
+        .on("mouseout", (event) => {
+          setTooltipPos(event, tooltip);
         });
 
       states

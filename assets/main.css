@@ -331,29 +331,30 @@
  */
 
 /* ! BUILDING: 
-  #chart-section {
-    background-color: red;
-  }
+#chart-section {
+  background-color: red;
+}
 
-  #chart-modal {
-    background-color: yellow;
-  }
+#chart-modal {
+  background-color: yellow;
+}
 
-  #chart-modal-content {
-    background-color: blue;
-  }
+#chart-modal-content {
+  background-color: blue;
+}
 
-  #chart-container {
-    background-color: yellow;
-  }
+#chart-container {
+  background-color: yellow;
+}
 
-  #chart {
-    background-color: chartreuse;
-  }
-    */
+#chart {
+  background-color: chartreuse;
+}
+
+*/
 
 #chart-section {
-  --text-color-darker: #869bc543;
+  --text-color-darker: #869bc563;
   --text-color-dark: #b0cafdb8;
   --text-color: #c6d7fa;
   --text-color-light: white;
@@ -749,10 +750,6 @@
   --width: 15rem;
   --height: 0.5rem;
 
-  color: var(--text-color);
-  letter-spacing: 0;
-  font-weight: lighter;
-
   position: absolute;
   bottom: -0.25rem;
   right: var(--cc-padding); /* chart-container's padding */
@@ -804,6 +801,36 @@
   font-style: italic;
   justify-self: flex-end;
   text-align: center;
+}
+
+#chart,
+#chart .tick,
+#legend {
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  letter-spacing: 0.05rem;
+  font-weight: lighter;
+  stroke-width: 0.75;
+  fill: none;
+  color: var(--text-color-darker);
+  stroke: currentColor;
+  transition: color var(--t6) var(--timing-function1);
+}
+
+#chart text {
+  fill: currentColor;
+  stroke-width: 0;
+}
+
+#chart:hover {
+  color: var(--text-color-dark);
+  transition: color var(--t4) var(--timing-function1);
+
+  & .tick,
+  & #legend {
+    color: var(--text-color-dark);
+    transition: color var(--t4) var(--timing-function1);
+  }
 }
 
 /*

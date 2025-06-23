@@ -1,9 +1,10 @@
-export default function () {
-  console.log("hello scatterplot");
-  return;
+import { colorThemes } from "../../color-themes.js";
+import { setTooltipPos } from "../../assets/setTooltipPos.js";
 
+export default function () {
   const url =
     "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
+
   const req = new XMLHttpRequest();
 
   req.open("GET", url, true);
@@ -15,9 +16,10 @@ export default function () {
       d.Seconds = new Date(d.Seconds * 1000);
     });
 
-    const svgW = 600;
-    const svgH = 350;
-    const padding = 50; // SVG area padding
+    const aspectRatio = 1.7;
+    const viewBoxWidth = 1200;
+    const viewBoxHeight = viewBoxWidth / aspectRatio;
+    const padding = 100;
     const xDomainPadding = 1; // 1 year padding
     const r = 6;
 
@@ -26,31 +28,35 @@ export default function () {
     const minY = d3.min(dataset, (d) => d.Seconds);
     const maxY = d3.max(dataset, (d) => d.Seconds);
 
+    const [doping, noDoping] = colorThemes[4];
+
+    const chart = d3
+      .select("#chart")
+      .attr("class", "scatter-plot")
+      .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const tooltip = d3.select("#tooltip");
+
+    d3.select("#chart-title").text("Doping in Professional Bicycle Racing");
+    d3.select("#chart-title-description").text(
+      "35 Fastest times up Alpe d'Huez"
+    );
+    d3.select("#chart-source a")
+      .text("freeCodeCamp Project Reference Data")
+      .attr("href", url);
+
     const xScale = d3
       .scaleLinear()
       .domain([minX - xDomainPadding, maxX + xDomainPadding])
-      .range([padding, svgW - padding]);
+      .range([padding, viewBoxWidth - padding]);
 
     const yScale = d3
       .scaleTime()
       .domain([minY, maxY])
-      .range([padding, svgH - padding]);
+      .range([padding, viewBoxHeight - padding]);
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("id", "tooltip")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
-
-    const svg = d3
-      .select("#chart-container")
-      .append("svg")
-      .attr("width", svgW)
-      .attr("height", svgH)
-      .attr("id", "svg");
-
-    svg
+    chart
       .selectAll("circle")
       .data(dataset)
       .enter()
@@ -61,26 +67,30 @@ export default function () {
       .attr("class", "dot")
       .attr("data-xvalue", (d) => d.Year)
       .attr("data-yvalue", (d) => d.Seconds)
-      .attr("fill", (d) => (d.Doping ? "orange" : "navy")) // .attr instead of style to allow :hover
+      .attr("fill", (d) => (d.Doping ? doping : noDoping)) // .attr instead of style to allow :hover
       .on("mouseover", (event, d) => {
-        tooltip
-          .attr("data-year", d.Year)
-          .html(
-            `${d.Name}: ${d.Nationality}<br>Year: ${d.Year}, Time: ${d.Time}
-            ${d.Doping ? "<br><br>" + d.Doping : ""}`
-          )
-          .style("opacity", 1)
-          .style("position", "absolute")
-          .style("top", event.pageY + "px")
-          .style("left", event.pageX + "px");
+        const tooltipContent = `
+        <div id="tooltip-content">
+          <p id="tooltip-title">Doping in Professional Bicycle Racing</p>
+          
+          <div class="data current">
+            <p class="value" style="color: ${d.Doping ? doping : noDoping};"><span>Time:</span><span>${d.Time}</span></p>
+            <p class="label"><span>Year:</span><span>${d.Year}</span></p>
+            <p class="label"><span>${d.Name}:</span><span>${d.Nationality}</span></p>
+          </div>
+          
+          <div id="tooltip-footer">
+            <p>${d.Doping || "No doping allegations reported"}</p>
+          </div>
+        </div>`;
+
+        // Set tooltip content
+        tooltip.html(tooltipContent).attr("data-year", d.Year);
+
+        setTooltipPos(event, tooltip);
       })
-      .on("mouseout", () => {
-        tooltip
-          .style("opacity", 0)
-          // Move the tooltip out of the svg area so that other .dots can reliably be hovered,
-          // without the tooltip overlapping them
-          .style("top", "0px")
-          .style("left", "0px");
+      .on("mouseout", (event) => {
+        setTooltipPos(event, tooltip);
       });
 
     const xvalueFormat = d3.format("d");
@@ -89,57 +99,46 @@ export default function () {
     const xAxisGenerator = d3.axisBottom(xScale).tickFormat(xvalueFormat);
     const yAxisGenerator = d3.axisLeft(yScale).tickFormat(yvalueFormat);
 
-    const xAxis = svg
+    const xAxis = chart
       .append("g")
       .attr("id", "x-axis")
-      .attr("transform", `translate(0, ${svgH - padding})`)
+      .attr("class", "axis")
+      .attr("transform", `translate(0, ${viewBoxHeight - padding})`)
       .call(xAxisGenerator);
 
-    const yAxis = svg
+    const yAxis = chart
       .append("g")
       .attr("id", "y-axis")
+      .attr("class", "axis")
       .attr("transform", `translate(${padding}, 0)`)
       .call(yAxisGenerator);
 
     xAxis.selectAll("g").attr("class", "tick");
     yAxis.selectAll("g").attr("class", "tick");
 
-    svg
-      .append("text")
-      .text("Doping in Professional Bicycle Racing")
-      .attr("id", "title")
-      .attr("x", svgW / 2)
-      .attr("y", padding / 2)
-      .style("text-anchor", "middle")
-      .style("font-size", "1.2rem");
-
-    svg
-      .append("text")
-      .text("35 Fastest times up Alpe d'Huez")
-      .attr("id", "subtitle")
-      .attr("x", svgW / 2)
-      .attr("y", padding / 2 + 20)
-      .style("text-anchor", "middle")
-      .style("font-size", "0.95rem");
-
-    svg
+    chart
       .append("text")
       .text("Time in Minutes")
-      .attr("x", padding + 12)
-      .attr("y", svgH / 2)
-      .attr("transform", `rotate(-90, ${padding + 12}, ${svgH / 2})`)
-      .style("text-anchor", "middle")
-      .style("font-size", "0.7rem");
+      .attr("x", padding + 16)
+      .attr("y", viewBoxHeight / 2)
+      .attr("transform", `rotate(-90, ${padding + 16}, ${viewBoxHeight / 2})`)
+      .style("text-anchor", "middle");
 
     const colorScale = d3
       .scaleOrdinal()
-      .domain(["Riders with doping allegations", "No doping allegations"])
-      .range(["orange", "navy"]);
+      .domain([
+        "Riders with doping allegations",
+        "No doping allegations reported",
+      ])
+      .range([doping, noDoping]);
 
-    const legend = svg
+    const legend = chart
       .append("g")
       .attr("id", "legend")
-      .attr("transform", `translate(${svgW - padding}, ${svgH / 2})`);
+      .attr(
+        "transform",
+        `translate(${viewBoxWidth - padding}, ${viewBoxHeight / 2})`
+      );
 
     legend
       .selectAll("g")
@@ -154,16 +153,15 @@ export default function () {
     legend
       .selectAll("g")
       .append("rect")
-      .attr("height", 12)
-      .attr("width", 12)
+      .attr("height", r * 1.85)
+      .attr("width", r * 1.85)
       .attr("fill", (d) => colorScale(d));
 
     legend
       .selectAll("g")
       .append("text")
       .text((d) => d)
-      .attr("transform", `translate(-6, 6)`)
-      .style("text-anchor", "end")
-      .style("font-size", "0.6rem");
+      .attr("transform", `translate(-6, 9)`)
+      .style("text-anchor", "end");
   };
 }

@@ -7,16 +7,22 @@ export const colorThemes = [
 
   // colorTheme2 - Heat map
   [
-    "#005F73",
-    "#0A9396",
-    "#94D2BD",
-    "#F7F0DE",
+    "#173572",
+    "#4F6CA7",
+    "#86A2DB",
+    "#F2EADF",
     "#FFDB99",
     "#FDA349",
     "#FC6722",
     "#DE2817",
     "#9B2226",
   ],
+
+  // colorTheme3 - Bar chart
+  ["#C69DBC", "#A06FB2", "#BA96C9", "#C4BAE1", "#A09CCB", "#35559C", "#363B9E"],
+
+  // colorTheme4 - Scatter plot
+  ["#fb6082", "#9eeafb"],
 
   // ! NOT IN USE: Purple to blue - NEEDS LIGHT, SLIGHTLY LIGHTER
   ["#F5BAC8", "#BB8DB8", "#8D6AAC", "#503B9C", "#2F377E", "#223573", "#023057"],

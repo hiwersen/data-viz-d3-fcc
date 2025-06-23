@@ -1,60 +1,58 @@
-*, *:before, *:after {
-    box-sizing: border-box;
-}
+/* ! Important to ensure variables are loaded before animations */
+@import url("../../assets/variables.css");
+@import url("../../assets/main.css");
 
-body {
-    background: repeating-linear-gradient(0deg, 
-    rgb(238, 238, 235) 0px, 
-    rgb(238, 238, 235) 20px, 
-    rgb(245, 245, 245) 21px,
-    rgb(245, 245, 245) 22px);
-    color:rgb(88, 88, 90);
-    height: 100vh;
-    padding: 0;
-    margin: 0;
+#gallery-page:has(#chart.bar-chart) {
+  & .bar:hover {
+    fill: var(--c2);
+    cursor: crosshair;
+  }
+
+  & #tooltip {
+    min-width: 15em;
+    max-width: calc(100dvw - 2em);
+    min-height: min(10em, calc(100dvh - 2em));
+    color: var(--text-color-accent);
+    text-align: center;
+  }
+
+  & #tooltip-content {
+    width: 100%;
+
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.chart-container {
-    background-color: rgba(255, 255, 255);
-    box-shadow: rgba(159, 155, 170, 0.342) 20px 50px 50px 10px;
+    justify-content: space-between;
+    gap: 2em;
+  }
+
+  & #tooltip .data {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 650px;
+    justify-content: space-between;
+    gap: 0.25em;
+  }
 
-}
+  & #tooltip .current .value {
+    font-size: 2.5rem;
+  }
 
-#title {
-    color:rgb(69, 69, 71);
-    text-align: center;
-    font-size: 1.6rem;
-}
+  @media screen and (max-width: 320px), screen and (max-height: 320px) {
+    & #tooltip-title,
+    & #tooltip .current {
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
 
-.bar {
-    fill: navy;
-}
+  & #tooltip .label,
+  & #tooltip-footer {
+    color: rgba(255, 255, 255, 0.75);
+  }
 
-.bar:hover {
-    fill: red;
-}
-
-.tooltip {
-    background-color: rgba(248, 120, 1, 0.65);
-    color:white;
-    font-size: 0.8rem;
-    text-align: center;
-    padding: 0.3rem;
-    border-radius: 3px;
-    border: 1px solid rgba(245, 25, 25, 0.336);
-    box-shadow: 3px 5px 10px 2px rgba(133, 66, 3, 0.65);
-    transition: opacity 0.3s ease-in;
-
-}
-
-footer {
-    margin-top: 2rem;
+  & #tooltip-footer {
+    font-style: italic;
+    font-weight: lighter;
+    font-size: 0.6rem;
+  }
 }

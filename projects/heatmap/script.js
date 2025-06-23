@@ -4,6 +4,7 @@ import { setTooltipPos } from "../../assets/setTooltipPos.js";
 export default function () {
   const url =
     "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
+
   const req = new XMLHttpRequest();
 
   req.open("GET", url, true);
@@ -36,7 +37,7 @@ export default function () {
     const aspectRatio = 2.4;
     const viewBoxWidth = 1200;
     const viewBoxHeight = viewBoxWidth / aspectRatio;
-    const paddingWidth = 80; // Allow space for vertical axis
+    const paddingWidth = 85; // Allow space for vertical axis
     const paddingHeight = 60; // Allow space for horizontal axis
     const domainPadding = 1; // 1 year
     const cellWidth = viewBoxWidth / (maxX - minX + 1);
@@ -180,12 +181,14 @@ export default function () {
     const xAxis = chart
       .append("g")
       .attr("id", "x-axis")
+      .attr("class", "axis")
       .attr("transform", `translate(0, ${viewBoxHeight - paddingHeight})`)
       .call(xAxisGenerator);
 
     const yAxis = chart
       .append("g")
       .attr("id", "y-axis")
+      .attr("class", "axis")
       .attr("transform", `translate(${paddingWidth}, ${cellHeight / 2})`)
       .call(yAxisGenerator);
 

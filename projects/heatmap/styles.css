@@ -9,7 +9,7 @@
   }
 
   & #tooltip {
-    width: 35em;
+    min-width: 35em;
     max-width: calc(100dvw - 2em);
     min-height: min(25em, calc(100dvh - 2em));
     color: var(--text-color-accent);
@@ -67,26 +67,5 @@
 
     border-top: var(--b-max);
     border-bottom: var(--b-max);
-  }
-
-  & .tick {
-    fill: none;
-    color: var(--text-color-darker);
-    stroke: currentColor;
-    stroke-width: 0.75;
-    transition: color var(--t6) var(--timing-function1);
-
-    & text {
-      font-family: var(--font-main);
-      font-size: 0.6rem;
-      font-weight: lighter;
-    }
-  }
-
-  #chart.heat-map:hover {
-    & .tick {
-      color: var(--text-color-dark);
-      transition: color var(--t4) var(--timing-function1);
-    }
   }
 }

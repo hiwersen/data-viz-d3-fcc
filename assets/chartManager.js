@@ -301,6 +301,6 @@ export class ChartManager {
 
     // ! DEBUGGING
     this.showChart();
-    this.loadChart("bar-chart");
+    this.loadChart("scatter-plot");
   }
 }

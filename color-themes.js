@@ -2,7 +2,7 @@ export const colorThemes = [
   // colorTheme0
   ["#F2E2CB", "#A9ACB9", "#7282AB", "#35559C", "#244384", "#173572", "#001D52"],
 
-  // colorTheme1 - Choropleth
+  // colorTheme1 - Choropleth map
   ["#EDCED3", "#C69DBC", "#A472A8", "#824794", "#562D70", "#2F164F", "#0D0233"],
 
   // colorTheme2 - Heat map
@@ -23,6 +23,32 @@ export const colorThemes = [
 
   // colorTheme4 - Scatter plot
   ["#fb6082", "#9eeafb"],
+
+  // colorTheme5 - Tree map
+  [
+    "#219EBC",
+    "#FF0054",
+    "#7AE582",
+    "#EFCA08",
+    "#00A6A6",
+
+    "#F72585",
+    "#023047",
+    "#AF4319",
+
+    "#7CA982",
+    "#C2A83E",
+
+    "#9E0059",
+    "#225560",
+    "#FB8500",
+    "#32DE8A",
+    "#CFD11A",
+    "#91C499",
+    "#808F85",
+
+    "#595959",
+  ],
 
   // ! NOT IN USE: Purple to blue - NEEDS LIGHT, SLIGHTLY LIGHTER
   ["#F5BAC8", "#BB8DB8", "#8D6AAC", "#503B9C", "#2F377E", "#223573", "#023057"],

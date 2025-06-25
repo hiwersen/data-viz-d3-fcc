@@ -330,7 +330,7 @@
  * CHART
  */
 
-/* ! BUILDING: 
+/* ! BUILDING:
 #chart-section {
   background-color: red;
 }
@@ -344,13 +344,16 @@
 }
 
 #chart-container {
-  background-color: yellow;
+  background-color: deeppink;
 }
 
 #chart {
   background-color: chartreuse;
 }
 
+#legend {
+  background-color: rgba(0, 255, 255, 1);
+}
 */
 
 #chart-section {
@@ -803,8 +806,8 @@
   text-align: center;
 }
 
-#chart,
-#chart .tick,
+#chart text,
+#chart .axis,
 #legend {
   font-family: var(--font-main);
   font-size: 0.8rem;
@@ -814,23 +817,20 @@
   fill: none;
   color: var(--text-color-darker);
   stroke: currentColor;
-  transition: color var(--t6) var(--timing-function1);
+  transition: all var(--t8) var(--timing-function1);
 }
 
-#chart text {
+#chart text,
+#legend text {
   fill: currentColor;
   stroke-width: 0;
 }
 
-#chart:hover {
+#gallery-page:has(#chart:hover) #legend,
+#chart:hover text,
+#chart:hover .axis {
   color: var(--text-color-dark);
-  transition: color var(--t4) var(--timing-function1);
-
-  & .tick,
-  & #legend {
-    color: var(--text-color-dark);
-    transition: color var(--t4) var(--timing-function1);
-  }
+  transition: all var(--t4) var(--timing-function1);
 }
 
 /*

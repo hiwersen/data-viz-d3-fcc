@@ -1,90 +1,44 @@
+import { colorThemes } from "../../color-themes.js";
+import { setTooltipPos } from "../../assets/setTooltipPos.js";
+
 export default function () {
-  console.log("hello treemap");
-  return;
+  const url =
+    "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json";
 
-  /**
-   * Create and render the empty SVG root when the page first loads
-   * while wait for the JSON files to download
-   */
-  const width = 960;
-  const height = 570;
-  const padding = 0.5;
+  const aspectRatio = 2.4; // 1.7
+  const viewBoxWidth = 1200;
+  const viewBoxHeight = viewBoxWidth / aspectRatio;
+  const padding = 1.5; // between tiles
+  const colorTheme = colorThemes[5];
 
-  const legendH = 50;
-  const legendW = width - 4 * padding;
-  const legendBox = 15;
+  const chart = d3
+    .select("#chart")
+    .attr("class", "tree-map")
+    .attr("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
 
-  const colorSet = [
-    "#023047",
-    "#7CA982",
-    "#219EBC",
-    "#C2A83E",
-    "#FF0054",
-    "#EFCA08",
-    "#00A6A6",
-    "#AF4319",
-    "#F72585",
-    "#9E0059",
-    "#225560",
-    "#FB8500",
-    "#32DE8A",
-    "#CFD11A",
-    "#91C499",
-    "#808F85",
-    "#7AE582",
-    "#595959",
-  ];
+  const tooltip = d3.select("#tooltip");
 
-  const tooltip = d3
-    .select("body")
-    .append("div")
-    .attr("id", "tooltip")
-    .attr("class", "tooltip")
-    .style("opacity", 0)
-    .style("position", "absolute")
-    .style("left", "-100px")
-    .style("top", "-100px");
-
-  const title = d3
-    .select("#diagram-container")
-    .append("h1")
-    .text("Video Game Sales")
-    .attr("id", "title");
-
-  const description = d3
-    .select("#diagram-container")
-    .append("p")
-    .text("Top 100 Most Sold Video Games Grouped by Platform")
-    .attr("id", "description");
-
-  const svg = d3
-    .select("#diagram-container")
-    .append("svg")
-    .attr("id", "tree-map")
-    .attr("width", width)
-    .attr("height", height);
-
-  const legend = d3
-    .select("#diagram-container")
-    .append("svg")
-    .attr("id", "legend")
-    .attr("width", 120)
-    .attr("height", height)
-    .attr("width", legendW)
-    .attr("height", legendH)
-    .attr("transform", `translate(${0}, ${2 * legendBox})`);
+  d3.select("#chart-title").text("Video Game Sales");
+  d3.select("#chart-title-description").text(
+    "Top 100 Most Sold Video Games Grouped by Platform"
+  );
+  d3.select("#chart-source a")
+    .text("freeCodeCamp Project Reference Data")
+    .attr("href", url);
 
   const req = new XMLHttpRequest();
 
-  const urlSalesData =
-    "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json";
-
-  req.open("GET", urlSalesData, true);
+  req.open("GET", url, true);
   req.send();
   req.onload = () => {
     const salesData = JSON.parse(req.responseText);
 
-    const treemap = d3.treemap().size([width, height]).padding(padding);
+    const treemap = d3
+      .treemap()
+      .size([viewBoxWidth, viewBoxHeight])
+      .paddingInner(padding)
+      .paddingOuter(padding);
 
     const root = d3
       .hierarchy(salesData)
@@ -98,15 +52,34 @@ export default function () {
     const categories = [];
     root.children.forEach((elem) => categories.push(elem.data.name));
 
-    const colorScale = d3.scaleOrdinal().domain(categories).range(colorSet);
+    const colorScale = d3.scaleOrdinal().domain(categories).range(colorTheme);
 
-    const node = svg
+    const defs = chart.append("defs");
+
+    const node = chart
       .selectAll("g")
       .data(nodes)
       .enter()
       .append("g")
-      .attr("class", "group")
-      .attr("transform", (d) => `translate(${d.x0}, ${d.y0})`);
+      .attr("class", "tile-wrapper")
+      .attr("color", (d) => colorScale(d.data.category))
+      .attr("transform", (d) => `translate(${d.x0}, ${d.y0})`)
+      .each(function (d, i) {
+        // Create unique clipPath for this tile
+        const clipId = `clip-${i}`;
+        const width = d.x1 - d.x0;
+        const height = d.y1 - d.y0;
+
+        defs
+          .append("clipPath")
+          .attr("id", clipId)
+          .append("rect")
+          .attr("width", width)
+          .attr("height", height);
+
+        // Apply clipPath to 'this' wrapper
+        d3.select(this).attr("clip-path", `url(#${clipId})`);
+      });
 
     node
       .append("rect")
@@ -117,34 +90,35 @@ export default function () {
       .attr("data-name", (d) => d.data.name)
       .attr("data-category", (d) => d.data.category)
       .attr("data-value", (d) => d.data.value)
-      .attr("fill", (d) => colorScale(d.data.category))
       .on("mouseover", (event, { data }) => {
-        const rect = event.target.getBoundingClientRect();
-        tooltip
-          .html(
-            `<p>Name: ${data.name}<br>Category: ${data.category}<br>Value: ${data.value}</p>`
-          )
-          .attr("data-value", data.value)
-          .style("opacity", 1)
-          .style("position", "absolute")
-          .style("top", rect.y - 85 + "px")
-          .style("left", rect.x + 5 + "px");
+        const tooltipContent = `
+        <div id="tooltip-content">
+            <p class="label">${data.name}</p>
+
+            <div>
+              <p class="value">${data.value}</p>
+              <p class="label">Million Units Sold</p>
+            </div>
+            
+            <p class="label">Platform: ${data.category}</p>
+        </div>`;
+
+        // Set tooltip content
+        tooltip.html(tooltipContent).attr("data-value", data.value);
+
+        setTooltipPos(event, tooltip);
       })
-      .on("mouseout", () => {
-        tooltip
-          .style("opacity", 0)
-          .style("top", "-100px")
-          .style("left", "-100px");
+      .on("mouseout", (event) => {
+        setTooltipPos(event, tooltip);
       });
 
     node
       .append("text")
       .attr("class", "tile-text")
-      .attr("x", "5")
-      .attr("y", "20");
+      .attr("x", "0")
+      .attr("y", "0");
 
-    // DONNOT use arrow function as callback when the 'this' keyword is going to be needed
-    node.each(function (d, i, nodes) {
+    node.each(function (d) {
       const currentElement = d3.select(this); // returns the current g.group
       const rectangleWidth = currentElement
         .select("rect")
@@ -222,6 +196,38 @@ export default function () {
       }
     });
 
+    createLegend(categories, colorScale);
+  };
+}
+
+// Legend creation with ResizeObserver
+function createLegend(categories, colorScale) {
+  const padding = 1.5; // outer padding
+  const legendBox = 12;
+  const legend = d3.select("#legend");
+  const legendElement = legend.node();
+
+  function updateLegendLayout() {
+    // Clear existing legend items
+    legend.selectAll("g").remove();
+
+    const rem = parseFloat(
+      window
+        .getComputedStyle(document.documentElement)
+        .getPropertyValue("font-size")
+    );
+    const legendPadding =
+      parseFloat(
+        window
+          .getComputedStyle(legendElement)
+          .getPropertyValue("--legend-padding")
+      ) * rem;
+    const legendWidth =
+      legendElement.getBoundingClientRect().width - 2 * legendPadding;
+
+    const legendItemSpacing =
+      (legendWidth - legendBox - 2 * padding) / (categories.length - 1);
+
     legend
       .selectAll("g")
       .data(categories)
@@ -229,20 +235,73 @@ export default function () {
       .append("g")
       .attr(
         "transform",
-        (_, i, c) => `translate(${(i * legendW) / c.length}, ${0})`
+        (_, i) =>
+          `translate(${i * legendItemSpacing + padding + legendPadding}, 0)`
       )
       .append("rect")
       .attr("width", legendBox)
       .attr("height", legendBox)
       .attr("class", "legend-item")
-      .attr("fill", (d) => colorScale(d));
+      .attr("fill", (d) => colorScale(d))
+      .attr("stroke", "none");
 
     legend
       .selectAll("g")
       .append("text")
+      .attr("fill", "red")
       .text((d) => d)
-      .attr("x", padding)
+      .attr("x", legendBox / 2) // padding / 2: start at center of the legendBox
       .attr("y", 2 * legendBox + 5)
-      .style("font-size", "0.95rem");
+      .attr("text-anchor", "middle"); // Now, center the text
+  }
+
+  // Initial layout after a brief delay for CSS to settle
+  setTimeout(() => {
+    updateLegendLayout();
+  }, 100);
+
+  // Create ResizeObserver to watch the legend element
+  const resizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      // Only respond to size changes, not initial observation
+      if (entry.contentRect.width > 0) {
+        console.log("@observer");
+        const chartSection = document.getElementById("chart-section");
+        const transitionDuration = parseFloat(
+          window
+            .getComputedStyle(chartSection)
+            .getPropertyValue("--snapping-to-duration")
+        );
+
+        const start = Date.now();
+
+        function animate() {
+          console.log("@animate");
+
+          const now = Date.now();
+          const elapsed = now - start;
+
+          if (elapsed >= transitionDuration) {
+            updateLegendLayout(); // Final update
+            return;
+          }
+
+          updateLegendLayout();
+          requestAnimationFrame(animate);
+        }
+
+        // First update
+        updateLegendLayout();
+        animate();
+      }
+    }
+  });
+
+  // Start observing the legend element
+  resizeObserver.observe(legendElement);
+
+  // Return cleanup function
+  return () => {
+    resizeObserver.disconnect();
   };
 }

@@ -1,82 +1,92 @@
-*, *:before, *:after {
-    box-sizing: border-box;
-}
+/* ! Important to ensure variables are loaded before animations */
+@import url("../../assets/variables.css");
+@import url("../../assets/main.css");
 
-body {
-    background: 
-    repeating-linear-gradient(0deg, 
-    transparent, 
-    transparent 50px, 
-    rgb(245, 245, 245) 50px,
-    rgb(245, 245, 245) 51px), 
-    repeating-linear-gradient(90deg, 
-     transparent, 
-     transparent 50px, 
-    rgb(245, 245, 245) 50px,
-    rgb(245, 245, 245) 51px),
-    rgb(233, 233, 233);
+#gallery-page:has(#chart.tree-map) {
+  & .tile-wrapper {
+    overflow: hidden;
+  }
 
-    color:rgb(88, 88, 90);
-    height: 100vh;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+  & .tile {
+    fill: currentColor;
+    fill-opacity: 0.1; /* Only affects fill, not stroke */
+    stroke: currentColor;
+    stroke-width: 4;
+    cursor: crosshair;
+  }
 
-#diagram-container {
-    background-color: rgba(255, 255, 255, 0);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-}
+  & .tile-text {
+    font-size: 0.6rem;
+    color: currentColor;
+    opacity: 0.5;
+    pointer-events: none;
+  }
 
-.tooltip {
-    background-color: rgba(39, 24, 10, 0.75);
-    color:white;
-    font-size: 0.95rem;
-    text-align: left;
-    border-radius: 3px;
-    border: 1px solid black;
-    box-shadow: 3px 5px 10px 2px rgba(39, 24, 10, 0.75);
-    padding: 0.5rem;
-    padding-top: 0;
-    padding-bottom: 0;
-}
+  #chart:hover {
+    & .tile-text {
+      opacity: 1;
+    }
+  }
 
-#title, #description {
-    color:rgb(69, 69, 71);
-    text-align: center;
-    font-size: 3rem;
+  & .tile-wrapper:hover {
+    & .tile {
+      fill-opacity: 1;
+    }
 
-    margin: 0.3em;
-}
+    & .tile-text {
+      color: var(--text-color-light);
+    }
+  }
 
-#description {
+  #chart-container > #legend {
+    --legend-padding: 1rem;
+    left: 50%;
+    width: calc(100% - (var(--cc-padding) * 2) + (var(--legend-padding) * 2));
+    height: calc(1rem + var(--padding) * 1.5);
+    transform: translateX(-50%);
+  }
+
+  & #tooltip {
     font-size: 1.2rem;
-}
+    width: 17em;
+    max-width: calc(100dvw - 2em);
+    min-height: min(10em, calc(100dvh - 2em));
+    color: var(--text-color-accent);
+    text-align: center;
+  }
 
-.tile:hover {
-    fill: red;
-}
+  & #tooltip-content {
+    width: 100%;
 
-.tile-text {
-    fill: rgb(240, 239, 239);
-    font-size: 0.8rem;
-}
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2em;
+  }
 
-.tick {
-    font-size: 0.7rem;
-}
+  & #tooltip .value {
+    font-size: 4rem;
+    line-height: 1.1;
+  }
 
-#legend {
-    background-color: rgba(98, 105, 110, 0.1);
-}
+  & #tooltip .value ~ .label {
+    line-height: 1.1;
+    font-style: italic;
+  }
 
-footer {
-    margin-top: 2rem;
-    font-size: 0.95rem;
+  & #tooltip .label {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  @media screen and (max-width: 320px), screen and (max-height: 320px) {
+    & #tooltip {
+      font-size: 0.8rem;
+    }
+
+    & #tooltip .value {
+      font-size: 2.5rem !important;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
 }

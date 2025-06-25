@@ -301,6 +301,6 @@ export class ChartManager {
 
     // ! DEBUGGING
     this.showChart();
-    this.loadChart("scatter-plot");
+    this.loadChart("tree-map");
   }
 }

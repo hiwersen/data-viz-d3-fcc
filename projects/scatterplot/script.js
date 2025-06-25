@@ -74,12 +74,12 @@ export default function () {
           <p id="tooltip-title">Doping in Professional Bicycle Racing</p>
           
           <div class="data current">
-            <p class="value" style="color: ${d.Doping ? doping : noDoping};"><span>Time:</span><span>${d.Time}</span></p>
+            <p class="value"><span>Time:</span><span>${d.Time}</span></p>
             <p class="label"><span>Year:</span><span>${d.Year}</span></p>
             <p class="label"><span>${d.Name}:</span><span>${d.Nationality}</span></p>
           </div>
           
-          <div id="tooltip-footer">
+          <div id="tooltip-footer" style="color: ${d.Doping ? doping : noDoping};">
             <p>${d.Doping || "No doping allegations reported"}</p>
           </div>
         </div>`;
@@ -132,12 +132,14 @@ export default function () {
       ])
       .range([doping, noDoping]);
 
+    const recLength = r * 1.85;
+
     const legend = chart
       .append("g")
       .attr("id", "legend")
       .attr(
         "transform",
-        `translate(${viewBoxWidth - padding}, ${viewBoxHeight / 2})`
+        `translate(${viewBoxWidth - padding - recLength}, ${padding})`
       );
 
     legend
@@ -153,8 +155,8 @@ export default function () {
     legend
       .selectAll("g")
       .append("rect")
-      .attr("height", r * 1.85)
-      .attr("width", r * 1.85)
+      .attr("height", recLength)
+      .attr("width", recLength)
       .attr("fill", (d) => colorScale(d));
 
     legend

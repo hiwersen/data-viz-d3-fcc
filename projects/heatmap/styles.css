@@ -68,4 +68,8 @@
     border-top: var(--b-max);
     border-bottom: var(--b-max);
   }
+
+  #chart.heat-map ~ #legend {
+    display: none;
+  }
 }

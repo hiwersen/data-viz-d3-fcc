@@ -97,6 +97,7 @@ export class ChartManager {
     // Clear SVG elements
     this.chartSVG.innerHTML = "";
     this.legendSVG.innerHTML = "";
+    this.legendSVG.classList.remove("set");
 
     // Clear text content
     document.getElementById("chart-title").textContent = "";
@@ -169,7 +170,7 @@ export class ChartManager {
     // console.log("@setupChartHiding");
     // Set an arbitrary delay before hiding chart
     // The user may hover back onto triggering areas (navbar, cards, chart)
-    const delay = 500; // ms
+    const delay = 75; // ms
 
     // Cancel any previous hiding triggers
     this.cancelHideTimer();
@@ -299,7 +300,6 @@ export class ChartManager {
     this.cardsEventListeners();
     */
 
-    // ! DEBUGGING
     this.showChart();
     this.loadChart("tree-map");
   }

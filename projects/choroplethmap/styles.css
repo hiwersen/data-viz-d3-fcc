@@ -117,7 +117,8 @@
     animation-iteration-count: 1;
   }
 
-  & #legend {
+  & #chart.choropleth-map ~ #legend {
+    display: block;
     /* Right-align legend with chart's rightmost edge  */
     transform: translateX(calc(1em - var(--chart-width) * 0.02));
   }

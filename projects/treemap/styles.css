@@ -41,9 +41,11 @@
   #chart-container > #legend {
     --legend-padding: 1rem;
     left: 50%;
+    bottom: -0.375rem;
     width: calc(100% - (var(--cc-padding) * 2) + (var(--legend-padding) * 2));
-    height: calc(1rem + var(--padding) * 1.5);
+    height: auto; /* ! Important: to preserve aspect ratio */
     transform: translateX(-50%);
+    display: block;
   }
 
   & #tooltip {

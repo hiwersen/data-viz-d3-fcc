@@ -29,9 +29,15 @@ export default function () {
 
   const req = new XMLHttpRequest();
 
+  const requested = Date.now();
+
   req.open("GET", url, true);
   req.send();
   req.onload = () => {
+    const loaded = Date.now();
+
+    console.log("loaded tree map in:", (loaded - requested) * 0.001 + "s");
+
     const salesData = JSON.parse(req.responseText);
 
     const treemap = d3
@@ -118,190 +124,119 @@ export default function () {
       .attr("x", "0")
       .attr("y", "0");
 
+    // Replace the complex text wrapping with this simpler version
     node.each(function (d) {
-      const currentElement = d3.select(this); // returns the current g.group
+      const currentElement = d3.select(this);
       const rectangleWidth = currentElement
         .select("rect")
         .node()
         .getAttribute("width");
 
-      const words = d.data.name.split(" ").map((word) => {
-        const wordSVGLength = currentElement
+      // Simple approach: truncate long titles
+      const maxChars = Math.floor(rectangleWidth / 8); // Approximate chars that fit
+      const title = d.data.name;
+
+      if (title.length <= maxChars) {
+        // Short title - just display it
+        currentElement
           .select("text")
-          .text(word)
-          .node()
-          .getComputedTextLength();
-        currentElement.select("text").text("");
-        return [word, wordSVGLength];
-      });
+          .append("tspan")
+          .text(title)
+          .attr("x", 5)
+          .attr("y", 15);
+      } else {
+        // Long title - split into 2-3 lines max
+        const words = title.split(" ");
+        const lines = [];
+        let currentLine = "";
 
-      const padding = 5;
-      let y = 15;
-      let text = "";
-      let textSVGLength = 0;
-      let count = 1;
+        words.forEach((word) => {
+          if ((currentLine + word).length <= maxChars) {
+            currentLine += (currentLine ? " " : "") + word;
+          } else {
+            if (currentLine) lines.push(currentLine);
+            currentLine = word;
+          }
+        });
+        if (currentLine) lines.push(currentLine);
 
-      while (words.length > 0) {
-        let wordSVGLength = words[0][1];
-
-        if (wordSVGLength > rectangleWidth - 10 * padding) {
-          text += words.shift()[0];
-          textSVGLength = currentElement
+        // Display max 3 lines
+        lines.slice(0, 3).forEach((line, i) => {
+          currentElement
             .select("text")
             .append("tspan")
-            .text(text) // Single word in the tspan
-            .attr("x", padding)
-            .attr("y", y * count)
-            .node()
-            .getComputedTextLength();
-
-          text = "";
-          textSVGLength = 0;
-          count++;
-        } else {
-          while (
-            textSVGLength + wordSVGLength <= rectangleWidth - 10 * padding &&
-            words.length > 0
-          ) {
-            if (text === "") {
-              text += words.shift()[0];
-              textSVGLength = currentElement
-                .select("text")
-                .append("tspan")
-                .text(text) // First word in the tspan
-                .attr("x", padding)
-                .attr("y", y * count)
-                .node()
-                .getComputedTextLength();
-            } else {
-              text += " " + words.shift()[0];
-              const lastTspan = currentElement
-                .selectAll("text tspan")
-                .nodes()
-                .pop();
-              textSVGLength = d3
-                .select(lastTspan)
-                .text(text)
-                .node()
-                .getComputedTextLength();
-            }
-
-            wordSVGLength = words.length > 0 ? words[0][1] : 0;
-          }
-
-          text = "";
-          textSVGLength = 0;
-          count++;
-        }
+            .text(line)
+            .attr("x", 5)
+            .attr("y", 15 + i * 12);
+        });
       }
     });
 
-    createLegend(categories, colorScale);
+    const drawn = Date.now();
+
+    console.log("drawn tree map in:", (drawn - loaded) * 0.001 + "s");
+
+    setLegend(categories, colorScale, viewBoxWidth);
   };
 }
 
-// Legend creation with ResizeObserver
-function createLegend(categories, colorScale) {
-  const padding = 1.5; // outer padding
-  const legendBox = 12;
-  const legend = d3.select("#legend");
+function setLegend(categories, colorScale, width) {
+  // Clear existing legend items
+  legend.selectAll("*").remove();
+
+  const legend = d3.select("#chart.tree-map ~ #legend");
   const legendElement = legend.node();
 
-  function updateLegendLayout() {
-    // Clear existing legend items
-    legend.selectAll("g").remove();
+  const rem = parseFloat(
+    window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue("font-size")
+  );
 
-    const rem = parseFloat(
+  const legendPadding =
+    parseFloat(
       window
-        .getComputedStyle(document.documentElement)
-        .getPropertyValue("font-size")
-    );
-    const legendPadding =
-      parseFloat(
-        window
-          .getComputedStyle(legendElement)
-          .getPropertyValue("--legend-padding")
-      ) * rem;
-    const legendWidth =
-      legendElement.getBoundingClientRect().width - 2 * legendPadding;
+        .getComputedStyle(legendElement)
+        .getPropertyValue("--legend-padding")
+    ) * rem;
 
-    const legendItemSpacing =
-      (legendWidth - legendBox - 2 * padding) / (categories.length - 1);
+  const chartPadding = 1.5;
+  const padding = legendPadding + chartPadding;
 
-    legend
-      .selectAll("g")
-      .data(categories)
-      .enter()
-      .append("g")
-      .attr(
-        "transform",
-        (_, i) =>
-          `translate(${i * legendItemSpacing + padding + legendPadding}, 0)`
-      )
-      .append("rect")
-      .attr("width", legendBox)
-      .attr("height", legendBox)
-      .attr("class", "legend-item")
-      .attr("fill", (d) => colorScale(d))
-      .attr("stroke", "none");
+  const legendViewBoxWidth = width;
+  const legendCellLength = 12;
+  const legendViewBoxHeight = legendCellLength + 2 * rem;
 
-    legend
-      .selectAll("g")
-      .append("text")
-      .attr("fill", "red")
-      .text((d) => d)
-      .attr("x", legendBox / 2) // padding / 2: start at center of the legendBox
-      .attr("y", 2 * legendBox + 5)
-      .attr("text-anchor", "middle"); // Now, center the text
-  }
+  const legendItemSpacing =
+    (legendViewBoxWidth - legendCellLength - 2 * padding) /
+    (categories.length - 1);
+  const legendViewBox = `0 0 ${legendViewBoxWidth} ${legendViewBoxHeight}`;
 
-  // Initial layout after a brief delay for CSS to settle
-  setTimeout(() => {
-    updateLegendLayout();
-  }, 100);
+  // ! Important: DO NOT set preserveAspectRatio to "xMidYMid meet"
+  // ! This will shorten the legend's viewBox to preserve aspect ratio
+  // ! Set height to "auto" in CSS to preserve aspect ratio
+  legend.attr("viewBox", legendViewBox).attr("preserveAspectRatio", "none");
 
-  // Create ResizeObserver to watch the legend element
-  const resizeObserver = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      // Only respond to size changes, not initial observation
-      if (entry.contentRect.width > 0) {
-        console.log("@observer");
-        const chartSection = document.getElementById("chart-section");
-        const transitionDuration = parseFloat(
-          window
-            .getComputedStyle(chartSection)
-            .getPropertyValue("--snapping-to-duration")
-        );
+  legend
+    .selectAll("g")
+    .data(categories)
+    .enter()
+    .append("g")
+    .append("rect")
+    .attr("x", (_, i) => i * legendItemSpacing + padding)
+    .attr("y", 0)
+    .attr("width", legendCellLength)
+    .attr("height", legendCellLength)
+    .attr("class", "legend-item")
+    .attr("fill", (d) => colorScale(d))
+    .attr("stroke", "none")
+    .attr("stroke-width", 0);
 
-        const start = Date.now();
-
-        function animate() {
-          console.log("@animate");
-
-          const now = Date.now();
-          const elapsed = now - start;
-
-          if (elapsed >= transitionDuration) {
-            updateLegendLayout(); // Final update
-            return;
-          }
-
-          updateLegendLayout();
-          requestAnimationFrame(animate);
-        }
-
-        // First update
-        updateLegendLayout();
-        animate();
-      }
-    }
-  });
-
-  // Start observing the legend element
-  resizeObserver.observe(legendElement);
-
-  // Return cleanup function
-  return () => {
-    resizeObserver.disconnect();
-  };
+  legend
+    .selectAll("g")
+    .append("text")
+    .text((d) => d)
+    .attr("x", (_, i) => i * legendItemSpacing + padding + legendCellLength / 2) // padding / 2: start at center of the legendBox
+    .attr("y", 2 * legendCellLength + 5)
+    .attr("text-anchor", "middle"); // Horizontally enter the text
 }

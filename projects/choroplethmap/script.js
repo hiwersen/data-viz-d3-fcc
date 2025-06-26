@@ -34,6 +34,8 @@ export default function () {
 
   const req = new XMLHttpRequest();
 
+  const requested = Date.now();
+
   const urlCountyData =
     "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json";
   const urlEducationData =
@@ -42,6 +44,13 @@ export default function () {
   req.open("GET", urlCountyData, true);
   req.send();
   req.onload = () => {
+    const loaded = Date.now();
+
+    console.log(
+      "loaded choropleth map in:",
+      (loaded - requested) * 0.001 + "s"
+    );
+
     const countyData = JSON.parse(req.responseText);
 
     req.open("GET", urlEducationData, true);
@@ -190,78 +199,99 @@ export default function () {
         .attr("stroke-width", 0.7)
         .attr("d", d3.geoPath());
 
-      const getProp = (id, prop) =>
-        parseFloat(
+      function setLegend() {
+        // Clear existing legend items
+        legend.selectAll("*").remove();
+
+        const chartElement = document.querySelector("#chart");
+        if (!chartElement.classList.contains("choropleth-map")) return;
+
+        const legendElement = document.querySelector("#chart ~ #legend");
+        if (!legendElement.classList.contains("set")) return;
+
+        const legend = d3.select("#chart.choropleth-map ~ #legend");
+
+        const getProp = (id, prop) =>
+          parseFloat(
+            window
+              .getComputedStyle(document.getElementById(id))
+              .getPropertyValue(prop)
+          );
+
+        const rem = parseFloat(
           window
-            .getComputedStyle(document.getElementById(id))
-            .getPropertyValue(prop)
+            .getComputedStyle(document.documentElement)
+            .getPropertyValue("font-size")
         );
+        const legendPadding = getProp("legend", "--padding") * rem;
+        const legendWidth = getProp("legend", "--width") * rem;
+        const legendHeight = getProp("legend", "--height") * rem;
 
-      const rem = parseFloat(
-        window
-          .getComputedStyle(document.documentElement)
-          .getPropertyValue("font-size")
-      );
-      const legendPadding = getProp("legend", "--padding") * rem;
-      const legendWidth = getProp("legend", "--width") * rem;
-      const legendHeight = getProp("legend", "--height") * rem;
+        const legendViewBoxWidth = legendWidth;
+        const legendViewBoxHeight = legendHeight;
 
-      const legendViewBoxWidth = legendWidth;
-      const legendViewBoxHeight = legendHeight;
+        const legendCellWidth = legendViewBoxWidth / colorScale.range().length;
+        const legendViewBox = `0 0 ${legendViewBoxWidth + legendPadding * 2} ${legendViewBoxHeight + legendPadding * 1.5}`;
 
-      const legendCellWidth = legendViewBoxWidth / colorScale.range().length;
-      const legendViewBox = `0 0 ${legendViewBoxWidth + legendPadding * 2} ${legendViewBoxHeight + legendPadding * 1.5}`;
+        legend
+          .attr("viewBox", legendViewBox)
+          .attr("preserveAspectRatio", "xMidYMid meet")
+          .attr("transform", `translate(${legendPadding}, 0)`);
 
-      const legend = d3
-        .select("#legend")
-        .attr("viewBox", legendViewBox)
-        .attr("preserveAspectRatio", "xMidYMid meet")
-        .append("g")
-        .attr("id", "legend-bar")
-        .attr("transform", `translate(${legendPadding}, 0)`);
+        legend
+          .selectAll("rect")
+          .data(colorScale.range())
+          .enter()
+          .append("rect")
+          .attr("x", (_, i) => i * legendCellWidth)
+          .attr("y", 0)
+          .attr("width", legendCellWidth)
+          .attr("height", legendViewBoxHeight)
+          .attr("fill", (d) => d);
 
-      legend
-        .selectAll("rect")
-        .data(colorScale.range())
-        .enter()
-        .append("rect")
-        .attr("x", (_, i) => i * legendCellWidth)
-        .attr("y", 0)
-        .attr("width", legendCellWidth)
-        .attr("height", legendViewBoxHeight)
-        .attr("fill", (d) => d);
+        const legendScale = d3
+          .scaleLinear()
+          .domain([minEdu / 100, maxEdu / 100])
+          .range([0, legendViewBoxWidth]);
 
-      const legendScale = d3
-        .scaleLinear()
-        .domain([minEdu / 100, maxEdu / 100])
-        .range([0, legendViewBoxWidth]);
+        const getTickValues = (min, max, Categorynum) => {
+          let ticks = [];
+          const range = (max - min) / Categorynum;
+          let tick = min;
 
-      const getTickValues = (min, max, Categorynum) => {
-        let ticks = [];
-        const range = (max - min) / Categorynum;
-        let tick = min;
+          while (ticks.length <= Categorynum) {
+            // The last tick value is inclusive
+            ticks.push(Number.parseFloat(tick.toFixed(1)) / 100);
+            tick += range;
+          }
+          return ticks;
+        };
 
-        while (ticks.length <= Categorynum) {
-          // The last tick value is inclusive
-          ticks.push(Number.parseFloat(tick.toFixed(1)) / 100);
-          tick += range;
-        }
-        return ticks;
-      };
+        const legendAxisGenerator = d3
+          .axisBottom(legendScale)
+          .tickValues(getTickValues(minEdu, maxEdu, colorScale.range().length))
+          .tickFormat(d3.format("0.0%"));
 
-      const legendAxisGenerator = d3
-        .axisBottom(legendScale)
-        .tickValues(getTickValues(minEdu, maxEdu, colorScale.range().length))
-        .tickFormat(d3.format("0.0%"));
+        const legendAxis = legend
+          .append("g")
+          .attr("id", "legend-axis")
+          .attr("class", "set")
+          .attr("transform", `translate(0, ${legendViewBoxHeight})`)
+          .call(legendAxisGenerator);
 
-      const legendAxis = legend
-        .append("g")
-        .attr("id", "legend-axis")
-        .attr("transform", `translate(0, ${legendViewBoxHeight})`)
-        .call(legendAxisGenerator);
+        legendAxis.selectAll("g").attr("class", "tick");
 
-      legendAxis.selectAll("g").attr("class", "tick");
+        legendElement.classList.add("set");
+
+        requestAnimationFrame(setLegend);
+      }
+
+      setLegend();
     };
+
+    const drawn = Date.now();
+
+    console.log("drawn choropleth map in:", (drawn - loaded) * 0.001 + "s");
   };
 }
 

@@ -7,9 +7,15 @@ export default function () {
 
   const req = new XMLHttpRequest();
 
+  const requested = Date.now();
+
   req.open("GET", url, true);
   req.send();
   req.onload = () => {
+    const loaded = Date.now();
+
+    console.log("loaded scatter plot in:", (loaded - requested) * 0.001 + "s");
+
     const dataset = JSON.parse(req.responseText);
 
     dataset.forEach((d) => {
@@ -165,5 +171,9 @@ export default function () {
       .text((d) => d)
       .attr("transform", `translate(-6, 9)`)
       .style("text-anchor", "end");
+
+    const drawn = Date.now();
+
+    console.log("drawn scatter plot in:", (drawn - loaded) * 0.001 + "s");
   };
 }

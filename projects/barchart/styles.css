@@ -35,6 +35,12 @@
 
   & #tooltip .current .value {
     font-size: 2.5rem;
+    line-height: 1.1;
+  }
+
+  & #tooltip .value ~ .label {
+    line-height: 1.1;
+    font-style: italic;
   }
 
   @media screen and (max-width: 320px), screen and (max-height: 320px) {
@@ -54,5 +60,9 @@
     font-style: italic;
     font-weight: lighter;
     font-size: 0.6rem;
+  }
+
+  #chart.bar-chart ~ #legend {
+    display: none;
   }
 }

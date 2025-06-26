@@ -104,8 +104,11 @@ export default function () {
           <p id="tooltip-title">US Gross Domestic Product</p>
           
           <div class="data current">
-            <p class="value">$${d[1]}</p>
-            <p class="label">Billion</p>
+            <div>
+              <p class="value">$${d[1]}</p>
+              <p class="label">Billion</p>
+            </div>
+            
             <p class="label">${date}</p>
           </div>
           

@@ -34,4 +34,8 @@
   #tooltip-footer {
     text-align: end;
   }
+
+  #chart.scatter-plot ~ #legend {
+    display: none;
+  }
 }

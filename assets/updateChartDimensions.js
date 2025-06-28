@@ -414,3 +414,21 @@ export class UpdateChartDimensions {
     requestAnimationFrame(this.handleResize);
   }
 }
+
+export const updateChartDimensions = new Promise((resolve) => {
+  window.addEventListener("load", () => {
+    const svgRatio = 1.6;
+    // Disable all transitions/animations for initial calculations
+    if (!document.body.classList.contains("no-transitions")) {
+      document.body.classList.add("no-transitions");
+    }
+
+    resolve(
+      new UpdateChartDimensions(
+        svgRatio,
+        0.1, // 10% max-discount
+        0.2
+      )
+    );
+  });
+});

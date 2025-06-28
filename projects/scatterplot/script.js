@@ -163,7 +163,8 @@ export default function () {
       .append("rect")
       .attr("height", recLength)
       .attr("width", recLength)
-      .attr("fill", (d) => colorScale(d));
+      .attr("fill", (d) => colorScale(d))
+      .attr("stroke", "none");
 
     legend
       .selectAll("g")

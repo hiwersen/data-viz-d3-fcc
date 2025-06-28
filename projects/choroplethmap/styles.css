@@ -8,7 +8,7 @@
   }
 
   & #tooltip {
-    width: 35em;
+    min-width: 35em;
     max-width: calc(100dvw - 2em);
     min-height: min(25em, calc(100dvh - 2em));
     color: var(--text-color-accent);
@@ -117,9 +117,11 @@
     animation-iteration-count: 1;
   }
 
-  & #chart.choropleth-map ~ #legend {
+  & #chart-section #chart.choropleth-map ~ #legend {
     display: block;
-    /* Right-align legend with chart's rightmost edge  */
-    transform: translateX(calc(1em - var(--chart-width) * 0.02));
+    /* Right-align legend with chart's rightmost edge
+    Discount --padding: 1rem; from #legend use to set axis in choroplethmap.js 
+    */
+    transform: translateX(calc(1em - var(--chart-width) * 0.015));
   }
 }

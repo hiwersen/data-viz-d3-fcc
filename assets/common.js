@@ -2,13 +2,10 @@ import { TextScramble } from "./text-scramble/index.js";
 import { staggeredAnimation } from "./staggered-animation.js";
 import { addAnimations } from "./add-animations.js";
 import { removeAnimations } from "./remove-animations.js";
-import { UpdateChartDimensions } from "./updateChartDimensions.js";
 import { ChartManager } from "./chartManager.js";
 
 // Create and export ChartManager's instance
 export const chartManager = new ChartManager();
-
-const svgRatio = 1.6;
 
 window.addEventListener("load", () => {
   // ! TODO: synchronize animation -
@@ -16,15 +13,11 @@ window.addEventListener("load", () => {
   // the carousel initial position isn't consistent
 
   // Disable all transitions/animations for initial calculations
-  document.body.classList.add("no-transitions");
+  if (!document.body.classList.contains("no-transitions")) {
+    document.body.classList.add("no-transitions");
+  }
 
   // document.getElementById("chart-modal").show();
-
-  new UpdateChartDimensions(
-    svgRatio,
-    0.1, // 10% max-discount
-    0.2
-  );
 
   // Use RAF to ensure all layout calculations are complete
   requestAnimationFrame(() => {

@@ -40,12 +40,18 @@
 
   #chart-container > #legend {
     --legend-padding: 1rem;
+    --offset: 0.25rem;
     left: 50%;
     bottom: -0.375rem;
     width: calc(100% - (var(--cc-padding) * 2) + (var(--legend-padding) * 2));
     height: auto; /* ! Important: to preserve aspect ratio */
+    padding: var(--offset);
     transform: translateX(-50%);
     display: block;
+  }
+
+  #chart-section.snapped #chart-container > #legend {
+    --offset: 0;
   }
 
   & #tooltip {

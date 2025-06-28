@@ -72,13 +72,13 @@ export default function () {
     gradient
       .append("stop")
       .attr("offset", "0%")
-      .attr("stop-color", colorTheme[3])
+      .attr("stop-color", colorTheme[3]) // top
       .attr("stop-opacity", 1);
 
     gradient
       .append("stop")
       .attr("offset", "100%")
-      .attr("stop-color", colorTheme[1])
+      .attr("stop-color", colorTheme[2]) // bottom
       .attr("stop-opacity", 1);
 
     chart

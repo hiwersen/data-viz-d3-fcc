@@ -6,16 +6,18 @@ export const colorThemes = [
   ["#EDCED3", "#C69DBC", "#A472A8", "#824794", "#562D70", "#2F164F", "#0D0233"],
 
   // colorTheme2 - Heat map
+
   [
-    "#173572",
-    "#4F6CA7",
-    "#86A2DB",
-    "#F2EADF",
-    "#FFDB99",
-    "#FDA349",
-    "#FC6722",
-    "#DE2817",
-    "#9B2226",
+    "#D8FCF2",
+    "#D8FCF2",
+    "#DDE0DD",
+    "#E0CCCE",
+    "#E6A4B0",
+    "#ED738C",
+    "#F34B6E",
+    "#F6365F",
+    "#F92452",
+    "#FF0037",
   ],
 
   // colorTheme3 - Bar chart
@@ -31,14 +33,11 @@ export const colorThemes = [
     "#7AE582",
     "#EFCA08",
     "#00A6A6",
-
     "#F72585",
     "#023047",
     "#AF4319",
-
     "#7CA982",
     "#C2A83E",
-
     "#9E0059",
     "#225560",
     "#FB8500",
@@ -46,7 +45,6 @@ export const colorThemes = [
     "#CFD11A",
     "#91C499",
     "#808F85",
-
     "#595959",
   ],
 
@@ -64,4 +62,17 @@ export const colorThemes = [
 
   // ! NOT IN USE: Deep blue-purple - NEEDS LIGHT, LIGHTER AND MORE SATURATION
   ["#B291BC", "#947EA8", "#766B94", "#595880", "#3B456C", "#1E3257", "#01123D"],
+
+  // ! NOT IN USE:
+  [
+    "#173572",
+    "#4F6CA7",
+    "#86A2DB",
+    "#F2EADF",
+    "#FFDB99",
+    "#FDA349",
+    "#FC6722",
+    "#DE2817",
+    "#9B2226",
+  ],
 ];

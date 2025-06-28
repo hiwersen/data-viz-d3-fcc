@@ -144,6 +144,7 @@
 }
 
 #navbar .arrow-right {
+  pointer-events: none; /* disable focus */
   color: transparent;
   background-image: var(--gradient1);
   background-clip: text;
@@ -746,6 +747,14 @@
   width: var(--chart-width); /* Set by JS */
   height: var(--chart-height); /* Set by JS */
   padding: var(--cc-padding);
+
+  opacity: 0;
+  transition: none;
+}
+
+#chart-container.chart-loaded {
+  opacity: 1;
+  transition: var(--transition);
 }
 
 #legend {
@@ -762,6 +771,7 @@
 
   z-index: 2;
   pointer-events: none;
+  transition: none;
 }
 
 #tooltip {

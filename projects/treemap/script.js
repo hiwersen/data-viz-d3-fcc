@@ -181,11 +181,11 @@ export default function () {
 }
 
 function setLegend(categories, colorScale, width) {
-  // Clear existing legend items
-  legend.selectAll("*").remove();
-
   const legend = d3.select("#chart.tree-map ~ #legend");
   const legendElement = legend.node();
+
+  // Clear existing legend items
+  legend.selectAll("*").remove();
 
   const rem = parseFloat(
     window
@@ -194,11 +194,13 @@ function setLegend(categories, colorScale, width) {
   );
 
   const legendPadding =
-    parseFloat(
-      window
-        .getComputedStyle(legendElement)
-        .getPropertyValue("--legend-padding")
-    ) * rem;
+    (legendElement
+      ? parseFloat(
+          window
+            .getComputedStyle(legendElement)
+            .getPropertyValue("--legend-padding")
+        )
+      : 1) * rem;
 
   const chartPadding = 1.5;
   const padding = legendPadding + chartPadding;

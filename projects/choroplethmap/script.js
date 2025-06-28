@@ -199,100 +199,83 @@ export default function () {
         .attr("stroke-width", 0.7)
         .attr("d", d3.geoPath());
 
-      function setLegend() {
-        // Clear existing legend items
-        legend.selectAll("*").remove();
+      setLegend(colorScale, minEdu, maxEdu);
 
-        const chartElement = document.querySelector("#chart");
-        if (!chartElement.classList.contains("choropleth-map")) return;
+      const drawn = Date.now();
 
-        const legendElement = document.querySelector("#chart ~ #legend");
-        if (!legendElement.classList.contains("set")) return;
-
-        const legend = d3.select("#chart.choropleth-map ~ #legend");
-
-        const getProp = (id, prop) =>
-          parseFloat(
-            window
-              .getComputedStyle(document.getElementById(id))
-              .getPropertyValue(prop)
-          );
-
-        const rem = parseFloat(
-          window
-            .getComputedStyle(document.documentElement)
-            .getPropertyValue("font-size")
-        );
-        const legendPadding = getProp("legend", "--padding") * rem;
-        const legendWidth = getProp("legend", "--width") * rem;
-        const legendHeight = getProp("legend", "--height") * rem;
-
-        const legendViewBoxWidth = legendWidth;
-        const legendViewBoxHeight = legendHeight;
-
-        const legendCellWidth = legendViewBoxWidth / colorScale.range().length;
-        const legendViewBox = `0 0 ${legendViewBoxWidth + legendPadding * 2} ${legendViewBoxHeight + legendPadding * 1.5}`;
-
-        legend
-          .attr("viewBox", legendViewBox)
-          .attr("preserveAspectRatio", "xMidYMid meet")
-          .attr("transform", `translate(${legendPadding}, 0)`);
-
-        legend
-          .selectAll("rect")
-          .data(colorScale.range())
-          .enter()
-          .append("rect")
-          .attr("x", (_, i) => i * legendCellWidth)
-          .attr("y", 0)
-          .attr("width", legendCellWidth)
-          .attr("height", legendViewBoxHeight)
-          .attr("fill", (d) => d);
-
-        const legendScale = d3
-          .scaleLinear()
-          .domain([minEdu / 100, maxEdu / 100])
-          .range([0, legendViewBoxWidth]);
-
-        const getTickValues = (min, max, Categorynum) => {
-          let ticks = [];
-          const range = (max - min) / Categorynum;
-          let tick = min;
-
-          while (ticks.length <= Categorynum) {
-            // The last tick value is inclusive
-            ticks.push(Number.parseFloat(tick.toFixed(1)) / 100);
-            tick += range;
-          }
-          return ticks;
-        };
-
-        const legendAxisGenerator = d3
-          .axisBottom(legendScale)
-          .tickValues(getTickValues(minEdu, maxEdu, colorScale.range().length))
-          .tickFormat(d3.format("0.0%"));
-
-        const legendAxis = legend
-          .append("g")
-          .attr("id", "legend-axis")
-          .attr("class", "set")
-          .attr("transform", `translate(0, ${legendViewBoxHeight})`)
-          .call(legendAxisGenerator);
-
-        legendAxis.selectAll("g").attr("class", "tick");
-
-        legendElement.classList.add("set");
-
-        requestAnimationFrame(setLegend);
-      }
-
-      setLegend();
+      console.log("drawn choropleth map in:", (drawn - loaded) * 0.001 + "s");
     };
-
-    const drawn = Date.now();
-
-    console.log("drawn choropleth map in:", (drawn - loaded) * 0.001 + "s");
   };
+}
+
+function setLegend(colorScale, minEdu, maxEdu) {
+  const legend = d3.select("#chart.choropleth-map ~ #legend");
+
+  // Clear existing legend items
+  legend.selectAll("*").remove();
+
+  const rem = parseFloat(
+    window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue("font-size")
+  );
+  const legendPadding = getProp("legend", "--padding") * rem;
+  const legendWidth = getProp("legend", "--width") * rem;
+  const legendHeight = getProp("legend", "--height") * rem;
+
+  const legendViewBoxWidth = legendWidth;
+  const legendViewBoxHeight = legendHeight;
+
+  const legendCellWidth = legendViewBoxWidth / colorScale.range().length;
+  const legendViewBox = `0 0 ${legendViewBoxWidth + legendPadding * 2} ${legendViewBoxHeight + legendPadding * 1.5}`;
+
+  legend
+    .attr("viewBox", legendViewBox)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  legend
+    .selectAll("rect")
+    .data(colorScale.range())
+    .enter()
+    .append("rect")
+    .attr("x", (_, i) => i * legendCellWidth + legendPadding)
+    .attr("y", 0)
+    .attr("width", legendCellWidth)
+    .attr("height", legendViewBoxHeight)
+    .attr("fill", (d) => d);
+
+  const legendScale = d3
+    .scaleLinear()
+    .domain([minEdu / 100, maxEdu / 100])
+    .range([0, legendViewBoxWidth]);
+
+  const getTickValues = (min, max, Categorynum) => {
+    let ticks = [];
+    const range = (max - min) / Categorynum;
+    let tick = min;
+
+    while (ticks.length <= Categorynum) {
+      // The last tick value is inclusive
+      ticks.push(Number.parseFloat(tick.toFixed(1)) / 100);
+      tick += range;
+    }
+    return ticks;
+  };
+
+  const legendAxisGenerator = d3
+    .axisBottom(legendScale)
+    .tickValues(getTickValues(minEdu, maxEdu, colorScale.range().length))
+    .tickFormat(d3.format("0.0%"));
+
+  const legendAxis = legend
+    .append("g")
+    .attr("id", "legend-axis")
+    .attr("x", legendPadding)
+    .attr("y", 0)
+    .attr("transform", `translate(${legendPadding}, ${legendViewBoxHeight})`)
+    .call(legendAxisGenerator);
+
+  legendAxis.selectAll("g").attr("class", "tick");
 }
 
 function getStats(data) {
@@ -354,4 +337,10 @@ function getStats(data) {
   });
 
   return stats;
+}
+
+function getProp(id, prop) {
+  return parseFloat(
+    window.getComputedStyle(document.getElementById(id)).getPropertyValue(prop)
+  );
 }

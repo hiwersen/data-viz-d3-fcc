@@ -309,6 +309,14 @@
   position: absolute;
   content: "";
   inset: 0;
+}
+
+/* ! Do not set overflow to image elements */
+#carousel .chart-image-wrapper,
+#carousel .chart-image-wrapper::before,
+#carousel .chart-image-glow,
+#carousel .chart-image-glow::before,
+#carousel .chart-image-glow::after {
   overflow: visible;
 }
 

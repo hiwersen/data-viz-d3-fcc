@@ -79,10 +79,11 @@ window.addEventListener("load", () => {
 window.addEventListener("resize", logRem);
 
 function logRem() {
-  console.log(
+  /*console.log(
     "rem:",
     window
       .getComputedStyle(document.documentElement)
       .getPropertyValue("font-size")
   );
+  */
 }

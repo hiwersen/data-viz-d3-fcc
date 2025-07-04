@@ -29,7 +29,7 @@ window.addEventListener("load", () => {
 
     // Initialize scramble text animation
     const scrambleText = document.querySelector(".scramble-text");
-    // ! TODO: uncomment  // new TextScramble(scrambleText).start();
+    new TextScramble(scrambleText).start();
 
     // Import carousel dynamically to avoid circular dependency
     // Otherwise: common.js imports carousel/index.js imports common.js (circular!)

@@ -14,7 +14,7 @@ export default function () {
   req.onload = () => {
     const loaded = Date.now();
 
-    console.log("loaded scatter plot in:", (loaded - requested) * 0.001 + "s");
+    // console.log("loaded scatter plot in:", (loaded - requested) * 0.001 + "s");
 
     const dataset = JSON.parse(req.responseText);
 

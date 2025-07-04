@@ -46,9 +46,6 @@
 #carousel {
   grid-area: carousel;
   z-index: 1;
-
-  /* ! BUILDING 
-  visibility: hidden; */
 }
 
 #footer {
@@ -330,32 +327,6 @@
 /*
  * CHART
  */
-
-/* ! BUILDING:
-#chart-section {
-  background-color: red;
-}
-
-#chart-modal {
-  background-color: yellow;
-}
-
-#chart-modal-content {
-  background-color: blue;
-}
-
-#chart-container {
-  background-color: deeppink;
-}
-
-#chart {
-  background-color: chartreuse;
-}
-
-#legend {
-  background-color: rgba(0, 255, 255, 1);
-}
-*/
 
 #chart-section {
   --text-color-darker: #869bc563;
@@ -797,14 +768,6 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 10s var(--timing-function1);
-
-  /* ! BUILDING 
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  visibility: visible;
-  opacity: 1;
-  */
 }
 
 #tooltip-content {

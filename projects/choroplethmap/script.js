@@ -46,10 +46,12 @@ export default function () {
   req.onload = () => {
     const loaded = Date.now();
 
+    /*
     console.log(
       "loaded choropleth map in:",
       (loaded - requested) * 0.001 + "s"
     );
+    */
 
     const countyData = JSON.parse(req.responseText);
 
@@ -203,7 +205,7 @@ export default function () {
 
       const drawn = Date.now();
 
-      console.log("drawn choropleth map in:", (drawn - loaded) * 0.001 + "s");
+      // console.log("drawn choropleth map in:", (drawn - loaded) * 0.001 + "s");
     };
   };
 }

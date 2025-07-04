@@ -36,7 +36,7 @@ export default function () {
   req.onload = () => {
     const loaded = Date.now();
 
-    console.log("loaded tree map in:", (loaded - requested) * 0.001 + "s");
+    // console.log("loaded tree map in:", (loaded - requested) * 0.001 + "s");
 
     const salesData = JSON.parse(req.responseText);
 
@@ -174,7 +174,7 @@ export default function () {
 
     const drawn = Date.now();
 
-    console.log("drawn tree map in:", (drawn - loaded) * 0.001 + "s");
+    // console.log("drawn tree map in:", (drawn - loaded) * 0.001 + "s");
 
     setLegend(categories, colorScale, viewBoxWidth);
   };

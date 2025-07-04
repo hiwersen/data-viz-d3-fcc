@@ -49,9 +49,6 @@ body::before {
   animation-timing-function: var(--timing-function2);
   animation-fill-mode: both, forwards, forwards;
   animation-iteration-count: 1, 1, infinite;
-
-  /* !DEBUGGING 
-  display: none; */
 }
 
 /* Pixel effect */
@@ -67,9 +64,6 @@ body::after {
   margin-left: calc(var(--pixel) * -0.25);
   margin-top: calc(var(--pixel) * 0.25);
   z-index: -1;
-
-  /* !DEBUGGING 
-    display: none; */
 }
 
 /* Ambient light effect */
@@ -208,9 +202,6 @@ body::after {
   animation-timing-function: linear;
   animation-fill-mode: both;
   animation-iteration-count: infinite;
-
-  /* DEBUGGING STYLE 
-    display: none; */
 }
 
 /* Tooltip - screen effect */

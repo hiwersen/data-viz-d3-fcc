@@ -77,9 +77,7 @@
     <div id="tooltip" class="showUp"></div>
     <div id="ambient-light"></div>
     <div id="page-container" class="grid fastFadeIn">
-      <!--<div id="page-container" class="grid fastFadeIn">-->
-      <nav id="navbar">
-        <!--<nav id="navbar" class="slowFadeIn">-->
+      <nav id="navbar" class="slowFadeIn">
         <ul class="flex-col-end-between">
           <li id="bar-chart-link" class="nav-link">
             <a href="#" target="_blank"
@@ -111,7 +109,7 @@
           </li>
         </ul>
       </nav>
-      <section id="title-container" class="flex">
+      <section id="title-container" class="flex slowFadeIn">
         <!--<section id="title-container" class="flex-col-start-between slowFadeIn">-->
         <h1 id="title" data-text="Data Visualisation">Data Visualisation</h1>
         <p id="title-description">with data-driven documents - D3.js</p>
@@ -128,7 +126,7 @@
           data-direction="fromRight"
           data-bezier="0.0, 1.0, 0.0, 1.0"
           data-target-text="A showcase of five interactive data visualisations. Each project explores different visualisation techniques created with common web standards and D3.js (Data-Driven Documents)."
-          data-scramble-length="1000"
+          data-scramble-length="1800"
         >
           A showcase of five interactive data visualisations. Each project
           explores different visualisation techniques created with common web
@@ -143,10 +141,9 @@
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">bar chart</span>
                 <div class="chart-image-container">
-                  <div class="chart-image-wrapper flex-col-center-center">
-                    <!--<div
+                  <div
                     class="chart-image-wrapper flex-col-center-center slowFadeIn"
-                  >-->
+                  >
                     <img
                       class="chart-image"
                       id="bar-chart-image"
@@ -170,9 +167,6 @@
                   <div
                     class="chart-image-glow flex-col-center-center fastFadeIn"
                   ></div>
-                  <!--<div
-                    class="chart-image-glow flex-col-center-center fastFadeIn"
-                  ></div>-->
                 </div>
               </div>
             </div>
@@ -184,10 +178,9 @@
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">heat map</span>
                 <div class="chart-image-container">
-                  <div class="chart-image-wrapper flex-col-center-center">
-                    <!--<div
+                  <div
                     class="chart-image-wrapper flex-col-center-center slowFadeIn"
-                  >-->
+                  >
                     <img
                       class="chart-image"
                       id="heat-map-image"
@@ -211,9 +204,6 @@
                   <div
                     class="chart-image-glow flex-col-center-center fastFadeIn"
                   ></div>
-                  <!--<div
-                    class="chart-image-glow flex-col-center-center fastFadeIn"
-                  ></div>-->
                 </div>
               </div>
             </div>
@@ -225,10 +215,9 @@
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">choropleth map</span>
                 <div class="chart-image-container">
-                  <div class="chart-image-wrapper flex-col-center-center">
-                    <!--<div
+                  <div
                     class="chart-image-wrapper flex-col-center-center slowFadeIn"
-                  >-->
+                  >
                     <img
                       class="chart-image"
                       id="choropleth-map-image"
@@ -252,9 +241,6 @@
                   <div
                     class="chart-image-glow flex-col-center-center fastFadeIn"
                   ></div>
-                  <!--<div
-                    class="chart-image-glow flex-col-center-center fastFadeIn"
-                  ></div>-->
                 </div>
               </div>
             </div>
@@ -266,10 +252,9 @@
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">scatter plot</span>
                 <div class="chart-image-container">
-                  <div class="chart-image-wrapper flex-col-center-center">
-                    <!--<div
+                  <div
                     class="chart-image-wrapper flex-col-center-center slowFadeIn"
-                  >-->
+                  >
                     <img
                       class="chart-image"
                       id="scatter-plot-image"
@@ -293,9 +278,6 @@
                   <div
                     class="chart-image-glow flex-col-center-center fastFadeIn"
                   ></div>
-                  <!--<div
-                    class="chart-image-glow flex-col-center-center fastFadeIn"
-                  ></div>-->
                 </div>
               </div>
             </div>
@@ -307,10 +289,9 @@
                 <div class="glass"></div>
                 <span class="chart-label gradient-text">tree map</span>
                 <div class="chart-image-container">
-                  <div class="chart-image-wrapper flex-col-center-center">
-                    <!--<div
+                  <div
                     class="chart-image-wrapper flex-col-center-center slowFadeIn"
-                  >-->
+                  >
                     <img
                       class="chart-image"
                       id="tree-map-image"
@@ -334,9 +315,6 @@
                   <div
                     class="chart-image-glow flex-col-center-center fastFadeIn"
                   ></div>
-                  <!--<div
-                    class="chart-image-glow flex-col-center-center fastFadeIn"
-                  ></div>-->
                 </div>
               </div>
             </div>
@@ -345,7 +323,6 @@
       </section>
 
       <section id="chart-section" class="chart-viewport">
-        <!-- <section id="chart-section" class="chart-viewport snapped"> -->
         <div id="chart-controls">
           <button
             id="chart-minimize"
@@ -401,9 +378,6 @@
         </div>
         <dialog id="chart-modal">
           <div id="chart-modal-content">
-            <!--          <div id="chart-modal-content" class="flex-col-center-between">
--->
-
             <div id="chart-title-container" class="flex">
               <h1 id="chart-title"></h1>
               <p id="chart-title-description"></p>
@@ -428,8 +402,7 @@
         </dialog>
       </section>
 
-      <footer id="footer">
-        <!--<footer id="footer" class="slowFadeIn">-->
+      <footer id="footer" class="slowFadeIn">
         <div id="contact" class="footer-section">
           <span>by:</span>
           <a href="https://github.com/hiwersen/" target="_black">Hiwersen </a>

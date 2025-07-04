@@ -295,10 +295,6 @@
   height: calc(100% - 2px); /* ! SET TO DYNAMIC VALUES */
   top: 1px; /* ! SET TO DYNAMIC VALUES */
   left: 1px; /* ! SET TO DYNAMIC VALUES */
-
-  /* ! DEBUGGING  
-  background-color: red;
-  */
 }
 
 /* Image common settings: */
@@ -367,10 +363,6 @@
 
   /* transition set to inherit doesn't work */
   transition: --alphaX var(--t4) ease-in-out;
-
-  /* ! BUILDING   
-  background-color: yellow; 
-  display: none; */
 }
 
 #carousel .chart-image-wrapper img {
@@ -413,10 +405,6 @@
   -webkit-mask: var(--mask);
   filter: blur(6px) grayscale(75%);
   z-index: -1;
-
-  /* !DEBUGGING 
-  background-color: yellow; 
-  display: none; */
 }
 
 #carousel .chart-image-reflex-floor {
@@ -431,7 +419,7 @@
   filter: blur(8px);
   z-index: -2;
 
-  /* ! BUILDING */
+  /* ! TEMPORARILY DISABLED */
   display: none;
 }
 
@@ -463,17 +451,6 @@
     transparent var(--offset1)
   );
 
-  /* ! TODO: BUILDING - DELETE !
-  --gradient: conic-gradient(
-    transparent,
-    rgba(0, 0, 0, 0.25) 0%,
-    rgba(0, 0, 0, 0.25) 50%,
-    rgba(0, 0, 0, 1) 90%,
-    rgba(0, 0, 0, 0.25) 100%,
-    transparent
-  );
-  */
-
   /* Mask variables */
   --m-image: var(--gradient), url("../../assets/images/choroplethmap.png");
   --m-size: 100% 100%, var(--original-size);
@@ -492,25 +469,16 @@
   -webkit-mask-repeat: var(--m-repeat);
   -webkit-mask-position: var(--m-position);
   -webkit-mask-composite: source-out; /* Webkit equivalent of subtract */
-
-  /* ! DEBUGGING 
-  display: none; */
 }
 
 #carousel .chart-image-glow::before {
   filter: saturate(2) brightness(3) blur(12px);
   z-index: -1;
-
-  /* ! BUILDING
-  display: none; */
 }
 
 #carousel .chart-image-glow::after {
   filter: saturate(2) brightness(3) blur(50px);
   z-index: -2;
-
-  /* ! BUILDING 
-  display: none; */
 }
 
 /* Fade glow effect after initial spin */

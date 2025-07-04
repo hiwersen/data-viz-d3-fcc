@@ -26,7 +26,7 @@ export class UpdateChartDimensions {
   }
 
   snap() {
-    console.log("@updateChartDimensions.snap");
+    // console.log("@updateChartDimensions.snap");
 
     this.isSnapped = true;
 
@@ -35,7 +35,7 @@ export class UpdateChartDimensions {
   }
 
   unsnap() {
-    console.log("@updateChartDimensions.unsnap");
+    // console.log("@updateChartDimensions.unsnap");
 
     this.isSnapped = false;
 
@@ -44,7 +44,7 @@ export class UpdateChartDimensions {
   }
 
   toggleSnap() {
-    console.log("@updateChartDimensions.toggleSnap");
+    // "@updateChartDimensions.toggleSnap");
 
     if (this.isSnapped) {
       this.unsnap();
@@ -218,7 +218,7 @@ export class UpdateChartDimensions {
 
     chartMaximize.addEventListener("click", () => {
       if (!this.isSnapped) {
-        console.log("@maximize");
+        // console.log("@maximize");
         this.snap();
       }
     });
@@ -368,21 +368,21 @@ export class UpdateChartDimensions {
     if (chartViewport) {
       this.chartViewport = chartViewport;
     } else {
-      console.log("chartViewport not found.");
+      // console.log("chartViewport not found.");
       return;
     }
 
     if (chartModal) {
       this.chartModal = chartModal;
     } else {
-      console.log("chartModal not found.");
+      // console.log("chartModal not found.");
       return;
     }
 
     if (chartContainer) {
       this.chartContainer = chartContainer;
     } else {
-      console.log("Chart container not found.");
+      // console.log("Chart container not found.");
       return;
     }
 

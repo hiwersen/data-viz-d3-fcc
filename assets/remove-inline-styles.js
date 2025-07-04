@@ -6,7 +6,7 @@ export function removeInlineStyles(elements, inlineStyles, timeout) {
       });
 
       if (i == elements.length - 1) {
-        console.log(elements);
+        // console.log(elements);
       }
     }, timeout[i]);
   });

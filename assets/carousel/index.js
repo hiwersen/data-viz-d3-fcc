@@ -248,7 +248,7 @@ export function initCarousel() {
       // console.log(card);
       // console.log(cardId);
       // console.log(link);
-      console.log(x);
+      // console.log(x);
       // console.log(link.classList);
     });
   }
@@ -405,9 +405,9 @@ export function initCarousel() {
       e.preventDefault();
 
       // Skip if snap translation is in progress
-      console.log("wheel before snapping check");
+      // console.log("wheel before snapping check");
       if (isSnapping) return;
-      console.log("wheel after snapping check");
+      // console.log("wheel after snapping check");
 
       updateTranslateX(e.deltaY, wheelSpeed);
 

@@ -18,7 +18,7 @@ export class ChartManager {
     this.cards = document.querySelectorAll("#carousel .chart-image");
     this.tooltip = document.getElementById("tooltip");
 
-    this.delay = 0; // ! TODO: uncomment 12000
+    this.delay = 12000;
     this.last = 0;
     this.currentChart = null;
     this.hoverTimeout = null;
@@ -209,7 +209,7 @@ export class ChartManager {
   }
 
   cancelHideTimer() {
-    console.log("@cancelHideTimer");
+    // console.log("@cancelHideTimer");
 
     clearTimeout(this.hoverTimeout);
     clearTimeout(this.closeDialogTimeout);
@@ -266,7 +266,7 @@ export class ChartManager {
       const elapsed = now - this.last;
       this.last = now;
 
-      console.log("focused:", chartType, elapsed);
+      // console.log("focused:", chartType, elapsed);
 
       this.focused = chartType;
       this.showChart(chartType);
@@ -286,7 +286,7 @@ export class ChartManager {
         return;
       }
 
-      console.log("blurred:", chartType, elapsed);
+      // console.log("blurred:", chartType, elapsed);
       this.focused = null;
       this.startHideTimer();
     };
@@ -359,10 +359,12 @@ export class ChartManager {
           clearTimeout(this.revertTimeout);
 
           if (!isMouseOverChartViewport && this.focused) {
+            /*
             console.log(
               "moving outside chartViewport while focused on:",
               this.focused
             );
+            */
 
             // Create a new timeout with fresh 75ms delay
             this.revertTimeout = setTimeout(() => {
@@ -378,7 +380,7 @@ export class ChartManager {
       const { shouldClose } = this.getInteractionState(e);
 
       if (shouldClose) {
-        console.log("@close with click");
+        // console.log("@close with click");
         this.cancelHideTimer();
         this.hideChart();
       }

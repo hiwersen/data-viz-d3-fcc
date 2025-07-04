@@ -175,6 +175,6 @@ export default function () {
 
     const drawn = Date.now();
 
-    console.log("drawn scatter plot in:", (drawn - loaded) * 0.001 + "s");
+    // console.log("drawn scatter plot in:", (drawn - loaded) * 0.001 + "s");
   };
 }

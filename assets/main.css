@@ -47,8 +47,8 @@
   grid-area: carousel;
   z-index: 1;
 
-  /* ! BUILDING */
-  visibility: hidden;
+  /* ! BUILDING 
+  visibility: hidden; */
 }
 
 #footer {
@@ -411,6 +411,12 @@
   box-shadow: 5px 5px 30px 10px var(--shadow-c4);
 
   z-index: 4;
+
+  /* BUILDING
+  background-color: hsla(0, 0%, 14%, 0.565);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  */
 }
 
 @media screen and (min-aspect-ratio: 1009/630) {

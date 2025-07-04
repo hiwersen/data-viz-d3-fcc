@@ -106,7 +106,11 @@ export function initCarousel() {
     });
 
     translate();
-    pushLink();
+
+    // Push link and load chart "half-way" snapping for better synchronization
+    setTimeout(() => {
+      pushLink();
+    }, transitionDurationSnap * 0.3);
 
     // Step 2: After full snap translation completes, reorganize DOM
     setTimeout(() => {
@@ -232,11 +236,10 @@ export function initCarousel() {
           link.classList.add("pushed");
         }
 
-        // ! DEBUGGING
         // Load chart if viewport is visible
         if (chartManager.isChartOpen) {
           const chartType = cardId;
-          // ! chartManager.loadChart(chartType);
+          chartManager.loadChart(chartType);
         }
       } else if (link) {
         link.classList.remove("pushed");

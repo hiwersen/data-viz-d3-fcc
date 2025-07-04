@@ -16,8 +16,10 @@ export class ChartManager {
     this.navbar = document.getElementById("navbar");
     this.navLinks = document.querySelectorAll("#navbar .nav-link");
     this.cards = document.querySelectorAll("#carousel .chart-image");
+    this.tooltip = document.getElementById("tooltip");
 
     this.delay = 0; // ! TODO: uncomment 12000
+    this.last = 0;
     this.currentChart = null;
     this.hoverTimeout = null;
     this.revertTimeout = null;
@@ -49,6 +51,9 @@ export class ChartManager {
     this.cardEventListeners = this.cardEventListeners.bind(this);
     this.init = this.init.bind(this);
     this.getInteractionState = this.getInteractionState.bind(this);
+    this.click = this.click.bind(this);
+    this.focus = this.focus.bind(this);
+    this.blur = this.blur.bind(this);
 
     if (document.readyState === "loading") {
       window.addEventListener("load", () => {
@@ -95,6 +100,7 @@ export class ChartManager {
     } catch (error) {
       console.error(`Error loading ${chartType}:`, error);
       this.showError(chartType);
+      this.hideChart();
     } finally {
       this.isLoading = false;
 
@@ -109,10 +115,32 @@ export class ChartManager {
     }
   }
 
+  showChart(chartType) {
+    // console.log("@showChart");
+
+    this.cancelHideTimer();
+
+    if (!this.isChartOpen) {
+      this.chartViewport.classList.add("viewport-visible");
+      this.isChartOpen = true;
+      this.dialog.show(); // Non-modal
+    }
+
+    this.loadChart(chartType);
+  }
+
   async clearChart() {
     this.chartContainer.classList.remove("chart-loaded");
     this.dialog.classList.remove("chart-loaded");
     this.dialog.classList.add("chart-loading");
+
+    // Clear tooltip content
+    this.tooltip.innerHTML = "";
+    // Reset tooltip position
+    this.tooltip.style.top = "-100dvh";
+    this.tooltip.style.left = "-100dvw";
+    this.tooltip.style.opacity = 0;
+    this.tooltip.style.visibility = "hidden";
 
     // Clear SVG elements
     this.chartSVG.innerHTML = "";
@@ -153,20 +181,6 @@ export class ChartManager {
     */
   }
 
-  showChart(chartType) {
-    // console.log("@showChart");
-
-    this.cancelHideTimer();
-
-    if (!this.isChartOpen) {
-      this.chartViewport.classList.add("viewport-visible");
-      this.isChartOpen = true;
-      this.dialog.show(); // Non-modal
-    }
-
-    this.loadChart(chartType);
-  }
-
   hideChart() {
     // console.log("@hideChart");
 
@@ -178,23 +192,6 @@ export class ChartManager {
     this.closeDialogTimeout = setTimeout(() => {
       this.dialog.close();
     }, this.transitionDuration);
-  }
-
-  cancelHideTimer() {
-    console.log("@cancelHideTimer");
-
-    clearTimeout(this.hoverTimeout);
-    clearTimeout(this.closeDialogTimeout);
-    this.hoverTimeout = null;
-    this.closeDialogTimeout = null;
-  }
-
-  cancelRevertToFocusedChart() {
-    // Clear any pending revert to focused chart
-    if (this.revertTimeout) {
-      clearTimeout(this.revertTimeout);
-      this.revertTimeout = null;
-    }
   }
 
   startHideTimer() {
@@ -211,78 +208,88 @@ export class ChartManager {
     }, delay);
   }
 
-  navbarEventListeners() {
-    this.navbar.addEventListener("mouseenter", () => {
-      this.isMouseOverNavbar = true;
-    });
+  cancelHideTimer() {
+    console.log("@cancelHideTimer");
 
-    this.navbar.addEventListener("mouseleave", () => {
-      this.isMouseOverNavbar = false;
-    });
+    clearTimeout(this.hoverTimeout);
+    clearTimeout(this.closeDialogTimeout);
+    this.hoverTimeout = null;
+    this.closeDialogTimeout = null;
   }
 
-  navLinksEventListeners() {
-    // console.log("@navbarHoverListeners");
+  cancelRevertToFocusedChart() {
+    // Clear any pending revert to focused chart
+    if (this.revertTimeout) {
+      clearTimeout(this.revertTimeout);
+      this.revertTimeout = null;
 
-    let last = 0;
+      // console.log("canceled revert to focused chart");
+    }
+  }
 
-    this.navLinks.forEach((link) => {
-      const chartType = link.id.replace("-link", "");
+  mouseEnter(chartType) {
+    return () => {
+      this.cancelRevertToFocusedChart();
+      this.showChart(chartType);
+    };
+  }
 
-      link.addEventListener("mouseenter", () => {
-        this.cancelRevertToFocusedChart();
-        this.showChart(chartType);
-      });
+  mouseLeave(chartType) {
+    return () => {
+      if (this.focused && this.focused !== chartType) {
+        // Small delay to allow new mouseenter to take priority
+        this.revertTimeout = setTimeout(() => {
+          this.showChart(this.focused);
+          this.revertTimeout = null;
+        }, 50);
+      }
+    };
+  }
 
-      link.addEventListener("mouseleave", () => {
-        if (this.focused && this.focused !== chartType) {
-          // Small delay to allow new mouseenter to take priority
-          this.revertTimeout = setTimeout(() => {
-            this.showChart(this.focused);
-            this.revertTimeout = null;
-          }, 50);
-        }
-      });
+  click(chartType) {
+    return (e) => {
+      e.preventDefault();
 
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
+      this.cancelRevertToFocusedChart();
 
-        this.cancelRevertToFocusedChart();
+      this.showChart(chartType);
 
-        this.showChart(chartType);
+      if (this.updateChartDimensions) {
+        this.updateChartDimensions.snap();
+      }
+    };
+  }
 
-        if (this.updateChartDimensions) {
-          this.updateChartDimensions.snap();
-        }
-      });
+  focus(chartType) {
+    return (e) => {
+      const now = Date.now();
+      const elapsed = now - this.last;
+      this.last = now;
 
-      link.querySelector("a").addEventListener("focus", (e) => {
-        const now = Date.now();
-        const elapsed = now - last;
-        last = now;
+      console.log("focused:", chartType, elapsed);
 
-        console.log("focused:", chartType, elapsed);
+      this.focused = chartType;
+      this.showChart(chartType);
+    };
+  }
 
-        this.focused = chartType;
-        this.showChart(chartType);
-      });
-      link.querySelector("a").addEventListener("blur", (e) => {
-        const now = Date.now();
-        const elapsed = now - last;
-        last = now;
+  blur(chartType) {
+    return (e) => {
+      const now = Date.now();
+      const elapsed = now - this.last;
+      this.last = now;
 
-        // Ignore rapid blur - edge case
-        if (elapsed < 100) {
-          // Refocus the element
-          e.target.focus();
-          return;
-        }
+      // Ignore rapid blur - edge case
+      if (elapsed < 100) {
+        // Refocus the element
+        e.target.focus();
+        return;
+      }
 
-        console.log("blurred:", chartType, elapsed);
-        this.focused = null;
-        this.startHideTimer();
-      });
-    });
+      console.log("blurred:", chartType, elapsed);
+      this.focused = null;
+      this.startHideTimer();
+    };
   }
 
   getInteractionState(e) {
@@ -308,6 +315,30 @@ export class ChartManager {
       isChartOpen: this.isChartOpen,
       isMouseOverChartViewport,
     };
+  }
+
+  navbarEventListeners() {
+    this.navbar.addEventListener("mouseenter", () => {
+      this.isMouseOverNavbar = true;
+    });
+
+    this.navbar.addEventListener("mouseleave", () => {
+      this.isMouseOverNavbar = false;
+    });
+  }
+
+  navLinksEventListeners() {
+    // console.log("@navbarHoverListeners");
+
+    this.navLinks.forEach((link) => {
+      const chartType = link.id.replace("-link", "");
+
+      link.addEventListener("mouseenter", this.mouseEnter(chartType));
+      link.addEventListener("mouseleave", this.mouseLeave(chartType));
+      link.addEventListener("click", this.click(chartType));
+      link.querySelector("a").addEventListener("focus", this.focus(chartType));
+      link.querySelector("a").addEventListener("blur", this.blur(chartType));
+    });
   }
 
   chartViewportEventListeners() {
@@ -373,23 +404,26 @@ export class ChartManager {
 
   cardEventListeners(card) {
     // console.log("@cardEventListeners");
-
     if (!card) return;
 
     const chartType = card.id.replace("-image", "");
 
     card.addEventListener("mouseenter", () => {
+      if (this.isChartOpen) return;
       this.isMouseOverAnyCard = true;
-      this.showChart();
-      this.loadChart(chartType);
+
+      this.mouseEnter(chartType)();
     });
 
     card.addEventListener("mouseleave", () => {
       this.isMouseOverAnyCard = false;
+      this.mouseLeave(chartType)();
       /* ! BUG FIXED: chart open and closes intermittently
       when this.startHideTimer(); is set to mouseleave event handler.
       */
     });
+
+    card.addEventListener("click", this.click(chartType));
   }
 
   cardsEventListeners() {

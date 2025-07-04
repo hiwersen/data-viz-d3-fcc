@@ -12,8 +12,13 @@
     min-width: 35em;
     max-width: calc(100dvw - 2em);
     color: var(--text-color-accent);
-    letter-spacing: 0.25em;
+
     text-align: end;
+  }
+
+  & #tooltip,
+  #chart.scatter-plot text {
+    letter-spacing: 0.25em;
   }
 
   & #tooltip-content,

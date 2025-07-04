@@ -24,7 +24,7 @@ export const colorThemes = [
   ["#C69DBC", "#A06FB2", "#BA96C9", "#C4BAE1", "#A09CCB", "#35559C", "#363B9E"],
 
   // colorTheme4 - Scatter plot
-  ["#fb6082", "#9eeafb"],
+  ["#FF0037", "#9eeafb"],
 
   // colorTheme5 - Tree map
   [

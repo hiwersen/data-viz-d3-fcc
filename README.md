@@ -1,6 +1,6 @@
 # D3.js Data Visualization Dashboard
 
-An interactive data visualization dashboard featuring multiple chart types built with D3.js, including bar charts, heat maps, choropleth maps, scatter plots, and tree maps.
+An interactive data visualization dashboard featuring multiple chart types built with D3.js, including bar chart, heat map, choropleth map, scatter plot, and tree map.
 
 ## Features
 
@@ -32,7 +32,6 @@ This application is currently **fully tested and optimized for Chrome on desktop
 
 ### Known Limitations
 
-- Mobile responsiveness requires additional development
 - Touch event handling not implemented for mobile devices
 - Performance on lower-end devices not optimized
 
@@ -71,18 +70,16 @@ Cross-browser and mobile optimization are planned for future releases. Contribut
 
 - Optimized images (WebP format with PNG fallback)
 - Lighthouse Performance Score: 92/100 (Chrome Desktop)
-- Total asset size: ~200KB
+- Total asset size: ~300KB
 
 ## Contributing
 
 Contributions are welcome, especially for:
 
 - Cross-browser compatibility improvements
-- Mobile responsiveness
 - Performance optimizations
-- Additional chart types
 - UX/UI
 
 ---
 
-**Note**: This is an active development project. For the best experience, please use Chrome on desktop until cross-platform optimizations are implemented.
+**Note**: This is an active development project. For the best experience, please use Chrome on desktop until cross-platform full optimizations are implemented.

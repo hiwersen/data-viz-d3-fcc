@@ -868,15 +868,29 @@
   padding: var(--xs);
 }
 
-#footer a,
-#footer a:visited {
-  color: var(--c1);
-  background-color: var(--text-color-light);
+#footer #contact a,
+#footer #contact a:visited {
+  color: var(--text-color-light); /* var(--g7); */
+  background-color: var(--shadow-c4);
 }
 
-#footer a:hover,
-#footer a:active,
-#footer a:visited:hover {
+#footer #contact a:hover,
+#footer #contact a:active,
+#footer #contact a:visited:hover {
+  color: var(--c1);
+  background-color: var(--g7);
+}
+
+#footer #source-code a,
+#footer #source-code a:visited {
+  color: var(--text-color-light); /* var(--g7); */
+  background-color: var(--shadow-c4);
+}
+
+#footer #source-code a:hover,
+#footer #source-code a:active,
+#footer #source-code a:visited:hover {
+  color: var(--c1);
   background-color: var(--g7);
 }
 

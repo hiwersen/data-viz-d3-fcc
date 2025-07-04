@@ -297,7 +297,8 @@
   left: 1px; /* ! SET TO DYNAMIC VALUES */
 
   /* ! DEBUGGING  
-  background-color: red; */
+  background-color: red;
+  */
 }
 
 /* Image common settings: */
@@ -349,7 +350,7 @@
     ),
     linear-gradient(
       to bottom,
-      rgba(235, 119, 251, calc(0.8 * calc(1 - var(--alphaX)))) -50%,
+      rgba(235, 119, 251, calc(0.25 * calc(1 - var(--alphaX)))) -50%,
       transparent 75%
     ),
     linear-gradient(
@@ -357,9 +358,9 @@
       rgba(0, 0, 0, calc(1 - var(--alphaX))) -100%,
       transparent 50%
     ),
-    linear-gradient(to top, rgba(251, 96, 130, 1) -150%, transparent 50%);
+    linear-gradient(to top, rgba(251, 96, 130, 0.5) -150%, transparent 50%);
 
-  background-color: rgb(53, 81, 138, 0.4);
+  background-color: black; /* rgb(53, 81, 138, 0.4); */
 
   transform-style: preserve-3d;
   perspective: var(--card-size);
@@ -372,15 +373,21 @@
   display: none; */
 }
 
+#carousel .chart-image-wrapper img {
+  padding: 1rem;
+}
+
 /* Chart background gradient reflex on floor */
 #carousel .chart-image-wrapper::before {
   transform: translateY(101%) scaleY(-1);
   background-color: inherit;
   background-image: inherit;
-  filter: blur(4px) brightness(1.5) saturate(1.3);
+  filter: blur(8px) brightness(1.3) saturate(1.3);
   /* Gradient mask for subtle fading effect */
-  mask: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent 80%);
-  -webkit-mask: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent 80%);
+
+  --mask: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent 80%);
+  mask: var(--mask);
+  -webkit-mask: var(--mask);
 }
 
 /* Translate image reflection on background 
@@ -389,15 +396,15 @@
   --x: calc(4% * (1 - var(--alphaX)) * var(--hemisphere));
   --absX: calc(100% + (4% * (1 - var(--alphaX))));
 
-  transform: translate(calc((50% - var(--x)) * -1), -45%)
-    scale(var(--absX), 1.1);
+  transform: translate(calc((50% - var(--x)) * -1), -48%)
+    scale(var(--absX), 1.05);
 
   --mask: linear-gradient(
     to left,
     transparent,
     transparent calc(1% + var(--x) - var(--padding)),
-    rgba(0, 0, 0, 0.6) calc(1% + var(--x) - var(--padding)),
-    rgba(0, 0, 0, 0.6) calc(99% + var(--x) + var(--padding)),
+    rgba(0, 0, 0, 0.25) calc(1% + var(--x) - var(--padding)),
+    rgba(0, 0, 0, 0.25) calc(99% + var(--x) + var(--padding)),
     transparent calc(99% + var(--x) + var(--padding)),
     transparent 100%
   );
@@ -416,17 +423,20 @@
   transform: translate(-50%, 51%) scaleY(-1);
   --mask: linear-gradient(
     to top,
-    rgba(0, 0, 0, max(var(--alphaX), 0.15)),
+    rgba(0, 0, 0, max(calc(var(--alphaX) * 0.3), 0.1)),
     transparent
   );
   mask: var(--mask);
   -webkit-mask: var(--mask);
   filter: blur(8px);
   z-index: -2;
+
+  /* ! BUILDING */
+  display: none;
 }
 
-#carousel .chart-image-glow::before,
-#carousel .chart-image-glow::after {
+#carousel #choropleth-map .chart-image-glow::before,
+#carousel #choropleth-map .chart-image-glow::after {
   width: 150%;
   height: 150%;
 
@@ -437,7 +447,7 @@
   /* Stretch the image vertically */
   --stretched-size: var(--original-position);
 
-  background-image: url("../../assets/images/choropleth.png");
+  background-image: url("../../assets/images/choroplethmap.png");
   background-size: var(--original-size) calc(var(--original-size) * 0.67); /* account for ar */
   background-repeat: no-repeat;
   background-position: center calc(50% - 4%); /* Reposition vertically */
@@ -464,7 +474,8 @@
   );
   */
 
-  --m-image: var(--gradient), url("../../assets/images/choropleth.png");
+  /* Mask variables */
+  --m-image: var(--gradient), url("../../assets/images/choroplethmap.png");
   --m-size: 100% 100%, var(--original-size);
   --m-repeat: no-repeat, no-repeat;
   --m-position: center, center;

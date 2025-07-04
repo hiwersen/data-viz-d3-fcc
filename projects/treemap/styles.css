@@ -9,7 +9,7 @@
 
   & .tile {
     fill: currentColor;
-    fill-opacity: 0.1; /* Only affects fill, not stroke */
+    fill-opacity: 0.1; /*  Only affects fill, not stroke */
     stroke: currentColor;
     stroke-width: 4;
     cursor: crosshair;
